@@ -1,0 +1,28 @@
+# Dependencies
+node_modules/
+
+# Environment files
+.env
+backend/.env
+frontend/.env
+
+# Database
+*.db
+*.sqlite
+
+# Build folders
+dist/
+build/
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# VS Code
+.vscode/
+
+# Generated reports
+reports/*.pdf
