@@ -21,6 +21,7 @@ export default function ChatWindow() {
             key={index}
             sender={msg.sender}
             message={msg.message}
+            timestamp={msg.timestamp}
           />
         ))}
 

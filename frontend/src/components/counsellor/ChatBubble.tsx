@@ -1,11 +1,13 @@
 interface Props {
   sender: "user" | "ai";
   message: string;
+  timestamp: string;
 }
 
 export default function ChatBubble({
   sender,
   message,
+  timestamp,
 }: Props) {
   return (
     <div
@@ -22,7 +24,11 @@ export default function ChatBubble({
             : "bg-slate-800 text-white"
         }`}
       >
-        {message}
+        <p>{message}</p>
+
+        <p className="text-xs mt-2 opacity-70">
+          {timestamp}
+        </p>
       </div>
     </div>
   );
