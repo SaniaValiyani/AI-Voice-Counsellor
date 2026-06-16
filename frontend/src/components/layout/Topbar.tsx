@@ -1,6 +1,10 @@
-import { Bell } from "lucide-react";
+import { Bell, Moon, Sun } from "lucide-react";
+import { useThemeStore } from "../../store/themeStore";
 
 export default function Topbar() {
+  const { darkMode, toggleTheme } =
+    useThemeStore();
+
   return (
     <div className="h-20 border-b border-slate-800 flex items-center justify-between px-8">
       <div>
@@ -13,11 +17,20 @@ export default function Topbar() {
         </p>
       </div>
 
-      <button className="relative">
-        <Bell className="text-white" />
+      <div className="flex items-center gap-5">
+        <button
+          onClick={toggleTheme}
+          className="text-white"
+        >
+          {darkMode ? <Sun /> : <Moon />}
+        </button>
 
-        <span className="absolute -top-1 -right-1 w-3 h-3 rounded-full bg-red-500" />
-      </button>
+        <button className="relative">
+          <Bell className="text-white" />
+
+          <span className="absolute -top-1 -right-1 w-3 h-3 rounded-full bg-red-500" />
+        </button>
+      </div>
     </div>
   );
 }
