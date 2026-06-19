@@ -7,6 +7,7 @@ import LeadScoreCard from "../components/counsellor/LeadScoreCard";
 import VoiceButton from "../components/counsellor/VoiceButton";
 import TypingIndicator from "../components/counsellor/TypingIndicator";
 import ClearChatButton from "../components/counsellor/ClearChatButton";
+import ChatInput from "../components/counsellor/ChatInput";
 
 export default function CounsellorPage() {
   return (
@@ -16,6 +17,8 @@ export default function CounsellorPage() {
         <div className="lg:col-span-2 space-y-6">
           <ClearChatButton />
           <ChatWindow />
+
+          <ChatInput />
 
           <TypingIndicator />
 
