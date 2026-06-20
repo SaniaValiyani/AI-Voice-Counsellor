@@ -17,7 +17,7 @@ export default function StatCard({
         {value}
       </h2>
 
-      <div className="h-1 bg-gradient-to-r from-cyan-500 to-purple-500 mt-5 rounded-full" />
+      <div className="h-1 bg-linear-to-r from-cyan-500 to-purple-500 mt-5 rounded-full" />
     </div>
   );
 }

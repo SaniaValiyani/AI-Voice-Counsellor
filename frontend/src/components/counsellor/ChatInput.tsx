@@ -5,49 +5,36 @@ import { useCounsellorStore } from "../../store/counsellorStore";
 import { sendChat } from "../../services/chatService";
 
 export default function ChatInput() {
-  const [message, setMessage] =
-    useState("");
+  const [message, setMessage] = useState("");
 
-  const {
-    addMessage,
-    messages,
-    setSentiment,
-  } = useCounsellorStore();
+  const { addMessage, messages, setSentiment } = useCounsellorStore();
 
   const sendMessage = async () => {
     if (!message.trim()) return;
 
+    const userMessage = message;
+
     addMessage({
       sender: "user",
-      message,
-      timestamp:
-        new Date().toLocaleTimeString(),
+      message: userMessage,
+      timestamp: new Date().toLocaleTimeString(),
     });
-    const userMessage = message;
 
     setMessage("");
 
-    const data =
-      await sendChat(
-        userMessage,
-        messages
-      );
+    const data = await sendChat(userMessage, messages);
 
-    setSentiment(
-      data.sentiment
-    );
+    setSentiment(data.sentiment);
 
     addMessage({
       sender: "ai",
       message: data.reply,
-      timestamp:
-        new Date().toLocaleTimeString(),
+      timestamp: new Date().toLocaleTimeString(),
     });
-
   };
 
   return (
-    <div className="flex gap-3">
+    <div className="flex gap-3 rounded-2xl bg-white/5 backdrop-blur-lg border border-white/10 p-2">
       <input
         onKeyDown={(e) => {
           if (e.key === "Enter") {
@@ -55,18 +42,16 @@ export default function ChatInput() {
           }
         }}
         value={message}
-        onChange={(e) =>
-          setMessage(e.target.value)
-        }
+        onChange={(e) => setMessage(e.target.value)}
         placeholder="Ask anything..."
-        className="flex-1 bg-slate-900 border border-slate-800 rounded-xl px-4 py-3 text-white"
+        className="flex-1 bg-transparent outline-none px-4 py-3 text-white placeholder:text-slate-400"
       />
 
       <button
         onClick={sendMessage}
-        className="bg-cyan-500 px-4 rounded-xl"
+        className="bg-linear-to-r from-cyan-500 to-blue-500 px-4 rounded-xl text-slate-950 font-medium"
       >
-        <Send />
+        <Send size={18} />
       </button>
     </div>
   );
