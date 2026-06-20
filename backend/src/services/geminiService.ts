@@ -7,23 +7,35 @@ const ai = new GoogleGenAI({
 });
 
 export async function generateReply(
-  message: string
+  message: string,
+  history: any[]
 ) {
+  const previousConversation =
+    history
+      .map(
+        (msg) =>
+          `${msg.sender}: ${msg.message}`
+      )
+      .join("\n");
+
   const response =
     await ai.models.generateContent({
       model: "gemini-2.5-flash",
       contents: `
       You are an AI career counsellor.
 
-      Rules:
-      - Be friendly.
-      - Be supportive.
-      - Help students choose careers.
-      - Keep responses concise.
-      - Focus on engineering, IT, careers, internships, skills and education.
+      Previous Conversation:
+      ${previousConversation}
 
-      Student Query:
+      Current Student Message:
       ${message}
+
+      Rules:
+      - Be friendly
+      - Be concise
+      - Give practical guidance
+      - Help with careers, internships,
+        engineering, skills and education.
       `,
     });
 

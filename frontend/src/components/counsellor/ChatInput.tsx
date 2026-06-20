@@ -8,8 +8,11 @@ export default function ChatInput() {
   const [message, setMessage] =
     useState("");
 
-  const { addMessage } =
-    useCounsellorStore();
+  const {
+    addMessage,
+    messages,
+    setSentiment,
+  } = useCounsellorStore();
 
   const sendMessage = async () => {
     if (!message.trim()) return;
@@ -25,7 +28,14 @@ export default function ChatInput() {
     setMessage("");
 
     const data =
-      await sendChat(userMessage);
+      await sendChat(
+        userMessage,
+        messages
+      );
+
+    setSentiment(
+      data.sentiment
+    );
 
     addMessage({
       sender: "ai",

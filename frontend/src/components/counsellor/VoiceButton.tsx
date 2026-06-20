@@ -11,6 +11,8 @@ export default function VoiceButton() {
     setListening,
     setThinking,
     isListening,
+    messages,
+    setSentiment,
   } = useCounsellorStore();
 
   const { language } = useLanguageStore();
@@ -72,7 +74,14 @@ export default function VoiceButton() {
       });
 
       const data =
-        await sendChat(text);
+        await sendChat(
+          text,
+          messages
+        );
+
+      setSentiment(
+        data.sentiment
+      );
 
       addMessage({
         sender: "ai",

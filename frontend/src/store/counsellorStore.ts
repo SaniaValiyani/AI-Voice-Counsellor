@@ -24,6 +24,12 @@ interface CounsellorState {
 
   messages: Message[];
 
+  sentiment: string;
+
+  setSentiment: (
+    sentiment: string
+  ) => void;
+
   setTranscript: (
     transcript: string
   ) => void;
@@ -37,9 +43,11 @@ export const useCounsellorStore =
   create<CounsellorState>((set) => ({
     isListening: false,
     isThinking: false,
-    
+
     transcript: "",
-    
+
+    sentiment: "Neutral",
+
     setListening: (value) =>
       set({
         isListening: value,
@@ -51,14 +59,21 @@ export const useCounsellorStore =
       }),
 
     messages: [
-    {
-      sender: "ai",
-      message:
-        "Hello! I am your AI Counsellor.",
-      timestamp:
-        new Date().toLocaleTimeString(),
-    },
-  ],
+      {
+        sender: "ai",
+        message:
+          "Hello! I am your AI Counsellor.",
+        timestamp:
+          new Date().toLocaleTimeString(),
+      },
+    ],
+
+    setSentiment: (
+      sentiment
+    ) =>
+      set({
+        sentiment,
+      }),
 
     setTranscript: (transcript) =>
       set({
@@ -72,7 +87,7 @@ export const useCounsellorStore =
           message,
         ],
       })),
-    
+
     clearMessages: () =>
       set({
         messages: [],

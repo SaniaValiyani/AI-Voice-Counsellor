@@ -1,20 +1,30 @@
 import { Request, Response } from "express";
 
-import { generateReply }
-from "../services/geminiService";
+import { generateReply } from "../services/geminiService";
+import { analyzeSentiment } from "../services/sentimentService";
 
 export async function chatController(
   req: Request,
   res: Response
 ) {
   try {
-    const { message } = req.body;
+    const {
+      message,
+      history,
+    } = req.body;
 
     const reply =
-      await generateReply(message);
+      await generateReply(
+        message,
+        history
+      );
+
+    const sentiment =
+      analyzeSentiment(message);
 
     return res.json({
       reply,
+      sentiment,
     });
   } catch (error) {
     console.error(error);
