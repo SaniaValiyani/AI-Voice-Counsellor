@@ -4,6 +4,7 @@ import { useLanguageStore } from "../../store/languageStore";
 import { useCounsellorStore } from "../../store/counsellorStore";
 import { sendChat } from "../../services/chatService";
 import VoiceWave from "./VoiceWave";
+import { speakText } from "../../services/speechService";
 
 export default function VoiceButton() {
   const {
@@ -64,6 +65,10 @@ export default function VoiceButton() {
         message: data.reply,
         timestamp: new Date().toLocaleTimeString(),
       });
+      speakText(
+        data.reply,
+        language
+      );
     };
   };
 

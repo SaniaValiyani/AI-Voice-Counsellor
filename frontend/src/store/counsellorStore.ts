@@ -11,11 +11,17 @@ interface CounsellorState {
 
   isThinking: boolean;
 
+  isSpeaking: boolean;
+
   setListening: (
     value: boolean
   ) => void;
 
   setThinking: (
+    value: boolean
+  ) => void;
+
+  setSpeaking: (
     value: boolean
   ) => void;
 
@@ -43,6 +49,7 @@ export const useCounsellorStore =
   create<CounsellorState>((set) => ({
     isListening: false,
     isThinking: false,
+    isSpeaking: false,
 
     transcript: "",
 
@@ -56,6 +63,11 @@ export const useCounsellorStore =
     setThinking: (value) =>
       set({
         isThinking: value,
+      }),
+
+    setSpeaking: (value) =>
+      set({
+        isSpeaking: value,
       }),
 
     messages: [

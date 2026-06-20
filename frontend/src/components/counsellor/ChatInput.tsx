@@ -4,8 +4,15 @@ import { Send } from "lucide-react";
 import { useCounsellorStore } from "../../store/counsellorStore";
 import { sendChat } from "../../services/chatService";
 
+import { speakText } from "../../services/speechService";
+import { useLanguageStore } from "../../store/languageStore";
+
+
 export default function ChatInput() {
   const [message, setMessage] = useState("");
+
+  const { language } =
+    useLanguageStore();
 
   const { addMessage, messages, setSentiment } = useCounsellorStore();
 
@@ -31,6 +38,11 @@ export default function ChatInput() {
       message: data.reply,
       timestamp: new Date().toLocaleTimeString(),
     });
+
+    speakText(
+      data.reply,
+      language
+    );
   };
 
   return (
