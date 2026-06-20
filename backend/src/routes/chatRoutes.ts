@@ -1,16 +1,13 @@
 import { Router } from "express";
 
+import { chatController }
+from "../controllers/chatController";
+
 const router = Router();
 
 router.post(
   "/chat",
-  async (req, res) => {
-    const { message } = req.body;
-
-    return res.json({
-      reply: `AI Response to: ${message}`,
-    });
-  }
+  chatController
 );
 
 export default router;

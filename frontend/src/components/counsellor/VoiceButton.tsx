@@ -2,6 +2,7 @@ import { Mic } from "lucide-react";
 import { motion } from "framer-motion";
 import { useLanguageStore } from "../../store/languageStore";
 import { useCounsellorStore } from "../../store/counsellorStore";
+import { sendChat } from "../../services/chatService";
 
 export default function VoiceButton() {
   const {
@@ -53,7 +54,7 @@ export default function VoiceButton() {
     recognition.start();
     setListening(true);
 
-    recognition.onresult = (
+    recognition.onresult = async (
       event: any
     ) => {
       const text =
@@ -70,16 +71,15 @@ export default function VoiceButton() {
           new Date().toLocaleTimeString(),
       });
 
-      setTimeout(() => {
-        setThinking(false);
-        addMessage({
-          sender: "ai",
-          message:
-            "Thank you. I understand your query.",
-          timestamp:
-            new Date().toLocaleTimeString(),
-        });
-      }, 1000);
+      const data =
+        await sendChat(text);
+
+      addMessage({
+        sender: "ai",
+        message: data.reply,
+        timestamp:
+          new Date().toLocaleTimeString(),
+      });
     };
   };
 
