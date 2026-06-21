@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { persist } from "zustand/middleware";
 
 interface Message {
   sender: "user" | "ai";
@@ -46,7 +47,9 @@ interface CounsellorState {
 }
 
 export const useCounsellorStore =
-  create<CounsellorState>((set) => ({
+  create<CounsellorState>()(
+    persist(
+      (set) => ({
     isListening: false,
     isThinking: false,
     isSpeaking: false,
@@ -102,7 +105,34 @@ export const useCounsellorStore =
 
     clearMessages: () =>
       set({
-        messages: [],
+        messages: [
+          {
+            sender: "ai",
+            message:
+              "Hello! I am your AI Counsellor.",
+            timestamp:
+              new Date().toLocaleTimeString(),
+          },
+        ],
+        transcript: "",
+        sentiment: "Neutral",
       }),
 
-  }));
+}),
+{
+  name:
+    "ai-counsellor-storage",
+
+  partialize: (state) => ({
+    messages:
+      state.messages,
+
+    transcript:
+      state.transcript,
+
+    sentiment:
+      state.sentiment,
+  }),
+}
+)
+);

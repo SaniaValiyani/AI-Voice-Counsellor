@@ -8,6 +8,7 @@ import SentimentCard from "../components/dashboard/SentimentCard";
 import LanguageChart from "../components/dashboard/LanguageChart";
 import LeadScoreWidget from "../components/dashboard/LeadScoreWidget";
 import RecentConversations from "../components/dashboard/RecentConversations";
+import SessionStats from "../components/dashboard/SessionStats";
 
 export default function DashboardPage() {
   return (
@@ -53,6 +54,7 @@ export default function DashboardPage() {
           <LeadChart />
 
           <SentimentCard />
+          <SessionStats />
         </div>
 
         {/* Secondary Widgets */}
