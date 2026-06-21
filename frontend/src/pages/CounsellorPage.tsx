@@ -10,6 +10,7 @@ import TypingIndicator from "../components/counsellor/TypingIndicator";
 import ClearChatButton from "../components/counsellor/ClearChatButton";
 import ChatInput from "../components/counsellor/ChatInput";
 import MuteButton from "../components/counsellor/MuteButton";
+import ExportButtons from "../components/counsellor/ExportButtons";
 
 export default function CounsellorPage() {
   return (
@@ -39,9 +40,10 @@ export default function CounsellorPage() {
         <div className="grid lg:grid-cols-3 gap-6">
           {/* Left Side */}
           <div className="lg:col-span-2 space-y-6">
-            <div className="flex gap-3">
+            <div className="flex gap-3 flex-wrap">
               <ClearChatButton />
               <MuteButton />
+              <ExportButtons />
             </div>
             
             <ChatWindow />
