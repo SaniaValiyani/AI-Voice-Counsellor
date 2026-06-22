@@ -6,7 +6,9 @@ import { sendChat } from "../../services/chatService";
 
 import { speakText } from "../../services/speechService";
 import { useLanguageStore } from "../../store/languageStore";
-
+import {
+  extractProfile,
+} from "../../utils/profileExtractor";
 
 export default function ChatInput() {
   const [message, setMessage] = useState("");
@@ -14,7 +16,12 @@ export default function ChatInput() {
   const { language } =
     useLanguageStore();
 
-  const { addMessage, messages, setSentiment } = useCounsellorStore();
+  const {
+    addMessage,
+    messages,
+    setSentiment,
+    updateProfile,
+  } = useCounsellorStore();
 
   const sendMessage = async () => {
     if (!message.trim()) return;
@@ -27,9 +34,21 @@ export default function ChatInput() {
       timestamp: new Date().toLocaleTimeString(),
     });
 
+    const profile =
+      extractProfile(
+        message
+      );
+
+    updateProfile(
+      profile
+    );
+
     setMessage("");
 
-    const data = await sendChat(userMessage, messages);
+    const data = await sendChat(
+      userMessage,
+      messages
+    );
 
     setSentiment(data.sentiment);
 
@@ -54,7 +73,11 @@ export default function ChatInput() {
           }
         }}
         value={message}
-        onChange={(e) => setMessage(e.target.value)}
+        onChange={(e) =>
+          setMessage(
+            e.target.value
+          )
+        }
         placeholder="Ask anything..."
         className="flex-1 bg-transparent outline-none px-4 py-3 text-white placeholder:text-slate-400"
       />

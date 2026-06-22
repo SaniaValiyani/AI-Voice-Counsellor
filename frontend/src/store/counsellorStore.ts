@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-
+import type { StudentProfile } from "../types/studentProfile";
 interface Message {
   sender: "user" | "ai";
   message: string;
@@ -50,6 +50,13 @@ interface CounsellorState {
   addMessage: (
     message: Message
   ) => void;
+
+  studentProfile: StudentProfile;
+
+  updateProfile: (
+    profile:
+      Partial<StudentProfile>
+  ) => void;
 }
 
 export const useCounsellorStore =
@@ -61,6 +68,18 @@ export const useCounsellorStore =
         isSpeaking: false,
 
         roadmap: "",
+
+        studentProfile: {
+          careerGoal: "",
+
+          interests: [],
+
+          skills: [],
+
+          educationLevel: "",
+
+          preferredLanguage: "",
+        },
 
         transcript: "",
 
@@ -87,6 +106,16 @@ export const useCounsellorStore =
           set({
             roadmap,
           }),
+
+        updateProfile: (
+          profile
+        ) =>
+          set((state) => ({
+            studentProfile: {
+              ...state.studentProfile,
+              ...profile,
+            },
+          })),
 
         messages: [
           {
@@ -146,6 +175,9 @@ export const useCounsellorStore =
 
           sentiment:
             state.sentiment,
+
+          studentProfile:
+            state.studentProfile,
         }),
       }
     )

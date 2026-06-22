@@ -12,6 +12,7 @@ import SessionStats from "../components/dashboard/SessionStats";
 import TopicInsights from "../components/dashboard/TopicInsights";
 import CareerInterestMeter from "../components/dashboard/CareerInterestMeter";
 import SessionDuration from "../components/dashboard/SessionDuration";
+import ProfileCard from "../components/dashboard/ProfileCard";
 
 export default function DashboardPage() {
   return (
@@ -54,6 +55,7 @@ export default function DashboardPage() {
 
         {/* Main Charts */}
         <div className="grid lg:grid-cols-2 gap-6 mt-8">
+          <ProfileCard />
           <LeadChart />
 
           <SentimentCard />
