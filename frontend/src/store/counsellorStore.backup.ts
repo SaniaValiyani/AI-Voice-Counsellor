@@ -13,6 +13,8 @@ interface CounsellorState {
 
   isSpeaking: boolean;
 
+  sessionStartTime: number;
+
   setListening: (
     value: boolean
   ) => void;
@@ -50,6 +52,8 @@ export const useCounsellorStore =
     isListening: false,
     isThinking: false,
     isSpeaking: false,
+
+    sessionStartTime: Date.now(),
 
     transcript: "",
 

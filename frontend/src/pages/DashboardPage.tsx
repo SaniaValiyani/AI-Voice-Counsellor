@@ -9,6 +9,9 @@ import LanguageChart from "../components/dashboard/LanguageChart";
 import LeadScoreWidget from "../components/dashboard/LeadScoreWidget";
 import RecentConversations from "../components/dashboard/RecentConversations";
 import SessionStats from "../components/dashboard/SessionStats";
+import TopicInsights from "../components/dashboard/TopicInsights";
+import CareerInterestMeter from "../components/dashboard/CareerInterestMeter";
+import SessionDuration from "../components/dashboard/SessionDuration";
 
 export default function DashboardPage() {
   return (
@@ -55,6 +58,9 @@ export default function DashboardPage() {
 
           <SentimentCard />
           <SessionStats />
+          <TopicInsights />
+          <CareerInterestMeter />
+          <SessionDuration />
         </div>
 
         {/* Secondary Widgets */}
