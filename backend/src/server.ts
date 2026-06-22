@@ -4,7 +4,7 @@ dotenv.config();
 import express from "express";
 import cors from "cors";
 import chatRoutes from "./routes/chatRoutes";
-
+import roadmapRoutes from "./routes/roadmapRoutes";
 
 const app = express();
 
@@ -13,6 +13,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/api", chatRoutes);
+app.use("/api", roadmapRoutes);
 
 app.get("/", (_, res) => {
   res.json({

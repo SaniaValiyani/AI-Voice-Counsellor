@@ -69,6 +69,28 @@ export async function generateReply(
       Use simple conversational Hindi.
 
       Do not write long essays.
+
+      If the student asks for:
+      - a roadmap
+      - how to become something
+      - career path
+      - learning path
+      - step-by-step guide
+
+      then generate a structured roadmap with:
+
+      🚀 Goal
+
+      📚 Phase 1 - Foundations
+
+      🛠 Phase 2 - Skills
+
+      💼 Phase 3 - Projects
+
+      🎯 Phase 4 - Internship / Job Prep
+
+      Keep it concise.
+
       `,
     });
 

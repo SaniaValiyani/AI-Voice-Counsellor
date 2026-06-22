@@ -14,6 +14,8 @@ interface CounsellorState {
 
   isSpeaking: boolean;
 
+  roadmap: string;
+
   setListening: (
     value: boolean
   ) => void;
@@ -24,6 +26,10 @@ interface CounsellorState {
 
   setSpeaking: (
     value: boolean
+  ) => void;
+
+  setRoadmap: (
+    roadmap: string
   ) => void;
 
   clearMessages: () => void;
@@ -50,61 +56,38 @@ export const useCounsellorStore =
   create<CounsellorState>()(
     persist(
       (set) => ({
-    isListening: false,
-    isThinking: false,
-    isSpeaking: false,
+        isListening: false,
+        isThinking: false,
+        isSpeaking: false,
 
-    transcript: "",
+        roadmap: "",
 
-    sentiment: "Neutral",
+        transcript: "",
 
-    setListening: (value) =>
-      set({
-        isListening: value,
-      }),
+        sentiment: "Neutral",
 
-    setThinking: (value) =>
-      set({
-        isThinking: value,
-      }),
+        setListening: (value) =>
+          set({
+            isListening: value,
+          }),
 
-    setSpeaking: (value) =>
-      set({
-        isSpeaking: value,
-      }),
+        setThinking: (value) =>
+          set({
+            isThinking: value,
+          }),
 
-    messages: [
-      {
-        sender: "ai",
-        message:
-          "Hello! I am your AI Counsellor.",
-        timestamp:
-          new Date().toLocaleTimeString(),
-      },
-    ],
+        setSpeaking: (value) =>
+          set({
+            isSpeaking: value,
+          }),
 
-    setSentiment: (
-      sentiment
-    ) =>
-      set({
-        sentiment,
-      }),
+        setRoadmap: (
+          roadmap
+        ) =>
+          set({
+            roadmap,
+          }),
 
-    setTranscript: (transcript) =>
-      set({
-        transcript,
-      }),
-
-    addMessage: (message) =>
-      set((state) => ({
-        messages: [
-          ...state.messages,
-          message,
-        ],
-      })),
-
-    clearMessages: () =>
-      set({
         messages: [
           {
             sender: "ai",
@@ -114,25 +97,56 @@ export const useCounsellorStore =
               new Date().toLocaleTimeString(),
           },
         ],
-        transcript: "",
-        sentiment: "Neutral",
+
+        setSentiment: (
+          sentiment
+        ) =>
+          set({
+            sentiment,
+          }),
+
+        setTranscript: (transcript) =>
+          set({
+            transcript,
+          }),
+
+        addMessage: (message) =>
+          set((state) => ({
+            messages: [
+              ...state.messages,
+              message,
+            ],
+          })),
+
+        clearMessages: () =>
+          set({
+            messages: [
+              {
+                sender: "ai",
+                message:
+                  "Hello! I am your AI Counsellor.",
+                timestamp:
+                  new Date().toLocaleTimeString(),
+              },
+            ],
+            transcript: "",
+            sentiment: "Neutral",
+          }),
       }),
+      {
+        name:
+          "ai-counsellor-storage",
 
-}),
-{
-  name:
-    "ai-counsellor-storage",
+        partialize: (state) => ({
+          messages:
+            state.messages,
 
-  partialize: (state) => ({
-    messages:
-      state.messages,
+          transcript:
+            state.transcript,
 
-    transcript:
-      state.transcript,
-
-    sentiment:
-      state.sentiment,
-  }),
-}
-)
-);
+          sentiment:
+            state.sentiment,
+        }),
+      }
+    )
+  );
