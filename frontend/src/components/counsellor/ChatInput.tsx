@@ -22,6 +22,8 @@ export default function ChatInput() {
     studentProfile,
     setSentiment,
     updateProfile,
+    addXP,
+    refreshAchievements,
   } = useCounsellorStore();
 
   const sendMessage = async () => {
@@ -59,6 +61,10 @@ export default function ChatInput() {
       message: data.reply,
       timestamp: new Date().toLocaleTimeString(),
     });
+
+    addXP(10);
+
+    refreshAchievements();
 
     speakText(
       data.reply,

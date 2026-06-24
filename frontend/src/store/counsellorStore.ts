@@ -2,6 +2,10 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import type { StudentProfile } from "../types/studentProfile";
 
+import {
+  calculateAchievements,
+} from "../utils/achievementEngine";
+
 interface Message {
   sender: "user" | "ai";
   message: string;
@@ -58,6 +62,12 @@ interface CounsellorState {
   updateProfile: (
     profile: Partial<StudentProfile>
   ) => void;
+
+  refreshAchievements: () => void;
+
+  addXP: (
+    amount: number
+  ) => void;
 }
 
 export const useCounsellorStore =
@@ -97,6 +107,12 @@ export const useCounsellorStore =
           educationLevel: "",
 
           preferredLanguage: "",
+
+          achievements: [],
+
+          xp: 0,
+
+          level: 1,
         },
 
         transcript: "",
@@ -136,9 +152,7 @@ export const useCounsellorStore =
 
               skills: [
                 ...new Set([
-                  ...state
-                    .studentProfile
-                    .skills,
+                  ...state.studentProfile.skills,
 
                   ...(profile.skills ||
                     []),
@@ -146,6 +160,44 @@ export const useCounsellorStore =
               ],
             },
           })),
+
+        refreshAchievements:
+          () =>
+            set((state) => ({
+              studentProfile: {
+                ...state.studentProfile,
+
+                achievements:
+                  calculateAchievements(
+                    state.studentProfile
+                  ),
+              },
+            })),
+
+        addXP: (
+          amount
+        ) =>
+          set((state) => {
+            const xp =
+              state.studentProfile
+                .xp + amount;
+
+            const level =
+              Math.floor(
+                xp / 100
+              ) + 1;
+
+            return {
+              studentProfile: {
+                ...state
+                  .studentProfile,
+
+                xp,
+
+                level,
+              },
+            };
+          }),
 
         messages: [
           {

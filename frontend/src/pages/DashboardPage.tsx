@@ -16,6 +16,8 @@ import ProfileCard from "../components/dashboard/ProfileCard";
 import GoalProgressCard from "../components/dashboard/GoalProgressCard";
 import StreakCard from "../components/dashboard/StreakCard";
 import MonthlyReportCard from "../components/dashboard/MonthlyReportCard";
+import AchievementsCard from "../components/dashboard/AchievementsCard";
+import LevelCard from "../components/dashboard/LevelCard";
 
 export default function DashboardPage() {
   return (
@@ -59,6 +61,8 @@ export default function DashboardPage() {
 
           {/* Main Charts */}
           <ProfileCard />
+          <LevelCard />
+          <AchievementsCard />
           <GoalProgressCard />
           <StreakCard />
           <MonthlyReportCard />

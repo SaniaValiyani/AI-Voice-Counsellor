@@ -22,4 +22,10 @@ export interface StudentProfile {
   learningStreak: number;
 
   lastActiveDate: string;
+
+  achievements: string[];
+
+  xp: number;
+
+  level: number;
 }
