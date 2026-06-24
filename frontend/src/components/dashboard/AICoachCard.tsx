@@ -12,7 +12,7 @@ export default function AICoachCard() {
   return (
     <div
       className="
-      bg-gradient-to-r
+      bg-linear-to-r
       from-cyan-500/20
       to-blue-500/20
       rounded-2xl

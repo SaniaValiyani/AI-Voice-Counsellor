@@ -70,6 +70,10 @@ interface CounsellorState {
   addXP: (
     amount: number
   ) => void;
+
+  toggleGoal: (
+    goalId: string
+  ) => void;
 }
 
 export const useCounsellorStore =
@@ -213,6 +217,65 @@ export const useCounsellorStore =
               studentProfile: {
                 ...state
                   .studentProfile,
+
+                xp,
+
+                level,
+              },
+            };
+          }),
+
+        toggleGoal: (
+          goalId
+        ) =>
+          set((state) => {
+
+            const updatedGoals =
+              state.studentProfile.goals.map(
+                (goal) =>
+                  goal.id === goalId
+                    ? {
+                        ...goal,
+                        completed:
+                          !goal.completed,
+                      }
+                    : goal
+              );
+
+            const completedCount =
+              updatedGoals.filter(
+                (goal) =>
+                  goal.completed
+              ).length;
+
+            const totalGoals =
+              updatedGoals.length;
+
+            const progress =
+              Math.round(
+                (completedCount /
+                  totalGoals) *
+                  100
+              );
+
+            const xp =
+              state.studentProfile.xp +
+              25;
+
+            const level =
+              Math.floor(
+                xp / 100
+              ) + 1;
+
+            return {
+              studentProfile: {
+                ...state.studentProfile,
+
+                goals:
+                  updatedGoals,
+
+                goalProgress:
+                  progress,
 
                 xp,
 

@@ -9,11 +9,8 @@ export default function GoalProgressCard() {
     useCounsellorStore();
 
   const progress =
-    Math.min(
-      studentProfile.skills
-        .length * 10,
-      100
-    );
+    studentProfile
+    .goalProgress || 0;
 
   return (
     <div
