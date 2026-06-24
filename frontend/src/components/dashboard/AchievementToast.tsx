@@ -1,29 +1,39 @@
-interface Props {
-  title: string;
+import {
+  useCounsellorStore,
 }
+from "../../store/counsellorStore";
 
-export default function AchievementToast({
-  title,
-}: Props) {
+export default function AchievementToast() {
+  const {
+    latestAchievement,
+  } =
+    useCounsellorStore();
+
+  if (
+    !latestAchievement
+  )
+    return null;
+
   return (
     <div
       className="
       fixed
       top-5
       right-5
-      bg-cyan-500
-      text-black
+      bg-green-500
       px-5
       py-3
       rounded-xl
-      shadow-lg
       z-50
       "
     >
-      🏆 Achievement Unlocked
+      🏆 Achievement
+      Unlocked
 
       <div>
-        {title}
+        {
+          latestAchievement
+        }
       </div>
     </div>
   );

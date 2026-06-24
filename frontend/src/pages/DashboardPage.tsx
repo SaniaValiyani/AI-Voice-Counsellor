@@ -18,6 +18,10 @@ import StreakCard from "../components/dashboard/StreakCard";
 import MonthlyReportCard from "../components/dashboard/MonthlyReportCard";
 import AchievementsCard from "../components/dashboard/AchievementsCard";
 import LevelCard from "../components/dashboard/LevelCard";
+import AICoachCard from "../components/dashboard/AICoachCard";
+import WeeklyChallengeCard from "../components/dashboard/WeeklyChallengeCard";
+import StudyPlannerCard from "../components/dashboard/StudyPlannerCard";
+import AchievementToast from "../components/dashboard/AchievementToast";
 
 export default function DashboardPage() {
   return (
@@ -60,12 +64,16 @@ export default function DashboardPage() {
           />
 
           {/* Main Charts */}
+          <AchievementToast />
           <ProfileCard />
           <LevelCard />
           <AchievementsCard />
           <GoalProgressCard />
           <StreakCard />
           <MonthlyReportCard />
+          <AICoachCard />
+          <WeeklyChallengeCard />
+          <StudyPlannerCard />
           <LeadChart />
           <SentimentCard />
           <SessionStats />

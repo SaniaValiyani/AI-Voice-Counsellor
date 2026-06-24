@@ -10,6 +10,11 @@ import {
   extractProfile,
 } from "../../utils/profileExtractor";
 
+import {
+  generateGoals,
+}
+from "../../utils/generateGoals";
+
 export default function ChatInput() {
   const [message, setMessage] = useState("");
 
@@ -45,6 +50,17 @@ export default function ChatInput() {
     updateProfile(
       profile
     );
+
+    if (
+      profile.careerGoal
+    ) {
+      updateProfile({
+        goals:
+          generateGoals(
+            profile.careerGoal
+          ),
+      });
+    }
 
     setMessage("");
 

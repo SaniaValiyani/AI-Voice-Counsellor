@@ -28,4 +28,11 @@ export interface StudentProfile {
   xp: number;
 
   level: number;
+
+  goals: {
+    id: string;
+    title: string;
+    completed: boolean;
+  }[];
+
 }

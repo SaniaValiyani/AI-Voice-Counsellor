@@ -45,6 +45,8 @@ interface CounsellorState {
 
   sentiment: string;
 
+  latestAchievement: string;
+
   setSentiment: (
     sentiment: string
   ) => void;
@@ -80,6 +82,8 @@ export const useCounsellorStore =
 
         roadmap: "",
 
+        latestAchievement: "",
+
         studentProfile: {
           careerGoal: "",
 
@@ -113,6 +117,8 @@ export const useCounsellorStore =
           xp: 0,
 
           level: 1,
+
+          goals: [],
         },
 
         transcript: "",
@@ -163,16 +169,32 @@ export const useCounsellorStore =
 
         refreshAchievements:
           () =>
-            set((state) => ({
-              studentProfile: {
-                ...state.studentProfile,
+            set((state) => {
 
-                achievements:
-                  calculateAchievements(
-                    state.studentProfile
-                  ),
-              },
-            })),
+              const updated =
+                calculateAchievements(
+                  state.studentProfile
+                );
+
+              const latest =
+                updated.find(
+                  (achievement) =>
+                    !state.studentProfile.achievements.includes(
+                      achievement
+                    )
+                );
+
+              return {
+                studentProfile: {
+                  ...state.studentProfile,
+                  achievements:
+                    updated,
+                },
+
+                latestAchievement:
+                  latest || "",
+              };
+            }),
 
         addXP: (
           amount
