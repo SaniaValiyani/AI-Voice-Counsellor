@@ -1,6 +1,7 @@
 export async function sendChat(
   message: string,
-  history: any[]
+  history: any[],
+  profile: any
 ) {
   const response =
     await fetch(
@@ -16,6 +17,7 @@ export async function sendChat(
         body: JSON.stringify({
           message,
           history,
+          profile,
         }),
       }
     );

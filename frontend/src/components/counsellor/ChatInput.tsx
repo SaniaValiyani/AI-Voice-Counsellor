@@ -19,6 +19,7 @@ export default function ChatInput() {
   const {
     addMessage,
     messages,
+    studentProfile,
     setSentiment,
     updateProfile,
   } = useCounsellorStore();
@@ -47,7 +48,8 @@ export default function ChatInput() {
 
     const data = await sendChat(
       userMessage,
-      messages
+      messages,
+      studentProfile
     );
 
     setSentiment(data.sentiment);

@@ -8,4 +8,10 @@ export interface StudentProfile {
   educationLevel: string;
 
   preferredLanguage: string;
+
+  recentTopics: string[];
+
+  strengths: string[];
+
+  weaknesses: string[];
 }

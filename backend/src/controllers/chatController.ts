@@ -11,12 +11,14 @@ export async function chatController(
     const {
       message,
       history,
+      profile,
     } = req.body;
 
     const reply =
       await generateReply(
         message,
-        history
+        history,
+        profile
       );
 
     const sentiment =

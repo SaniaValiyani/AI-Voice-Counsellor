@@ -1,27 +1,25 @@
-import { GoogleGenAI }
-from "@google/genai";
+import Groq from "groq-sdk";
 
-const ai =
-  new GoogleGenAI({
-    apiKey:
-      process.env.GEMINI_API_KEY!,
-  });
+const groq = new Groq({
+  apiKey: process.env.GROQ_API_KEY,
+});
 
 export async function generateRoadmap(
   career: string
 ) {
-  const response =
-    await ai.models.generateContent({
-      model:
-        "gemini-2.5-flash",
+  const completion =
+    await groq.chat.completions.create({
+      model: "llama-3.3-70b-versatile",
 
-      contents: `
-Generate a student-friendly roadmap for:
+      messages: [
+        {
+          role: "system",
+          content: `
+You are an expert AI Career Counsellor.
 
-${career}
+Generate student-friendly career roadmaps.
 
 Rules:
-
 - Use phases.
 - Use bullet points.
 - Use emojis.
@@ -30,13 +28,21 @@ Rules:
 - Mention projects.
 - Mention internships.
 - Mention certifications.
-
-Format clearly.
+- Never use markdown.
+- Never use * or **.
 `,
+        },
+        {
+          role: "user",
+          content: `Generate a roadmap for: ${career}`,
+        },
+      ],
+
+      temperature: 0.7,
     });
 
   return (
-    response.text ??
+    completion.choices[0]?.message?.content ||
     "No roadmap available"
   );
 }

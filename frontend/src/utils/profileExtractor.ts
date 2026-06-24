@@ -6,43 +6,39 @@ export function extractProfile(
 
   let careerGoal = "";
 
-  if (
-    lower.includes(
-      "ai engineer"
-    )
-  ) {
-    careerGoal =
-      "AI Engineer";
-  }
+  const careers = [
+    "ai engineer",
+    "data scientist",
+    "data analyst",
+    "frontend developer",
+    "backend developer",
+    "full stack developer",
+    "cloud engineer",
+    "devops engineer",
+    "cybersecurity engineer",
+    "ui ux designer",
+    "product manager",
+    "mobile app developer",
+  ];
 
-  if (
-    lower.includes(
-      "data scientist"
-    )
-  ) {
-    careerGoal =
-      "Data Scientist";
-  }
-
-  if (
-    lower.includes(
-      "web developer"
-    )
-  ) {
-    careerGoal =
-      "Web Developer";
-  }
-
-  if (
-    lower.includes(
-      "cybersecurity"
-    )
-  ) {
-    careerGoal =
-      "Cybersecurity";
+  for (const career of careers) {
+    if (lower.includes(career)) {
+      careerGoal = career
+        .split(" ")
+        .map(
+          (word) =>
+            word.charAt(0).toUpperCase() +
+            word.slice(1)
+        )
+        .join(" ");
+    }
   }
 
   return {
     careerGoal,
+    preferredLanguage:
+      localStorage.getItem(
+        "selected-language"
+      ) || "English",
   };
 }
