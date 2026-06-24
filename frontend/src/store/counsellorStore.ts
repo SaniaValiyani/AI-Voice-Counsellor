@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import type { StudentProfile } from "../types/studentProfile";
+
 interface Message {
   sender: "user" | "ai";
   message: string;
@@ -33,6 +34,7 @@ interface CounsellorState {
   ) => void;
 
   clearMessages: () => void;
+
   transcript: string;
 
   messages: Message[];
@@ -54,8 +56,7 @@ interface CounsellorState {
   studentProfile: StudentProfile;
 
   updateProfile: (
-    profile:
-      Partial<StudentProfile>
+    profile: Partial<StudentProfile>
   ) => void;
 }
 
@@ -75,6 +76,23 @@ export const useCounsellorStore =
           interests: [],
 
           skills: [],
+
+          completedSkills: [],
+
+          goalProgress: 0,
+
+          recentTopics: [],
+
+          strengths: [],
+
+          weaknesses: [],
+
+          learningStreak: 1,
+
+          lastActiveDate:
+            new Date()
+              .toISOString()
+              .split("T")[0],
 
           educationLevel: "",
 
@@ -113,7 +131,19 @@ export const useCounsellorStore =
           set((state) => ({
             studentProfile: {
               ...state.studentProfile,
+
               ...profile,
+
+              skills: [
+                ...new Set([
+                  ...state
+                    .studentProfile
+                    .skills,
+
+                  ...(profile.skills ||
+                    []),
+                ]),
+              ],
             },
           })),
 
@@ -134,12 +164,16 @@ export const useCounsellorStore =
             sentiment,
           }),
 
-        setTranscript: (transcript) =>
+        setTranscript: (
+          transcript
+        ) =>
           set({
             transcript,
           }),
 
-        addMessage: (message) =>
+        addMessage: (
+          message
+        ) =>
           set((state) => ({
             messages: [
               ...state.messages,

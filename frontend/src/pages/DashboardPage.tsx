@@ -13,6 +13,9 @@ import TopicInsights from "../components/dashboard/TopicInsights";
 import CareerInterestMeter from "../components/dashboard/CareerInterestMeter";
 import SessionDuration from "../components/dashboard/SessionDuration";
 import ProfileCard from "../components/dashboard/ProfileCard";
+import GoalProgressCard from "../components/dashboard/GoalProgressCard";
+import StreakCard from "../components/dashboard/StreakCard";
+import MonthlyReportCard from "../components/dashboard/MonthlyReportCard";
 
 export default function DashboardPage() {
   return (
@@ -30,13 +33,15 @@ export default function DashboardPage() {
           duration: 0.6,
         }}
       >
-        {/* Statistics */}
-        <div className="grid lg:grid-cols-4 gap-6">
-          <StatCard
-            title="Students"
-            value="154"
-          />
-
+        <div
+          className="
+          grid
+          gap-6
+          md:grid-cols-2
+          xl:grid-cols-3
+          "
+        >
+          {/* Statistics */}
           <StatCard
             title="Hot Leads"
             value="42"
@@ -51,29 +56,25 @@ export default function DashboardPage() {
             title="Languages"
             value="4"
           />
-        </div>
 
-        {/* Main Charts */}
-        <div className="grid lg:grid-cols-2 gap-6 mt-8">
+          {/* Main Charts */}
           <ProfileCard />
+          <GoalProgressCard />
+          <StreakCard />
+          <MonthlyReportCard />
           <LeadChart />
-
           <SentimentCard />
           <SessionStats />
           <TopicInsights />
           <CareerInterestMeter />
           <SessionDuration />
-        </div>
 
-        {/* Secondary Widgets */}
-        <div className="grid lg:grid-cols-2 gap-6 mt-8">
+          {/* Secondary Widgets */}
           <LanguageChart />
 
           <LeadScoreWidget />
-        </div>
 
-        {/* Recent Conversations */}
-        <div className="mt-8">
+          {/* Recent Conversations */}
           <RecentConversations />
         </div>
       </motion.div>

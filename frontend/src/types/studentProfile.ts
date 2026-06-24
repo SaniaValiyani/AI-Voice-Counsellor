@@ -14,4 +14,12 @@ export interface StudentProfile {
   strengths: string[];
 
   weaknesses: string[];
+
+  completedSkills: string[];
+
+  goalProgress: number;
+
+  learningStreak: number;
+
+  lastActiveDate: string;
 }

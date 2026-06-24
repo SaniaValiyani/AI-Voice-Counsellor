@@ -18,27 +18,52 @@ export function extractProfile(
     "cybersecurity engineer",
     "ui ux designer",
     "product manager",
-    "mobile app developer",
   ];
 
-  for (const career of careers) {
+  careers.forEach((career) => {
     if (lower.includes(career)) {
       careerGoal = career
         .split(" ")
         .map(
           (word) =>
-            word.charAt(0).toUpperCase() +
+            word.charAt(0)
+              .toUpperCase() +
             word.slice(1)
         )
         .join(" ");
     }
-  }
+  });
+
+  const skills: string[] = [];
+
+  const skillKeywords = [
+    "python",
+    "java",
+    "javascript",
+    "typescript",
+    "react",
+    "node",
+    "sql",
+    "git",
+    "machine learning",
+    "deep learning",
+    "cloud",
+    "aws",
+    "docker",
+  ];
+
+  skillKeywords.forEach(
+    (skill) => {
+      if (
+        lower.includes(skill)
+      ) {
+        skills.push(skill);
+      }
+    }
+  );
 
   return {
     careerGoal,
-    preferredLanguage:
-      localStorage.getItem(
-        "selected-language"
-      ) || "English",
+    skills,
   };
 }
