@@ -1,4 +1,4 @@
-import { StudentProfile } from "../types/studentProfile";
+import type { StudentProfile } from "../types/studentProfile";
 
 export function calculateAchievements(
   profile: StudentProfile

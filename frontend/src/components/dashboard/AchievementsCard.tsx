@@ -32,9 +32,7 @@ export default function AchievementsCard() {
         space-y-2
         "
       >
-        {studentProfile
-          .achievements
-          .map(
+        {(studentProfile.achievements || []).map(
             (
               achievement
             ) => (
