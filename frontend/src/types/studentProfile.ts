@@ -35,4 +35,8 @@ export interface StudentProfile {
     completed: boolean;
   }[];
 
+  careerReadiness: number;
+
+  timeline: string[];
+
 }

@@ -6,6 +6,10 @@ import {
   calculateAchievements,
 } from "../utils/achievementEngine";
 
+import {
+  calculateCareerReadiness,
+} from "../utils/careerReadiness";
+
 interface Message {
   sender: "user" | "ai";
   message: string;
@@ -125,6 +129,10 @@ export const useCounsellorStore =
           level: 1,
 
           goals: [],
+
+          timeline: [],
+
+          careerReadiness: 0,
         },
 
         transcript: "",
@@ -176,7 +184,6 @@ export const useCounsellorStore =
         refreshAchievements:
           () =>
             set((state) => {
-
               const updated =
                 calculateAchievements(
                   state.studentProfile
@@ -231,7 +238,6 @@ export const useCounsellorStore =
           goalId
         ) =>
           set((state) => {
-
             const updatedGoals =
               state.studentProfile.goals.map(
                 (goal) =>
@@ -269,6 +275,25 @@ export const useCounsellorStore =
                 xp / 100
               ) + 1;
 
+            const readiness =
+              calculateCareerReadiness(
+                state.studentProfile.skills,
+
+                completedCount,
+
+                totalGoals,
+
+                state.studentProfile.learningStreak
+              );
+
+            const timelineEntry =
+              `Completed: ${
+                updatedGoals.find(
+                  (goal) =>
+                    goal.id === goalId
+                )?.title
+              }`;
+
             return {
               studentProfile: {
                 ...state.studentProfile,
@@ -282,6 +307,16 @@ export const useCounsellorStore =
                 xp,
 
                 level,
+
+                careerReadiness:
+                  readiness,
+
+                timeline: [
+                  ...state.studentProfile
+                    .timeline,
+
+                  timelineEntry,
+                ],
               },
             };
           }),

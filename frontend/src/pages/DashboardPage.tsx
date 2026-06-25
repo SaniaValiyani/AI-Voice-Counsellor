@@ -23,6 +23,11 @@ import WeeklyChallengeCard from "../components/dashboard/WeeklyChallengeCard";
 import StudyPlannerCard from "../components/dashboard/StudyPlannerCard";
 import AchievementToast from "../components/dashboard/AchievementToast";
 import GoalsCard from "../components/dashboard/GoalsCard";
+import CareerReadinessCard from "../components/dashboard/CareerReadinessCard";
+import NextGoalCard from "../components/dashboard/NextGoalCard";
+import TimelineCard from "../components/dashboard/TimelineCard";
+import AIInsightsCard from "../components/dashboard/AIInsightsCard";
+
 
 export default function DashboardPage() {
   return (
@@ -76,6 +81,10 @@ export default function DashboardPage() {
           <AICoachCard />
           <WeeklyChallengeCard />
           <StudyPlannerCard />
+          <CareerReadinessCard />
+          <NextGoalCard />
+          <TimelineCard />
+          <AIInsightsCard />
           <LeadChart />
           <SentimentCard />
           <SessionStats />
