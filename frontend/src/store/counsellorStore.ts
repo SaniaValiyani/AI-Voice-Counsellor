@@ -84,6 +84,8 @@ export const useCounsellorStore =
         isThinking: false,
         isSpeaking: false,
 
+        isGeneratingGoals: false,
+
         roadmap: "",
 
         latestAchievement: "",

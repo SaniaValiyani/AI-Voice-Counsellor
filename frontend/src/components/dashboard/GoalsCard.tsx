@@ -3,45 +3,31 @@ import {
 } from "../../store/counsellorStore";
 
 export default function GoalsCard() {
-
   const {
     studentProfile,
     toggleGoal,
-  } =
-    useCounsellorStore();
+  } = useCounsellorStore();
 
   return (
-    <div
-      className="
-      bg-white/5
-      rounded-2xl
-      p-5
-      "
-    >
-      <h2
-        className="
-        text-xl
-        text-white
-        mb-4
-        "
-      >
-        🎯 Goals
-      </h2>
+    <div>
+      🎯 Goals
 
       <div
         className="
         space-y-3
         "
       >
-        {(studentProfile.goals ||
-          []).map(
+        {(studentProfile.goals || []).map(
           (goal) => (
             <div
               key={goal.id}
               className="
+              bg-white/5
+              rounded-xl
+              p-3
               flex
-              items-center
               gap-3
+              items-center
               "
             >
               <input
@@ -57,11 +43,14 @@ export default function GoalsCard() {
               />
 
               <span
-                className={
-                  goal.completed
-                    ? "line-through"
-                    : ""
-                }
+                className={`
+                  flex-1
+                  ${
+                    goal.completed
+                      ? "line-through"
+                      : ""
+                  }
+                `}
               >
                 {goal.title}
               </span>

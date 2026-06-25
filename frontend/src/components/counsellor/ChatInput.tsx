@@ -15,6 +15,11 @@ import {
 }
 from "../../utils/generateGoals";
 
+import {
+  fetchGoals,
+}
+from "../../services/goalService";
+
 export default function ChatInput() {
   const [message, setMessage] = useState("");
 
@@ -54,11 +59,15 @@ export default function ChatInput() {
     if (
       profile.careerGoal
     ) {
+
+      const goalData =
+        await fetchGoals(
+          profile.careerGoal
+        );
+
       updateProfile({
         goals:
-          generateGoals(
-            profile.careerGoal
-          ),
+          goalData.goals,
       });
     }
 
