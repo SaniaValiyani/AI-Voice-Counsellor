@@ -6,6 +6,9 @@ import cors from "cors";
 import chatRoutes from "./routes/chatRoutes";
 import roadmapRoutes from "./routes/roadmapRoutes";
 import goalRoutes from "./routes/goalRoutes";
+import { connectDB } from "./config/database";
+import studentRoutes from "./routes/studentRoutes";
+
 
 const app = express();
 
@@ -20,6 +23,11 @@ app.use(
   goalRoutes
 );
 
+app.use(
+ "/api/student",
+ studentRoutes
+);
+
 app.get("/", (_, res) => {
   res.json({
     message:
@@ -30,8 +38,18 @@ app.get("/", (_, res) => {
 const PORT =
   process.env.PORT || 5000;
 
-app.listen(PORT, () => {
-  console.log(
-    `Server running on ${PORT}`
+async function start() {
+
+  await connectDB();
+
+  app.listen(
+    process.env.PORT || 5000,
+    () => {
+      console.log(
+        "Server Running"
+      );
+    }
   );
-});
+}
+
+start();
