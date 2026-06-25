@@ -1,19 +1,39 @@
 export async function saveProfile(
- profile:any
-){
+  profile: any
+) {
 
- await fetch(
-  "http://localhost:5000/api/student/save",
-  {
-   method:"POST",
+  try {
 
-   headers:{
-    "Content-Type":
-    "application/json",
-   },
+    await fetch(
+      "http://localhost:5000/api/student/save",
+      {
+        method: "POST",
 
-   body:
-   JSON.stringify(profile),
+        headers: {
+          "Content-Type":
+            "application/json",
+        },
+
+        body:
+          JSON.stringify(profile),
+      }
+    );
+
+  } catch (error) {
+
+    console.error(
+      "Profile save failed",
+      error
+    );
   }
- );
+}
+
+export async function loadProfile() {
+
+  const response =
+    await fetch(
+      "http://localhost:5000/api/student/profile"
+    );
+
+  return response.json();
 }

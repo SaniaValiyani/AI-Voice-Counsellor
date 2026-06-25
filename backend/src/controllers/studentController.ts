@@ -28,3 +28,23 @@ export async function saveProfile(
     });
   }
 }
+
+export async function getProfile(
+  req: any,
+  res: any
+) {
+  try {
+
+    const profile =
+      await Student.findOne();
+
+    res.json(profile);
+
+  } catch (error) {
+
+    res.status(500).json({
+      error:
+        "Failed to load profile",
+    });
+  }
+}

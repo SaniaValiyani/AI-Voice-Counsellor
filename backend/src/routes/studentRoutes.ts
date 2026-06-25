@@ -2,12 +2,18 @@ import { Router }
 from "express";
 
 import {
- saveProfile
+ saveProfile,
+ getProfile,
 }
 from "../controllers/studentController";
 
 const router =
 Router();
+
+router.get(
+  "/profile",
+  getProfile
+);
 
 router.post(
  "/save",

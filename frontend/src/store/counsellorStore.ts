@@ -10,6 +10,12 @@ import {
   calculateCareerReadiness,
 } from "../utils/careerReadiness";
 
+import {
+  saveProfile,
+  loadProfile,
+}
+from "../services/studentService";
+
 interface Message {
   sender: "user" | "ai";
   message: string;
@@ -78,6 +84,12 @@ interface CounsellorState {
   toggleGoal: (
     goalId: string
   ) => void;
+
+  loadStudentProfile:
+    () => Promise<void>;
+
+  persistProfile:
+    () => Promise<void>;
 }
 
 export const useCounsellorStore =
@@ -163,7 +175,8 @@ export const useCounsellorStore =
 
         updateProfile: (
           profile
-        ) =>
+        ) => {
+
           set((state) => ({
             studentProfile: {
               ...state.studentProfile,
@@ -173,13 +186,53 @@ export const useCounsellorStore =
               skills: [
                 ...new Set([
                   ...state.studentProfile.skills,
-
-                  ...(profile.skills ||
-                    []),
+                  ...(profile.skills || []),
                 ]),
               ],
             },
-          })),
+          }));
+
+          setTimeout(() => {
+
+            useCounsellorStore
+              .getState()
+              .persistProfile();
+
+          }, 0);
+        },
+        loadStudentProfile:
+        async () => {
+
+          const profile =
+            await loadProfile();
+
+          if (!profile)
+            return;
+
+          const {
+            _id,
+            __v,
+            createdAt,
+            updatedAt,
+            ...cleanProfile
+          } = profile;
+
+          set({
+            studentProfile:
+              cleanProfile,
+          });
+        },
+
+        persistProfile:
+          async () => {
+
+            const state =
+              useCounsellorStore.getState();
+
+            await saveProfile(
+              state.studentProfile
+            );
+          },
 
         refreshAchievements:
           () =>
@@ -236,7 +289,8 @@ export const useCounsellorStore =
 
         toggleGoal: (
           goalId
-        ) =>
+        ) => {
+
           set((state) => {
             const updatedGoals =
               state.studentProfile.goals.map(
@@ -278,11 +332,8 @@ export const useCounsellorStore =
             const readiness =
               calculateCareerReadiness(
                 state.studentProfile.skills,
-
                 completedCount,
-
                 totalGoals,
-
                 state.studentProfile.learningStreak
               );
 
@@ -319,7 +370,16 @@ export const useCounsellorStore =
                 ],
               },
             };
-          }),
+          });
+
+          setTimeout(() => {
+
+            useCounsellorStore
+              .getState()
+              .persistProfile();
+
+          }, 0);
+        },
 
         messages: [
           {
