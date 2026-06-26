@@ -4,6 +4,11 @@ import { generateReply } from "../services/geminiService";
 import { analyzeSentiment } from "../services/sentimentService";
 import { getMemory } from "../services/memoryService";
 
+import {
+extractMemory
+}
+from "../services/memoryExtractionService";
+
 
 export async function chatController(
   req: Request,
@@ -19,6 +24,10 @@ export async function chatController(
       history,
       profile,
     } = req.body;
+
+    await extractMemory(
+    message
+    );
 
     const reply =
       await generateReply(

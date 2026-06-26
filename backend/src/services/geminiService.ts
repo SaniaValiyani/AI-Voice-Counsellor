@@ -72,8 +72,32 @@ ${
 }
 `;
 
+const importantFacts = `
+
+IMPORTANT FACTS
+
+${
+memory?.memories
+
+?.map(
+
+(mem:any)=>
+
+`${mem.category}: ${mem.value}`
+
+)
+
+.join("\n")
+
+||"None"
+
+}
+`;
+
 const prompt = `
 ${memoryContext}
+
+${importantFacts}
 
 ${previousConversation}
 
