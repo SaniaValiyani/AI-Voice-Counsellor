@@ -16,6 +16,12 @@ import {
 }
 from "../services/studentService";
 
+import {
+ saveMessage,
+ loadMessages,
+}
+from "../services/chatHistoryService";
+
 interface Message {
   sender: "user" | "ai";
   message: string;
@@ -89,6 +95,9 @@ interface CounsellorState {
     () => Promise<void>;
 
   persistProfile:
+    () => Promise<void>;
+
+  loadChatHistory:
     () => Promise<void>;
 }
 
@@ -233,6 +242,17 @@ export const useCounsellorStore =
               state.studentProfile
             );
           },
+
+        loadChatHistory:
+        async () => {
+
+        const messages =
+        await loadMessages();
+
+        set({
+          messages,
+        });
+        },
 
         refreshAchievements:
           () =>
@@ -405,15 +425,20 @@ export const useCounsellorStore =
             transcript,
           }),
 
-        addMessage: (
+        addMessage:
+        (message) => {
+
+        set((state) => ({
+          messages:[
+          ...state.messages,
+          message,
+          ],
+        }));
+
+        saveMessage(
           message
-        ) =>
-          set((state) => ({
-            messages: [
-              ...state.messages,
-              message,
-            ],
-          })),
+        );
+        },
 
         clearMessages: () =>
           set({

@@ -8,7 +8,7 @@ import roadmapRoutes from "./routes/roadmapRoutes";
 import goalRoutes from "./routes/goalRoutes";
 import { connectDB } from "./config/database";
 import studentRoutes from "./routes/studentRoutes";
-
+import chatHistoryRoutes from "./routes/chatHistoryRoutes";
 
 const app = express();
 
@@ -26,6 +26,11 @@ app.use(
 app.use(
  "/api/student",
  studentRoutes
+);
+
+app.use(
+ "/api/chat-history",
+ chatHistoryRoutes
 );
 
 app.get("/", (_, res) => {

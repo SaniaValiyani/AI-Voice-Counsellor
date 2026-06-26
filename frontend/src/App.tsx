@@ -19,12 +19,14 @@ function App() {
 
   const {
     loadStudentProfile,
+    loadChatHistory,
   } =
     useCounsellorStore();
 
   useEffect(() => {
 
     loadStudentProfile();
+    loadChatHistory();
 
   }, []);
 
