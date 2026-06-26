@@ -2,12 +2,18 @@ import { Request, Response } from "express";
 
 import { generateReply } from "../services/geminiService";
 import { analyzeSentiment } from "../services/sentimentService";
+import { getMemory } from "../services/memoryService";
+
 
 export async function chatController(
   req: Request,
   res: Response
 ) {
   try {
+
+    const memory =
+      await getMemory();
+    
     const {
       message,
       history,
@@ -18,7 +24,8 @@ export async function chatController(
       await generateReply(
         message,
         history,
-        profile
+        profile,
+        memory
       );
 
     const sentiment =

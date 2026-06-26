@@ -8,46 +8,105 @@ const groq = new Groq({
 export async function generateReply(
   message: string,
   history: any[],
-  profile: any
+  profile: any,
+  memory: any
 ) {
-  const memoryContext = `
-Student Profile
+const memoryContext = `
+========================
+STUDENT PROFILE
+========================
 
 Career Goal:
-${profile?.careerGoal || "Unknown"}
+${memory?.student?.careerGoal || profile?.careerGoal || "Unknown"}
 
 Education Level:
-${profile?.educationLevel || "Unknown"}
+${memory?.student?.educationLevel || profile?.educationLevel || "Unknown"}
 
 Preferred Language:
-${profile?.preferredLanguage || "English"}
+${memory?.student?.preferredLanguage || profile?.preferredLanguage || "English"}
 
 Skills:
-${profile?.skills?.join(", ") || "None"}
+${memory?.student?.skills?.join(", ") || profile?.skills?.join(", ") || "None"}
 
 Interests:
-${profile?.interests?.join(", ") || "None"}
+${memory?.student?.interests?.join(", ") || profile?.interests?.join(", ") || "None"}
+
+XP:
+${memory?.student?.xp || 0}
+
+Level:
+${memory?.student?.level || 1}
+
+Career Readiness:
+${memory?.student?.careerReadiness || 0}%
+
+Learning Streak:
+${memory?.student?.learningStreak || 0}
+
+Achievements:
+${memory?.student?.achievements?.join(", ") || "None"}
+
+Goals:
+${
+  memory?.student?.goals
+    ?.map(
+      (goal: any) =>
+        `${goal.title} (${goal.completed ? "Completed" : "Pending"})`
+    )
+    .join("\n") || "None"
+}
 `;
 
-  const prompt = `
+const previousConversation = `
+========================
+PREVIOUS CONVERSATIONS
+========================
+
+${
+  memory?.messages
+    ?.map(
+      (msg: any) =>
+        `${msg.sender}: ${msg.message}`
+    )
+    .join("\n") || "No previous conversations."
+}
+`;
+
+const prompt = `
 ${memoryContext}
 
-You are an AI Career Counsellor.
+${previousConversation}
 
-Memory Rules:
+You are an AI Career Counsellor for college students.
 
-- Use the student's profile whenever relevant.
-- Do not ask for information already known.
-- Keep responses concise.
-- Use emojis.
-- Use bullet symbol •
-- Never use markdown.
-- Never use *
-- Never use **
-- Include direct URLs for resources.
-- Be student friendly.
+Your personality:
 
-Student Message:
+• Friendly
+• Motivating
+• Practical
+• Encouraging
+
+Rules:
+
+• Continue previous conversations naturally.
+• Never ask for information you already know.
+• Refer to completed goals whenever relevant.
+• Keep answers short and engaging.
+• Use emojis only where helpful.
+• Never use Markdown.
+• Never use *
+• Never use **
+• Use the bullet symbol • instead of markdown bullets.
+• Include direct URLs whenever recommending:
+  • Courses
+  • Certifications
+  • Documentation
+  • Internships
+• Prefer numbered steps for action plans.
+• Keep responses suitable for students with short attention spans.
+
+Current Student Question:
+
 ${message}
 `;
 
@@ -57,15 +116,17 @@ ${message}
       content: prompt,
     },
 
-    ...history.map(
-      (msg: any): ChatCompletionMessageParam => ({
-        role:
-          msg.sender === "user"
-            ? "user"
-            : "assistant",
-        content: String(msg.message || ""),
-      })
-    ),
+    ...history
+      .slice(-8)
+      .map(
+        (msg: any): ChatCompletionMessageParam => ({
+          role:
+            msg.sender === "user"
+              ? "user"
+              : "assistant",
+          content: String(msg.message || ""),
+        })
+      ),
 
     {
       role: "user",
