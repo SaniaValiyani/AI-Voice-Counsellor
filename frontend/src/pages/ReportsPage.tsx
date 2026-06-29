@@ -1,4 +1,6 @@
+import ExportButtons from "@/components/reports/ExportButtons";
 import Sidebar from "../components/layout/Sidebar";
+import CareerReportCard from "../components/reports/CareerReportCard";
 
 export default function ReportsPage() {
   return (
@@ -11,7 +13,9 @@ export default function ReportsPage() {
         </h1>
 
         <div className="text-slate-400">
-          Career Reports coming next...
+          <CareerReportCard/>
+
+          <ExportButtons/>
         </div>
       </main>
     </div>

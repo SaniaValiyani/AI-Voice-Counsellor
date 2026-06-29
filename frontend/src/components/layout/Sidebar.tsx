@@ -44,7 +44,7 @@ export default function Sidebar() {
   const location = useLocation();
 
   return (
-    <div>
+    <div className="sticky top-0 h-screen w-80 bg-slate-900/95 backdrop-blur-xl border-r border-slate-800 p-6">
       <div className="mb-10">
         <div className="flex items-center gap-3">
           <div className="w-12 h-12 rounded-2xl bg-cyan-500 flex items-center justify-center text-black text-xl font-bold shadow-lg shadow-cyan-500/30">
@@ -84,7 +84,7 @@ export default function Sidebar() {
 
                 ${
                   location.pathname === item.path
-                    ? "bg-cyan-500 text-black font-semibold shadow-lg shadow-cyan-500/20"
+                    ? "bg-linear-to-r from-cyan-500 to-sky-500 text-white font-semibold shadow-lg shadow-cyan-500/20"
                     : "text-slate-300 hover:bg-cyan-500/10 hover:text-cyan-400"
                 }
               `}
