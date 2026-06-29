@@ -12,10 +12,16 @@ export default function DashboardLayout({
     <div className="flex bg-slate-950 min-h-screen">
       <Sidebar />
 
-      <div className="flex-1">
+      <div className="flex-1 overflow-hidden">
         <Topbar />
 
-        <div className="p-8">
+        <div
+          className="
+          p-8
+          overflow-y-auto
+          h-[calc(100vh-80px)]
+          "
+        >
           {children}
         </div>
       </div>
