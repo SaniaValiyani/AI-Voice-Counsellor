@@ -9,12 +9,27 @@ export async function generateReply(
   message: string,
   history: any[],
   profile: any,
-  memory: any
+  memory: any,
+  settings: any
 ) {
 const memoryContext = `
 ========================
 STUDENT PROFILE
 ========================
+
+AI Preferences
+
+Language:
+${settings?.language || "English"}
+
+Personality:
+${settings?.aiPersonality || "Friendly"}
+
+Voice Rate:
+${settings?.voiceRate ?? 1}
+
+Voice Pitch:
+${settings?.voicePitch ?? 1}
 
 Career Goal:
 ${memory?.student?.careerGoal || profile?.careerGoal || "Unknown"}
@@ -128,6 +143,19 @@ Rules:
   • Internships
 • Prefer numbered steps for action plans.
 • Keep responses suitable for students with short attention spans.
+Always answer in the preferred language.
+
+Adapt your tone according to the selected personality.
+
+If personality is:
+
+Friendly → Warm and encouraging.
+
+Professional → Formal and structured.
+
+Motivational → Energetic with actionable advice.
+
+Concise → Keep answers brief and to the point.
 
 Current Student Question:
 

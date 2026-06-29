@@ -30,6 +30,7 @@ export default function ChatInput() {
     addMessage,
     messages,
     studentProfile,
+    settings,
     setSentiment,
     updateProfile,
     addXP,
@@ -76,7 +77,8 @@ export default function ChatInput() {
     const data = await sendChat(
       userMessage,
       messages,
-      studentProfile
+      studentProfile,
+      settings
     );
 
     setSentiment(data.sentiment);

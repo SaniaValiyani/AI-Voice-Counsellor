@@ -23,6 +23,7 @@ export async function chatController(
       message,
       history,
       profile,
+      settings,
     } = req.body;
 
     await extractMemory(
@@ -34,7 +35,8 @@ export async function chatController(
         message,
         history,
         profile,
-        memory
+        memory,
+        settings
       );
 
     const sentiment =

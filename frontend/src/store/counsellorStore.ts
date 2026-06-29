@@ -28,6 +28,15 @@ interface Message {
   timestamp: string;
 }
 
+interface Settings {
+  theme: string;
+  language: string;
+  aiPersonality: string;
+  voiceRate: number;
+  voicePitch: number;
+  notifications: boolean;
+}
+
 interface CounsellorState {
   isListening: boolean;
 
@@ -36,6 +45,8 @@ interface CounsellorState {
   isSpeaking: boolean;
 
   roadmap: string;
+
+  settings: Settings;
 
   setListening: (
     value: boolean
@@ -99,6 +110,9 @@ interface CounsellorState {
 
   loadChatHistory:
     () => Promise<void>;
+
+  updateSettings:
+    (settings: Partial<Settings>) => void;
 }
 
 export const useCounsellorStore =
@@ -155,6 +169,38 @@ export const useCounsellorStore =
 
           careerReadiness: 0,
         },
+
+        settings: {
+
+          theme: "dark",
+
+          language: "English",
+
+          aiPersonality: "Friendly",
+
+          voiceRate: 1,
+
+          voicePitch: 1,
+
+          notifications: true,
+
+      },
+
+      updateSettings:(settings)=>{
+
+      set(state=>({
+
+      settings:{
+
+      ...state.settings,
+
+      ...settings,
+
+      },
+
+      }));
+
+      },
 
         transcript: "",
 
