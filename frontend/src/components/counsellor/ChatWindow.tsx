@@ -2,9 +2,14 @@ import { motion } from "framer-motion";
 import ChatBubble from "./ChatBubble";
 import { useEffect, useRef } from "react";
 import { useCounsellorStore } from "../../store/counsellorStore";
+import SkeletonBubble from "../common/SkeletonBubble";
+
 
 export default function ChatWindow() {
-  const { messages } = useCounsellorStore();
+  const {
+  messages,
+  isThinking,
+} = useCounsellorStore();
 
   const bottomRef = useRef<HTMLDivElement>(null);
 
@@ -63,6 +68,9 @@ export default function ChatWindow() {
       ))}
       </div>
       )}
+
+      {isThinking && <SkeletonBubble />}
+    
       <div ref={bottomRef} />
 
       <div ref={bottomRef} />

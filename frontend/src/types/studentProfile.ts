@@ -1,4 +1,6 @@
 export interface StudentProfile {
+  name: string;
+
   careerGoal: string;
 
   interests: string[];
