@@ -11,6 +11,7 @@ import ClearChatButton from "../components/counsellor/ClearChatButton";
 import ChatInput from "../components/counsellor/ChatInput";
 import MuteButton from "../components/counsellor/MuteButton";
 import ExportButtons from "../components/counsellor/ExportButtons";
+import AIMemoryPanel from "../components/counsellor/AIMemoryPanel";
 
 export default function CounsellorPage() {
   return (
@@ -37,9 +38,16 @@ export default function CounsellorPage() {
           <p className="text-gray-600">Career Guidance Assistant</p>
         </div>
 
-        <div className="grid lg:grid-cols-3 gap-6">
+        <div
+          className="
+          grid
+          xl:grid-cols-4
+          gap-6
+          items-start
+          "
+        >
           {/* Left Side */}
-          <div className="lg:col-span-2 space-y-6">
+          <div className="xl:col-span-3 space-y-6">
             <div className="flex gap-3 flex-wrap">
               <ClearChatButton />
               <MuteButton />
@@ -59,6 +67,8 @@ export default function CounsellorPage() {
 
           {/* Right Side */}
           <div className="space-y-6">
+            <AIMemoryPanel />
+
             <TranscriptPanel />
 
             <SentimentBadge />

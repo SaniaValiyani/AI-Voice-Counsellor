@@ -101,7 +101,7 @@ export default function Sidebar() {
     >
       <div className="mb-10">
         <div className="flex items-center gap-4">
-          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-cyan-500 to-blue-600 text-2xl">
+          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-linear-to-br from-cyan-500 to-blue-600 text-2xl">
             🎓
           </div>
 

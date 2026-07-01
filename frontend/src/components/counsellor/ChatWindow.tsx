@@ -19,20 +19,53 @@ export default function ChatWindow() {
       initial={{ opacity: 0, y: 18 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
-      className="bg-white/5 backdrop-blur-lg border border-white/10 rounded-2xl p-6 h-125 overflow-y-auto"
+      className="
+      bg-slate-900/70
+      backdrop-blur-xl
+      border
+      border-cyan-500/10
+      rounded-3xl
+      p-6
+      h-160
+      overflow-y-auto
+      scroll-smooth
+      shadow-2xl
+      shadow-cyan-500/5
+      space-y-6
+      "
     >
-      <div className="space-y-4">
-        {messages.map((msg, index) => (
-          <ChatBubble
-            key={index}
-            sender={msg.sender}
-            message={msg.message}
-            timestamp={msg.timestamp}
-          />
-        ))}
 
-        <div ref={bottomRef} />
+      {messages.length === 0 && (
+        <div className="h-full flex flex-col items-center justify-center text-center">
+          <div className="text-6xl mb-6">🤖</div>
+
+          <h2 className="text-2xl font-bold text-white">
+            Welcome to CareerPilot AI
+          </h2>
+
+          <p className="text-slate-400 mt-3 max-w-md">
+            Ask about careers, internships, skills, learning paths,
+            interview preparation, or higher studies.
+          </p>
+        </div>
+      )}
+
+      {messages.length > 0 && (
+      <div className="space-y-6">
+
+        {messages.map((msg, index) => (
+        <ChatBubble
+          key={index}
+          sender={msg.sender}
+          message={msg.message}
+          timestamp={msg.timestamp}
+        />
+      ))}
       </div>
+      )}
+      <div ref={bottomRef} />
+
+      <div ref={bottomRef} />
     </motion.div>
   );
 }

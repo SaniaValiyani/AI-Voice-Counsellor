@@ -27,9 +27,9 @@ export default function ChatBubble({
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.2 }}
+      initial={{ opacity: 0, y: 10, scale: 0.98 }}
+      animate={{ opacity: 1, y: 0, scale : 1 }}
+      transition={{ duration: 0.35 }}
       className={`flex ${isUser ? "justify-end" : "justify-start"}`}
     >
       <div
@@ -40,27 +40,43 @@ export default function ChatBubble({
         {!isUser ? (
           <AIAvatar />
         ) : (
-          <div className="h-10 w-10 rounded-full bg-cyan-500 flex items-center justify-center font-bold text-slate-950">
-            U
+          <div
+            className="
+              h-11
+              w-11
+              rounded-full
+              bg-linear-to-br
+              from-cyan-400
+              to-blue-600
+              flex
+              items-center
+              justify-center
+              font-bold
+              text-white
+              shadow-lg
+              shadow-cyan-500/30
+            "
+          >
+            S
           </div>
         )}
 
-        <div
-          className={`rounded-2xl px-4 py-3 shadow-lg ${
-            isUser
-              ? "bg-linear-to-r from-cyan-500 to-blue-500 text-slate-950"
-              : "bg-white/10 backdrop-blur-lg border border-white/10 text-white"
-          }`}
-        >
+<div
+  className={`rounded-3xl px-6 py-5 shadow-lg ${
+    isUser
+      ? "bg-linear-to-r from-cyan-400 via-sky-500 to-blue-600 text-slate-950"
+      : "bg-slate-900/80 backdrop-blur-xl border border-cyan-500/10 text-white shadow-xl shadow-cyan-500/5"
+  }`}
+>
           <p
             className={`text-[10px] uppercase tracking-[0.2em] mb-1 ${
               isUser ? "text-slate-800/65" : "text-slate-300/60"
             }`}
           >
-            {isUser ? "User" : "AI"}
+            {isUser ? "You" : "CareerPilot AI"}
           </p>
 
-          <div className="leading-relaxed">
+          <div className="leading-8 space-y-2">
             {lines.map((line, index) => {
               const isSectionHeading =
                 line.startsWith("🚀") ||
@@ -76,7 +92,7 @@ export default function ChatBubble({
                   key={index}
                   className={
                     isSectionHeading
-                      ? "font-bold text-cyan-400 mt-3"
+                      ? "font-semibold text-cyan-300 text-lg mt-5 mb-2"
                       : "whitespace-pre-wrap"
                   }
                 >
@@ -99,7 +115,7 @@ export default function ChatBubble({
           )}
 
           <p
-            className={`text-xs mt-2 ${
+            className={`text-[11px] mt-4 opacity-70 ${
               isUser ? "text-slate-800/70" : "text-slate-300/70"
             }`}
           >

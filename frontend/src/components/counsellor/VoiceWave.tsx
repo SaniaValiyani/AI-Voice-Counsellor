@@ -1,20 +1,28 @@
 import { motion } from "framer-motion";
 
-const bars = [0.4, 0.7, 0.5, 0.9, 0.6, 1, 0.3, 0.8];
+const bars = Array.from({ length: 14 });
 
 export default function VoiceWave() {
   return (
-    <div className="flex items-end gap-1 h-8">
-      {bars.map((height, index) => (
-        <motion.span
+    <div className="flex items-center justify-center gap-1 h-14">
+      {bars.map((_, index) => (
+        <motion.div
           key={index}
-          className="w-1.5 rounded-full bg-cyan-300"
-          initial={{ height: 6 }}
-          animate={{ height: `${height * 32}px` }}
+          className="w-1 rounded-full bg-linear-to-t from-cyan-400 via-sky-400 to-blue-500"
+          animate={{
+            height: [
+              12,
+              42 - (index % 4) * 4,
+              20 + (index % 5) * 5,
+              50 - (index % 3) * 6,
+              12,
+            ],
+            opacity: [0.6, 1, 0.8, 1, 0.6],
+          }}
           transition={{
-            duration: 0.5,
+            duration: 1,
             repeat: Infinity,
-            repeatType: "reverse",
+            ease: "easeInOut",
             delay: index * 0.08,
           }}
         />
