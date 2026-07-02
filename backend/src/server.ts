@@ -9,6 +9,7 @@ import goalRoutes from "./routes/goalRoutes";
 import { connectDB } from "./config/database";
 import studentRoutes from "./routes/studentRoutes";
 import chatHistoryRoutes from "./routes/chatHistoryRoutes";
+import authRoutes from "./routes/authRoutes";
 
 const app = express();
 
@@ -31,6 +32,11 @@ app.use(
 app.use(
  "/api/chat-history",
  chatHistoryRoutes
+);
+
+app.use(
+  "/auth",
+  authRoutes
 );
 
 app.get("/", (_, res) => {

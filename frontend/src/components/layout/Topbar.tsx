@@ -29,11 +29,11 @@ export default function Topbar() {
       {/* Left */}
 
       <div>
-        <h1 className="text-3xl font-bold text-white">
+        <h1 className="text-3xl font-bold app-text">
           Dashboard
         </h1>
 
-        <p className="text-slate-400">
+        <p className="app-text-muted">
           Welcome back, keep learning 🚀
         </p>
       </div>
@@ -54,13 +54,13 @@ export default function Topbar() {
             className="
               w-72
               rounded-xl
-              bg-slate-900
+              app-card
               border
               border-slate-700
               py-2.5
               pl-11
               pr-4
-              text-white
+              app-text
               outline-none
               focus:border-cyan-500
             "
@@ -69,26 +69,26 @@ export default function Topbar() {
 
         {/* XP */}
 
-        <div className="flex items-center gap-2 rounded-xl bg-slate-900 px-4 py-2">
+        <div className="flex items-center gap-2 rounded-xl app-card px-4 py-2">
           <Trophy
             size={18}
             className="text-yellow-400"
           />
 
-          <span className="text-white">
+          <span className="app-text">
             {profile.xp} XP
           </span>
         </div>
 
         {/* Streak */}
 
-        <div className="flex items-center gap-2 rounded-xl bg-slate-900 px-4 py-2">
+        <div className="flex items-center gap-2 rounded-xl app-card px-4 py-2">
           <Flame
             size={18}
             className="text-orange-400"
           />
 
-          <span className="text-white">
+          <span className="app-text">
             {profile.learningStreak} Days
           </span>
         </div>
@@ -99,7 +99,7 @@ export default function Topbar() {
           onClick={toggleTheme}
           className="
             rounded-xl
-            bg-slate-900
+            app-card
             p-3
             hover:bg-slate-800
             transition
@@ -108,7 +108,7 @@ export default function Topbar() {
           {darkMode ? (
             <Sun className="text-yellow-300" />
           ) : (
-            <Moon className="text-white" />
+            <Moon className="app-text" />
           )}
         </button>
 
@@ -124,13 +124,13 @@ export default function Topbar() {
             className="
               relative
               rounded-xl
-              bg-slate-900
+              app-card
               p-3
               hover:bg-slate-800
               transition
             "
           >
-            <Bell className="text-white" />
+            <Bell className="app-text" />
 
             <span
               className="
@@ -182,7 +182,14 @@ export default function Topbar() {
             cursor-pointer
           "
         >
-          S
+          {profile.name
+            ? profile.name
+                .split(" ")
+                .map((word) => word[0])
+                .join("")
+                .slice(0, 2)
+                .toUpperCase()
+            : "U"}
         </div>
       </div>
     </header>

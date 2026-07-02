@@ -128,3 +128,35 @@
     @apply font-sans;
     }
 }
+
+@layer components {
+
+  .app-bg{
+    @apply bg-background;
+  }
+
+  .app-card{
+    @apply bg-card border border-border;
+  }
+
+  .app-card-glass{
+    @apply bg-card/70 backdrop-blur-xl border border-border;
+  }
+
+  .app-text{
+    @apply text-foreground;
+  }
+
+  .app-text-muted{
+    @apply text-muted-foreground;
+  }
+
+  .app-input{
+    @apply bg-background border border-border text-foreground;
+  }
+
+  .app-sidebar{
+    @apply bg-sidebar border-r border-sidebar-border;
+  }
+
+}

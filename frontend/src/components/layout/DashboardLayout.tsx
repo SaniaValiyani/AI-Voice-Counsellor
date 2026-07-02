@@ -9,7 +9,7 @@ export default function DashboardLayout({
   children,
 }: Props) {
   return (
-    <div className="flex bg-slate-950 min-h-screen">
+    <div className="flex app-bg min-h-screen">
       <Sidebar />
 
       <div className="flex-1 overflow-hidden">

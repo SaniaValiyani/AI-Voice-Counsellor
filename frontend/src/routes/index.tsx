@@ -6,6 +6,29 @@ import CounsellorPage from "../pages/CounsellorPage";
 import AnalyticsPage from "../pages/AnalyticsPage";
 import ReportsPage from "../pages/ReportsPage";
 import SettingsPage from "../pages/SettingsPage";
+import RegisterPage from "../pages/RegisterPage";
+import { useAuthStore } from "../store/authStore";
+import { Navigate } from "react-router-dom";
+
+function ProtectedRoute({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const authenticated =
+    useAuthStore(
+      (state) =>
+        state.isAuthenticated
+    );
+
+  if (!authenticated) {
+    return (
+      <Navigate to="/" replace />
+    );
+  }
+
+  return children;
+}
 
 export const router = createBrowserRouter([
   {
@@ -13,12 +36,24 @@ export const router = createBrowserRouter([
     element: <LoginPage />,
   },
   {
+    path:"/register",
+    element:<RegisterPage/>
+  },
+  {
     path: "/dashboard",
-    element: <DashboardPage />,
+    element: (
+      <ProtectedRoute>
+        <DashboardPage />
+      </ProtectedRoute>
+    ),
   },
   {
     path: "/counsellor",
-    element: <CounsellorPage />,
+    element: (
+      <ProtectedRoute>
+        <CounsellorPage />
+      </ProtectedRoute>
+    ),
   },
 
   {
