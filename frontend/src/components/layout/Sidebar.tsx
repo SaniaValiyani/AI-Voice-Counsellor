@@ -15,6 +15,13 @@ import {
   LogOut,
 } from "lucide-react";
 
+import {
+  useConversationStore
+} from "../../store/conversationStore";
+
+import { useCounsellorStore }
+from "../../store/counsellorStore";
+
 const menuItems = [
   {
     section: "MAIN",
@@ -84,25 +91,22 @@ export default function Sidebar() {
   const navigate = useNavigate();
   const location = useLocation();
 
+  const conversations =
+    useConversationStore(
+      (state) =>
+        state.conversations
+    );
+
+  const setMessages =
+    useCounsellorStore(
+    (state)=>state.setMessages
+    );
+
   return (
-    <div
-      className="
-        sticky
-        top-0
-        h-screen
-        w-80
-        app-sidebar
-        border-r
-        border-slate-800
-        p-8
-        flex
-        flex-col
-        justify-between
-      "
-    >
+    <div className="w-80 h-screen bg-slate-950 border-r border-slate-800 flex flex-col justify-between p-6">
       <div>
-        <div className="flex items-center gap-4 mb-10">
-          <div className="text-4xl">🎓</div>
+        <div className="flex items-center gap-3 mb-10">
+          <div className="text-3xl">🎓</div>
 
           <div>
             <h1 className="text-2xl font-extrabold app-text">
@@ -156,6 +160,67 @@ export default function Sidebar() {
               </div>
             </div>
           ))}
+        </div>
+
+        <div className="mt-10">
+          <h3
+            className="
+              text-xs
+              uppercase
+              tracking-widest
+              text-slate-500
+              mb-4
+            "
+          >
+            Recent Chats
+          </h3>
+
+          <div className="space-y-2">
+            {conversations
+              .slice(0, 5)
+              .map((chat) => (
+                <button
+                  key={chat._id}
+                  onClick={() => {
+                    setMessages(chat.messages);
+                    navigate("/counsellor");
+                  }}
+                  className="
+                    w-full
+                    rounded-lg
+                    bg-slate-900
+                    p-3
+                    text-left
+                    hover:bg-slate-800
+                    transition
+                  "
+                >
+                  <p
+                    className="
+                      text-white
+                      truncate
+                    "
+                  >
+                    {chat.messages.find(
+                    (m:any)=>m.sender==="user"
+                    )?.message ||
+                    "No messages"}
+                  </p>
+
+                  <p
+                    className="
+                      text-xs
+                      text-slate-400
+                      mt-1
+                    "
+                  >
+                    {new Date(
+                      chat.createdAt
+                    ).toLocaleDateString()}
+                  </p>
+                </button>
+              ))}
+          </div>
         </div>
       </div>
 

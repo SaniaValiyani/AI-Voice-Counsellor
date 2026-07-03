@@ -9,15 +9,21 @@ extractMemory
 }
 from "../services/memoryExtractionService";
 
+import { AuthRequest }
+from "../middleware/authMiddleware";
+
+import {
+  saveConversation,
+} from "../services/conversationService";
 
 export async function chatController(
-  req: Request,
+  req: AuthRequest,
   res: Response
 ) {
   try {
 
     const memory =
-      await getMemory();
+      await getMemory(req.userId!);
     
     const {
       message,
@@ -41,6 +47,38 @@ export async function chatController(
 
     const sentiment =
       analyzeSentiment(message);
+
+    await saveConversation(
+
+      req.userId!,
+
+      [
+        ...history,
+
+        {
+          sender: "user",
+
+          message,
+
+          timestamp:
+            new Date().toLocaleTimeString(),
+        },
+
+        {
+          sender: "ai",
+
+          message: reply,
+
+          timestamp:
+            new Date().toLocaleTimeString(),
+        },
+      ],
+
+      profile?.preferredLanguage ||
+        "English",
+
+      sentiment
+    );
 
     return res.json({
       reply,

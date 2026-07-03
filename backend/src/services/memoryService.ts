@@ -2,10 +2,12 @@ import ChatMessage from "../models/ChatMessage";
 import Student from "../models/Student";
 import UserMemory from "../models/UserMemory";
 
-export async function getMemory() {
+export async function getMemory(
+userId:string
+) {
 
   const student =
-    await Student.findOne();
+    await Student.findById(userId)
 
   const memories =
     await UserMemory.find();

@@ -1,6 +1,16 @@
 import Sidebar from "./Sidebar";
 import Topbar from "./Topbar";
 
+import { useEffect } from "react";
+
+import {
+  getConversations
+} from "../../services/conversationService";
+
+import {
+  useConversationStore
+} from "../../store/conversationStore";
+
 interface Props {
   children: React.ReactNode;
 }
@@ -8,8 +18,27 @@ interface Props {
 export default function DashboardLayout({
   children,
 }: Props) {
+
+  const setConversations =
+    useConversationStore(
+      (state) =>
+        state.setConversations
+    );
+
+  useEffect(() => {
+
+    getConversations()
+      .then(
+        setConversations
+      )
+      .catch(
+        console.error
+      );
+
+  }, []);
+
   return (
-    <div className="flex app-bg min-h-screen">
+    <div className="flex">
       <Sidebar />
 
       <div className="flex-1 overflow-hidden">
@@ -17,9 +46,9 @@ export default function DashboardLayout({
 
         <div
           className="
-          p-8
-          overflow-y-auto
-          h-[calc(100vh-80px)]
+            p-8
+            overflow-y-auto
+            h-[calc(100vh-80px)]
           "
         >
           {children}

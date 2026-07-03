@@ -86,6 +86,10 @@ interface CounsellorState {
     message: Message
   ) => void;
 
+  setMessages: (
+    messages: Message[]
+  ) => void;
+
   studentProfile: StudentProfile;
 
   updateProfile: (
@@ -485,6 +489,13 @@ export const useCounsellorStore =
           message
         );
         },
+
+        setMessages: (
+          messages
+        ) =>
+          set({
+            messages,
+          }),
 
         clearMessages: () =>
           set({
