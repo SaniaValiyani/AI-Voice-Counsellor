@@ -22,6 +22,10 @@ import {
 }
 from "../services/chatHistoryService";
 
+import {
+fetchRoadmap,
+} from "../services/roadmapService";
+
 interface Message {
   sender: "user" | "ai";
   message: string;
@@ -117,6 +121,9 @@ interface CounsellorState {
 
   updateSettings:
     (settings: Partial<Settings>) => void;
+
+  loadRoadmap:
+  () => Promise<void>;
 }
 
 export const useCounsellorStore =
@@ -305,6 +312,25 @@ export const useCounsellorStore =
             studentProfile:
               cleanProfile,
           });
+        },
+
+        loadRoadmap:
+        async()=>{
+
+        const profile=
+        useCounsellorStore
+        .getState()
+        .studentProfile;
+
+        const roadmap=
+        await fetchRoadmap(
+        profile.email
+        );
+
+        set({
+        roadmap,
+        });
+
         },
 
         persistProfile:

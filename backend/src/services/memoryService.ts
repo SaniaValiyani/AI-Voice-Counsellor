@@ -1,26 +1,44 @@
-import ChatMessage from "../models/ChatMessage";
-import Student from "../models/Student";
-import UserMemory from "../models/UserMemory";
+import Memory from "../models/Memory";
 
-export async function getMemory(
-userId:string
+export async function getMemory(studentId: string) {
+  let memory = await Memory.findOne({
+    studentId,
+  });
+
+  if (!memory) {
+    memory = await Memory.create({
+      studentId,
+    });
+  }
+
+  return memory;
+}
+
+export async function addMemory(
+  studentId: string,
+  memoryText: string
 ) {
+  const memory =
+    await getMemory(studentId);
 
-  const student =
-    await Student.findById(userId)
+  const facts =
+    memoryText
+      .split("\n")
+      .map((f) => f.trim())
+      .filter(Boolean);
 
-  const memories =
-    await UserMemory.find();
+  for (const fact of facts) {
+    if (!memory.memories.includes(fact)) {
+      memory.memories.push(fact);
+    }
+  }
 
-  const messages =
-    await ChatMessage
-      .find()
-      .sort({ createdAt: -1 })
-      .limit(10);
+  if (memory.memories.length > 100) {
+    memory.memories =
+      memory.memories.slice(-100);
+  }
 
-  return {
-    student,
-    messages: messages.reverse(),
-    memories,
-  };
+  await memory.save();
+
+  return memory;
 }

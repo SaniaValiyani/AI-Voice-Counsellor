@@ -5,44 +5,68 @@ const groq = new Groq({
 });
 
 export async function generateRoadmap(
-  career: string
+  profile: any,
+  memories: string[]
 ) {
+  const prompt = `
+You are an expert career mentor.
+
+Create a COMPLETE learning roadmap.
+
+Student
+
+Career Goal:
+${profile.careerGoal}
+
+Education:
+${profile.educationLevel}
+
+Skills:
+${profile.skills.join(", ")}
+
+Interests:
+${profile.interests.join(", ")}
+
+Long Term Memory:
+${memories.join("\n")}
+
+Output format
+
+Career Goal
+
+Weeks
+
+Topics
+
+Projects
+
+Resources
+
+Milestones
+
+Estimated Duration
+
+Use emojis.
+
+Do not use markdown.
+`;
+
   const completion =
     await groq.chat.completions.create({
       model: "llama-3.3-70b-versatile",
 
+      temperature: 0.4,
+
       messages: [
         {
-          role: "system",
-          content: `
-You are an expert AI Career Counsellor.
-
-Generate student-friendly career roadmaps.
-
-Rules:
-- Use phases.
-- Use bullet points.
-- Use emojis.
-- Keep concise.
-- Mention skills.
-- Mention projects.
-- Mention internships.
-- Mention certifications.
-- Never use markdown.
-- Never use * or **.
-`,
-        },
-        {
           role: "user",
-          content: `Generate a roadmap for: ${career}`,
+          content: prompt,
         },
       ],
-
-      temperature: 0.7,
     });
 
   return (
     completion.choices[0]?.message?.content ||
-    "No roadmap available"
+    ""
   );
 }

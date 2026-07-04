@@ -17,7 +17,7 @@ import CareerReadinessCard from "../components/dashboard/CareerReadinessCard";
 import NextGoalCard from "../components/dashboard/NextGoalCard";
 import TimelineCard from "../components/dashboard/TimelineCard";
 import AIInsightsCard from "../components/dashboard/AIInsightsCard";
-import WelcomeBanner from "../components/dashboard/WelcomeBanner";
+//import WelcomeBanner from "../components/dashboard/WelcomeBanner";
 import HeroBanner from "../components/dashboard/HeroBanner";
 import XPProgressCard from "../components/dashboard/XPProgressCard";
 import DailyMissionCard from "../components/dashboard/DailyMissionCard";
@@ -33,8 +33,21 @@ import TopicInsights from "../components/dashboard/TopicInsights";
 import CareerInterestMeter from "../components/dashboard/CareerInterestMeter";
 import MonthlyReportCard from "../components/dashboard/MonthlyReportCard";
 
+import { useEffect } from "react";
+import { useCounsellorStore } from "../store/counsellorStore";
 
 export default function DashboardPage() {
+  const loadRoadmap =
+  useCounsellorStore(
+  (s)=>s.loadRoadmap
+  );
+
+  useEffect(()=>{
+
+  loadRoadmap();
+
+  },[]);
+  
   return (
     <DashboardLayout>
       <motion.div

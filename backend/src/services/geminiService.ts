@@ -1,6 +1,10 @@
 import Groq from "groq-sdk";
 import type { ChatCompletionMessageParam } from "groq-sdk/resources/chat/completions";
 
+import {
+  getMemory,
+} from "./memoryService";
+
 const groq = new Groq({
   apiKey: process.env.GROQ_API_KEY,
 });
@@ -72,6 +76,11 @@ ${
 }
 `;
 
+const longTermMemory =
+  await getMemory(
+    profile.email
+  );
+
 const previousConversation = `
 ========================
 PREVIOUS CONVERSATIONS
@@ -86,6 +95,8 @@ ${
     .join("\n") || "No previous conversations."
 }
 `;
+
+const personality = profile?.settings?.aiPersonality || "Friendly";
 
 const importantFacts = `
 
@@ -109,8 +120,41 @@ memory?.memories
 }
 `;
 
+const personalityPrompt = `
+AI Personality:
+${personality}
+
+Rules:
+
+Friendly:
+- Warm
+- Encouraging
+- Supportive
+
+Professional:
+- Formal
+- Direct
+- Precise
+
+Motivational:
+- High energy
+- Inspiring
+- Positive
+
+Teacher:
+- Explain concepts step by step
+- Use simple examples
+- Be educational
+`;
+
 const prompt = `
 ${memoryContext}
+
+Long Term Memory
+
+${longTermMemory.memories.join("\n")}
+
+${personalityPrompt}
 
 ${importantFacts}
 

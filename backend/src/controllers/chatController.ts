@@ -2,7 +2,12 @@ import { Request, Response } from "express";
 
 import { generateReply } from "../services/geminiService";
 import { analyzeSentiment } from "../services/sentimentService";
-import { getMemory } from "../services/memoryService";
+
+import { 
+getMemory,
+addMemory, 
+} 
+from "../services/memoryService";
 
 import {
 extractMemory
@@ -15,6 +20,7 @@ from "../middleware/authMiddleware";
 import {
   saveConversation,
 } from "../services/conversationService";
+
 
 export async function chatController(
   req: AuthRequest,
@@ -32,10 +38,6 @@ export async function chatController(
       settings,
     } = req.body;
 
-    await extractMemory(
-    message
-    );
-
     const reply =
       await generateReply(
         message,
@@ -44,6 +46,16 @@ export async function chatController(
         memory,
         settings
       );
+
+    const extractedMemory =
+      await extractMemory(message);
+
+    if (extractedMemory.trim()) {
+      await addMemory(
+        profile.email,
+        extractedMemory
+      );
+    }
 
     const sentiment =
       analyzeSentiment(message);

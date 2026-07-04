@@ -17,6 +17,9 @@ import path from "path";
 
 import uploadRoutes from "./routes/uploadRoutes";
 
+import memoryRoutes from "./routes/memoryRoutes";
+
+
 const app = express();
 
 app.use(cors());
@@ -32,9 +35,14 @@ app.use(
 
 app.use("/api", chatRoutes);
 
-app.use("/api", roadmapRoutes);
+app.use(
+  "/api/roadmap",
+  roadmapRoutes
+);
 
 app.use("/api/upload", uploadRoutes);
+
+app.use("/api/memory", memoryRoutes);
 
 app.use(
   "/api/goals",

@@ -1,39 +1,27 @@
+import { useCounsellorStore } from "../../store/counsellorStore";
+
 export default function StudyPlannerCard() {
+
+  const roadmap =
+    useCounsellorStore(
+      (s) => s.roadmap
+    );
+
   return (
-    <div
-      className="
-      bg-white/5
-      rounded-2xl
-      p-5
-      "
-    >
-      <h2
+    <div>
+      <h3>📅 Today's Plan</h3>
+
+      <pre
         className="
-        text-xl
-        text-white
+        whitespace-pre-wrap
+        text-sm
+        leading-7
+        text-slate-300
         "
       >
-        📅 Today's Plan
-      </h2>
-
-      <ul
-        className="
-        mt-3
-        space-y-2
-        "
-      >
-        <li>
-          • 30 min Learning
-        </li>
-
-        <li>
-          • 1 Coding Problem
-        </li>
-
-        <li>
-          • Review Notes
-        </li>
-      </ul>
+        {roadmap ||
+          "Generate a roadmap by completing your profile."}
+      </pre>
     </div>
   );
 }

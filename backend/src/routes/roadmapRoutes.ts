@@ -1,16 +1,13 @@
-import { Router }
-from "express";
+import { Router } from "express";
 
 import {
   roadmapController,
-}
-from "../controllers/roadmapController";
+} from "../controllers/roadmapController";
 
-const router =
-  Router();
+const router = Router();
 
-router.post(
-  "/roadmap",
+router.get(
+  "/:email",
   roadmapController
 );
 

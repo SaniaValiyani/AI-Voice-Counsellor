@@ -1,133 +1,78 @@
-import UserMemory
-from "../models/UserMemory";
+import Groq from "groq-sdk";
 
-const patterns = [
-
-{
-category:"Career Goal",
-regex:
-/I want to become (.+)/i,
-},
-
-{
-category:"Interest",
-regex:
-/I like (.+)/i,
-},
-
-{
-category:"Programming Language",
-regex:
-/I know (.+)/i,
-},
-
-{
-category:"Certification",
-regex:
-/I completed (.+)/i,
-},
-
-{
-category:"Preferred Domain",
-regex:
-/I am interested in (.+)/i,
-},
-
-{
-category:"Favorite Subject",
-
-regex:
-/My favorite subject is (.+)/i,
-
-},
-
-{
-category:"Dream Company",
-
-regex:
-/I want to work at (.+)/i,
-
-},
-
-{
-category:"Learning Style",
-
-regex:
-/I prefer (.+) tutorials/i,
-
-},
-
-{
-category:"Strength",
-
-regex:
-/I am good at (.+)/i,
-
-},
-
-{
-category:"Weakness",
-
-regex:
-/I struggle with (.+)/i,
-},
-];
-
-export async function
-extractMemory(
-message:string
-){
-
-for(
-const pattern
-of patterns
-){
-
-const match =
-message.match(
-pattern.regex
-);
-
-if(match){
-
-const value =
-match[1].trim();
-
-if(
-
-value.length<3
-
-){
-
-continue;
-
-}
-
-const exists =
-await UserMemory.findOne({
-
-category:
-pattern.category,
-
-value,
-
+const groq = new Groq({
+  apiKey: process.env.GROQ_API_KEY,
 });
 
-if(!exists){
+export async function extractMemory(
+  message: string
+) {
+const prompt = `
+You extract long-term memory.
 
-await UserMemory.create({
+Save only facts that remain useful in future conversations.
 
-category:
-pattern.category,
+Examples:
 
-value,
+Career Goals
 
-});
+Skills
 
-}
+Interests
 
-}
+Weaknesses
 
-}
+Strengths
 
+Favourite Subjects
+
+Preferred Languages
+
+Learning Style
+
+Dream Company
+
+Internship Goals
+
+Never save:
+
+Greetings
+
+Thank you
+
+Bye
+
+Temporary questions
+
+Current mood
+
+Output:
+
+One fact per line.
+
+No bullets.
+
+No numbering.
+
+Message:
+
+${message}
+`;
+
+  const completion =
+    await groq.chat.completions.create({
+      model: "llama-3.3-70b-versatile",
+      temperature: 0.1,
+      messages: [
+        {
+          role: "user",
+          content: prompt,
+        },
+      ],
+    });
+
+  return (
+    completion.choices[0]?.message?.content ||
+    ""
+  );
 }
