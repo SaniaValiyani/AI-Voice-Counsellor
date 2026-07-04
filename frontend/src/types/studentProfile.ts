@@ -1,44 +1,68 @@
+export interface Goal {
+  id: string;
+  title: string;
+  completed: boolean;
+}
+
 export interface StudentProfile {
   name: string;
+  email: string;
+
+  phone: string;
+
+  college: string;
+
+  branch: string;
+
+  year: string;
+
+  location: string;
+
+  bio: string;
+
+  profileImage: string;
+
+  linkedin: string;
+
+  github: string;
+
+  portfolio: string;
+
+  resume: string;
 
   careerGoal: string;
-
-  interests: string[];
-
-  skills: string[];
 
   educationLevel: string;
 
   preferredLanguage: string;
 
-  recentTopics: string[];
+  interests: string[];
+
+  skills: string[];
+
+  completedSkills: string[];
 
   strengths: string[];
 
   weaknesses: string[];
 
-  completedSkills: string[];
-
-  goalProgress: number;
-
-  learningStreak: number;
-
-  lastActiveDate: string;
-
-  achievements: string[];
+  recentTopics: string[];
 
   xp: number;
 
   level: number;
 
-  goals: {
-    id: string;
-    title: string;
-    completed: boolean;
-  }[];
+  learningStreak: number;
+
+  goalProgress: number;
 
   careerReadiness: number;
 
+  achievements: string[];
+
+  goals: Goal[];
+
   timeline: string[];
 
+  lastActiveDate: string;
 }

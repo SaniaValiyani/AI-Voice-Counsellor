@@ -182,14 +182,9 @@ export default function Topbar() {
             cursor-pointer
           "
         >
-          {profile.name
-            ? profile.name
-                .split(" ")
-                .map((word) => word[0])
-                .join("")
-                .slice(0, 2)
-                .toUpperCase()
-            : "U"}
+          {profile.careerGoal
+          ? profile.careerGoal[0]
+          : "S"}
         </div>
       </div>
     </header>

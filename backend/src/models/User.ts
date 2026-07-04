@@ -22,40 +22,9 @@ const userSchema = new mongoose.Schema(
     },
 
     profile: {
-      careerGoal: {
-        type: String,
-        default: "",
-      },
-
-      educationLevel: {
-        type: String,
-        default: "",
-      },
-
-      preferredLanguage: {
-        type: String,
-        default: "English",
-      },
-
-      skills: {
-        type: [String],
-        default: [],
-      },
-
-      interests: {
-        type: [String],
-        default: [],
-      },
-
-      xp: {
-        type: Number,
-        default: 0,
-      },
-
-      learningStreak: {
-        type: Number,
-        default: 0,
-      },
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Student",
+      required: true,
     },
   },
   {

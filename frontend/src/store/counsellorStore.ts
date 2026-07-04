@@ -134,6 +134,31 @@ export const useCounsellorStore =
         latestAchievement: "",
 
         studentProfile: {
+          name: "",
+
+          email: "",
+
+          phone: "",
+
+          college: "",
+
+          branch: "",
+
+          year: "",
+
+          location: "",
+
+          bio: "",
+
+          profileImage: "",
+
+          linkedin: "",
+
+          github: "",
+
+          portfolio: "",
+
+          resume: "",
           careerGoal: "",
 
           interests: [],

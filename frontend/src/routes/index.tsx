@@ -9,6 +9,8 @@ import SettingsPage from "../pages/SettingsPage";
 import RegisterPage from "../pages/RegisterPage";
 import { useAuthStore } from "../store/authStore";
 import { Navigate } from "react-router-dom";
+import ProfilePage from "../pages/ProfilePage";
+
 
 function ProtectedRoute({
   children,
@@ -67,5 +69,9 @@ export const router = createBrowserRouter([
   {
     path: "/settings",
     element: <SettingsPage />,
+  },
+  {
+    path:"/profile",
+    element:<ProfilePage/>
   },
 ]);

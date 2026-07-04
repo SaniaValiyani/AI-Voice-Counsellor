@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import bcrypt from "bcrypt";
 
 import User from "../models/User";
+import Student from "../models/Student";
 import { generateToken } from "../utils/generateToken";
 
 export async function register(
@@ -63,15 +64,22 @@ export async function register(
       );
 
     // -------------------------
-    // Create User
+    // Create Student
     // -------------------------
 
-    const user =
-      await User.create({
-        fullName,
-        email,
-        password: hashedPassword,
-      });
+    // 1. Create empty student profile first
+    const student = await Student.create({
+      name: fullName,
+      preferredLanguage: "English",
+    });
+
+    // 2. Create user linked to student
+    const user = await User.create({
+      fullName,
+      email,
+      password: hashedPassword,
+      profile: student._id,
+    });
 
     // -------------------------
     // JWT
@@ -95,6 +103,7 @@ export async function register(
         profile: user.profile,
       },
     });
+
   } catch (error) {
     console.error(error);
 
@@ -125,7 +134,7 @@ export async function login(
     // Find user
     const user = await User.findOne({
       email,
-    });
+    }).populate("profile");
 
     if (!user) {
       return res.status(401).json({
@@ -161,6 +170,7 @@ export async function login(
         profile: user.profile,
       },
     });
+
   } catch (error) {
     console.error(error);
 

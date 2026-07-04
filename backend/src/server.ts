@@ -13,15 +13,28 @@ import chatHistoryRoutes from "./routes/chatHistoryRoutes";
 import authRoutes from "./routes/authRoutes";
 import conversationRoutes from "./routes/conversationRoutes";
 
+import path from "path";
+
+import uploadRoutes from "./routes/uploadRoutes";
+
 const app = express();
 
 app.use(cors());
 
 app.use(express.json());
 
+app.use(
+  "/uploads",
+  express.static(
+    path.join(__dirname, "../uploads")
+  )
+);
+
 app.use("/api", chatRoutes);
 
 app.use("/api", roadmapRoutes);
+
+app.use("/api/upload", uploadRoutes);
 
 app.use(
   "/api/goals",

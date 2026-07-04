@@ -13,6 +13,7 @@ import {
   CalendarDays,
   Target,
   LogOut,
+  User,
 } from "lucide-react";
 
 import {
@@ -45,6 +46,11 @@ const menuItems = [
         title: "Reports",
         path: "/reports",
         icon: FileText,
+      },
+      {
+        title:"Profile",
+        path:"/profile",
+        icon:User,
       },
     ],
   },
