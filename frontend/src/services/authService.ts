@@ -1,54 +1,25 @@
-const API =
-  "http://localhost:5000";
+import api from "./api";
 
-export async function registerUser(
-  fullName: string,
-  email: string,
-  password: string
-) {
-  const response =
-    await fetch(
-      `${API}/auth/register`,
-      {
-        method: "POST",
+export async function login(data:any){
 
-        headers: {
-          "Content-Type":
-            "application/json",
-        },
+const res=
+await api.post(
+"/auth/login",
+data
+);
 
-        body: JSON.stringify({
-          fullName,
-          email,
-          password,
-        }),
-      }
-    );
+return res.data;
 
-  return response.json();
 }
 
-export async function loginUser(
-  email: string,
-  password: string
-) {
-  const response =
-    await fetch(
-      `${API}/auth/login`,
-      {
-        method: "POST",
+export async function register(data:any){
 
-        headers: {
-          "Content-Type":
-            "application/json",
-        },
+const res=
+await api.post(
+"/auth/register",
+data
+);
 
-        body: JSON.stringify({
-          email,
-          password,
-        }),
-      }
-    );
+return res.data;
 
-  return response.json();
 }

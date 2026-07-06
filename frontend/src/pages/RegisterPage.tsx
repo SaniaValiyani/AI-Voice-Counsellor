@@ -1,23 +1,24 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import {
-  BrainCircuit,
-  Eye,
-  EyeOff,
-  Loader2,
-} from "lucide-react";
+import { useNavigate, Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import { BrainCircuit } from "lucide-react";
 
 import AnimatedBackground from "../components/layout/AnimatedBackground";
-import { registerUser } from "../services/authService";
+
+import { register } from "../services/authService";
 import { useAuthStore } from "../store/authStore";
+import { useLanguageStore } from "../store/languageStore";
 
 export default function RegisterPage() {
   const navigate = useNavigate();
 
-  const login = useAuthStore(
-    (state) => state.login
-  );
+  const { language, setLanguage } =
+    useLanguageStore();
+
+  const login =
+    useAuthStore(
+      (state) => state.login
+    );
 
   const [fullName, setFullName] =
     useState("");
@@ -28,78 +29,43 @@ export default function RegisterPage() {
   const [password, setPassword] =
     useState("");
 
-  const [confirmPassword, setConfirmPassword] =
-    useState("");
-
-  const [showPassword, setShowPassword] =
-    useState(false);
-
   const [loading, setLoading] =
     useState(false);
 
-  const [error, setError] =
-    useState("");
-
-  async function handleRegister() {
-    setError("");
-
-    if (
-      !fullName ||
-      !email ||
-      !password
-    ) {
-      setError(
-        "Please fill all fields."
-      );
+  const handleRegister = async () => {
+    if (!fullName || !email || !password) {
+      alert("Please fill all fields");
       return;
     }
-
-    if (
-      password !==
-      confirmPassword
-    ) {
-      setError(
-        "Passwords do not match."
-      );
-      return;
-    }
-
-    setLoading(true);
 
     try {
+      setLoading(true);
+
       const data =
-        await registerUser(
+        await register({
           fullName,
           email,
-          password
-        );
+          password,
+        });
 
-      if (data.token) {
-        login(
-          data.token,
-          data.user
-        );
+      login(
+        data.token,
+        data.user
+      );
 
-        navigate("/dashboard");
-
-        return;
-      }
-
-      setError(data.error);
+      navigate("/dashboard");
+    } catch (error: any) {
+      alert(
+        error?.response?.data?.error ||
+          "Registration Failed"
+      );
     } finally {
       setLoading(false);
     }
-  }
-
-  const passwordStrength =
-    password.length < 6
-      ? "Weak"
-      : password.length < 10
-      ? "Medium"
-      : "Strong";
+  };
 
   return (
-    <div className="relative min-h-screen app-bg flex items-center justify-center overflow-hidden">
+    <div className="relative min-h-screen bg-slate-950 flex items-center justify-center overflow-hidden">
 
       <AnimatedBackground />
 
@@ -112,9 +78,14 @@ export default function RegisterPage() {
           opacity: 1,
           y: 0,
         }}
+        transition={{
+          duration: 0.8,
+        }}
         className="relative z-10"
       >
-        <div className="backdrop-blur-xl app-card-glass border border-white/20 rounded-3xl p-10 shadow-2xl w-107.5">
+        <div className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-3xl p-10 shadow-2xl w-107.5">
+
+          {/* Logo */}
 
           <div className="flex flex-col items-center gap-4">
 
@@ -123,133 +94,105 @@ export default function RegisterPage() {
               className="text-cyan-400"
             />
 
-            <h1 className="text-3xl font-bold app-text">
-
+            <h1 className="text-3xl font-bold text-white">
               Create Account
-
             </h1>
+
+            <p className="text-slate-300 text-center">
+              Join AI Voice Counsellor
+            </p>
 
           </div>
 
+          {/* Form */}
+
           <div className="mt-8 space-y-4">
 
+            <select
+              value={language}
+              onChange={(e) =>
+                setLanguage(
+                  e.target.value as
+                    | "English"
+                    | "Hindi"
+                    | "Gujarati"
+                    | "Marathi"
+                )
+              }
+              className="w-full rounded-xl bg-white border border-white/20 px-4 py-3 text-black"
+            >
+              <option value="English">
+                English
+              </option>
+
+              <option value="Hindi">
+                Hindi
+              </option>
+
+              <option value="Gujarati">
+                Gujarati
+              </option>
+
+              <option value="Marathi">
+                Marathi
+              </option>
+            </select>
+
             <input
+              type="text"
               placeholder="Full Name"
               value={fullName}
-              onChange={(e)=>
+              onChange={(e) =>
                 setFullName(
                   e.target.value
                 )
               }
-              className="w-full rounded-xl app-card-glass border border-white/20 px-4 py-3 app-text"
+              className="w-full rounded-xl bg-white/10 border border-white/20 px-4 py-3 text-white outline-none"
             />
 
             <input
+              type="email"
               placeholder="Email"
               value={email}
-              onChange={(e)=>
+              onChange={(e) =>
                 setEmail(
                   e.target.value
                 )
               }
-              className="w-full rounded-xl app-card-glass border border-white/20 px-4 py-3 app-text"
+              className="w-full rounded-xl bg-white/10 border border-white/20 px-4 py-3 text-white outline-none"
             />
-
-            <div className="relative">
-
-              <input
-                type={
-                  showPassword
-                    ? "text"
-                    : "password"
-                }
-                value={password}
-                onChange={(e)=>
-                  setPassword(
-                    e.target.value
-                  )
-                }
-                placeholder="Password"
-                className="w-full rounded-xl app-card-glass border border-white/20 px-4 py-3 pr-12 app-text"
-              />
-
-              <button
-                type="button"
-                onClick={()=>
-                  setShowPassword(
-                    !showPassword
-                  )
-                }
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400"
-              >
-                {showPassword
-                  ? <EyeOff size={18}/>
-                  : <Eye size={18}/>}
-              </button>
-
-            </div>
-
-            <div className="text-sm">
-
-              Password Strength:
-
-              <span
-                className={`ml-2 ${
-                  passwordStrength==="Strong"
-                    ? "text-green-400"
-                    : passwordStrength==="Medium"
-                    ? "text-yellow-400"
-                    : "text-red-400"
-                }`}
-              >
-
-                {passwordStrength}
-
-              </span>
-
-            </div>
 
             <input
               type="password"
-              placeholder="Confirm Password"
-              value={confirmPassword}
-              onChange={(e)=>
-                setConfirmPassword(
+              placeholder="Password"
+              value={password}
+              onChange={(e) =>
+                setPassword(
                   e.target.value
                 )
               }
-              className="w-full rounded-xl app-card-glass border border-white/20 px-4 py-3 app-text"
+              className="w-full rounded-xl bg-white/10 border border-white/20 px-4 py-3 text-white outline-none"
             />
-
-            {error && (
-              <p className="text-red-400 text-sm">
-
-                {error}
-
-              </p>
-            )}
 
             <button
               onClick={handleRegister}
               disabled={loading}
-              className="w-full rounded-xl bg-cyan-500 hover:bg-cyan-400 py-3 font-semibold text-black"
+              className="w-full rounded-xl bg-cyan-500 hover:bg-cyan-400 py-3 font-semibold text-black transition"
             >
               {loading
-                ? <Loader2 className="animate-spin mx-auto"/>
+                ? "Creating Account..."
                 : "Register"}
             </button>
 
-            <p className="text-center text-slate-400">
+            <p className="text-center text-slate-300">
 
-              Already have an account?
+              Already have an account?{" "}
 
               <Link
                 to="/"
-                className="text-cyan-400 ml-2"
+                className="text-cyan-400 hover:underline"
               >
-
                 Login
-
               </Link>
 
             </p>

@@ -6,10 +6,12 @@ import {
   Flame,
   Trophy,
 } from "lucide-react";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import { useThemeStore } from "../../store/themeStore";
 import { useCounsellorStore } from "../../store/counsellorStore";
-import { useState } from "react";
+import { useAuthStore } from "../../store/authStore";
 import NotificationDropdown from "./NotificationDropdown";
 
 export default function Topbar() {
@@ -23,6 +25,14 @@ export default function Topbar() {
     useCounsellorStore(
       (state) => state.studentProfile
     );
+
+  const logout =
+    useAuthStore(
+      (s) => s.logout
+    );
+
+  const navigate =
+    useNavigate();
 
   return (
     <header className="flex items-center justify-between">
@@ -183,9 +193,28 @@ export default function Topbar() {
           "
         >
           {profile.careerGoal
-          ? profile.careerGoal[0]
-          : "S"}
+            ? profile.careerGoal[0]
+            : "S"}
         </div>
+
+        {/* Logout */}
+
+        <button
+          onClick={() => {
+            logout();
+            navigate("/");
+          }}
+          className="
+            rounded-xl
+            app-card
+            px-4
+            py-2
+            hover:bg-slate-800
+            transition
+          "
+        >
+          Logout
+        </button>
       </div>
     </header>
   );

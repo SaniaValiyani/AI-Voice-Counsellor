@@ -1,93 +1,66 @@
 import { create } from "zustand";
+import { persist } from "zustand/middleware";
 
-interface User {
+interface User{
 
-  id: string;
+id:string;
 
-  fullName: string;
+fullName:string;
 
-  email: string;
-
-  profile: any;
-
-}
-
-interface AuthStore {
-
-  user: User | null;
-
-  token: string | null;
-
-  isAuthenticated: boolean;
-
-  login: (
-    token: string,
-    user: User
-  ) => void;
-
-  logout: () => void;
+email:string;
 
 }
 
-export const useAuthStore =
-create<AuthStore>((set) => ({
+interface AuthState{
 
-  user:
-    JSON.parse(
-      localStorage.getItem(
-        "user"
-      ) || "null"
-    ),
+token:string|null;
 
-  token:
-    localStorage.getItem(
-      "token"
-    ),
+user:User|null;
 
-  isAuthenticated:
-    !!localStorage.getItem(
-      "token"
-    ),
+login:(token:string,user:User)=>void;
 
-  login:
-    (token, user) => {
+logout:()=>void;
 
-      localStorage.setItem(
-        "token",
-        token
-      );
+}
 
-      localStorage.setItem(
-        "user",
-        JSON.stringify(user)
-      );
+export const useAuthStore=create<AuthState>()(
 
-      set({
+persist(
 
-        token,
+(set)=>({
 
-        user,
+token:null,
 
-        isAuthenticated: true,
+user:null,
 
-      });
+login:(token,user)=>
 
-    },
+set({
 
-  logout: () => {
+token,
 
-    localStorage.clear();
+user,
 
-    set({
+}),
 
-      token: null,
+logout:()=>
 
-      user: null,
+set({
 
-      isAuthenticated: false,
+token:null,
 
-    });
+user:null,
 
-  },
+}),
 
-}));
+}),
+
+{
+
+name:"auth-storage",
+
+}
+
+)
+
+);

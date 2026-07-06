@@ -5,12 +5,12 @@ import { BrainCircuit, Eye, EyeOff, Loader2 } from "lucide-react";
 
 import AnimatedBackground from "../components/layout/AnimatedBackground";
 import { useLanguageStore } from "../store/languageStore";
-import { loginUser } from "../services/authService";
+import { login } from "../services/authService";
 import { useAuthStore } from "../store/authStore";
 
 export default function LoginPage() {
   const navigate = useNavigate();
-  const login = useAuthStore((state) => state.login);
+  const loginStore = useAuthStore((state) => state.login);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -34,10 +34,13 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      const data = await loginUser(email, password);
+      const data = await login({
+        email,
+        password,
+      });
 
       if (data.token) {
-        login(data.token, data.user);
+        loginStore(data.token, data.user);
 
         navigate("/dashboard");
         return;
@@ -158,14 +161,14 @@ export default function LoginPage() {
               disabled={loading}
               className="w-full rounded-xl bg-cyan-500 hover:bg-cyan-400 py-3 font-semibold text-black transition"
             >
-              loading ? (
+              {loading ? (
                 <Loader2
                   className="animate-spin mx-auto"
                   size={20}
                 />
               ) : (
                 "Login"
-              )
+              )}
             </button>
             <p className="text-center text-slate-400">
 

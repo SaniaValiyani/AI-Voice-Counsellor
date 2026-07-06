@@ -7,30 +7,9 @@ import AnalyticsPage from "../pages/AnalyticsPage";
 import ReportsPage from "../pages/ReportsPage";
 import SettingsPage from "../pages/SettingsPage";
 import RegisterPage from "../pages/RegisterPage";
-import { useAuthStore } from "../store/authStore";
-import { Navigate } from "react-router-dom";
 import ProfilePage from "../pages/ProfilePage";
 
-
-function ProtectedRoute({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  const authenticated =
-    useAuthStore(
-      (state) =>
-        state.isAuthenticated
-    );
-
-  if (!authenticated) {
-    return (
-      <Navigate to="/" replace />
-    );
-  }
-
-  return children;
-}
+import ProtectedRoute from "../components/ProtectedRoute";
 
 export const router = createBrowserRouter([
   {
@@ -38,8 +17,8 @@ export const router = createBrowserRouter([
     element: <LoginPage />,
   },
   {
-    path:"/register",
-    element:<RegisterPage/>
+    path: "/register",
+    element: <RegisterPage />,
   },
   {
     path: "/dashboard",
@@ -57,21 +36,36 @@ export const router = createBrowserRouter([
       </ProtectedRoute>
     ),
   },
-
   {
     path: "/analytics",
-    element: <AnalyticsPage />,
+    element: (
+      <ProtectedRoute>
+        <AnalyticsPage />
+      </ProtectedRoute>
+    ),
   },
   {
     path: "/reports",
-    element: <ReportsPage />,
+    element: (
+      <ProtectedRoute>
+        <ReportsPage />
+      </ProtectedRoute>
+    ),
   },
   {
     path: "/settings",
-    element: <SettingsPage />,
+    element: (
+      <ProtectedRoute>
+        <SettingsPage />
+      </ProtectedRoute>
+    ),
   },
   {
-    path:"/profile",
-    element:<ProfilePage/>
+    path: "/profile",
+    element: (
+      <ProtectedRoute>
+        <ProfilePage />
+      </ProtectedRoute>
+    ),
   },
 ]);
