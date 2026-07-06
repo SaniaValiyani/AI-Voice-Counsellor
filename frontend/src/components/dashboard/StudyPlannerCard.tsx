@@ -1,27 +1,28 @@
 import { useCounsellorStore } from "../../store/counsellorStore";
 
 export default function StudyPlannerCard() {
-
-  const roadmap =
-    useCounsellorStore(
-      (s) => s.roadmap
-    );
+  const roadmap = useCounsellorStore((s) => s.roadmap);
 
   return (
     <div>
-      <h3>📅 Today's Plan</h3>
+      <h2 className="text-xl font-semibold mb-4">📅 Today's Plan</h2>
 
-      <pre
-        className="
-        whitespace-pre-wrap
-        text-sm
-        leading-7
-        text-slate-300
-        "
-      >
-        {roadmap ||
-          "Generate a roadmap by completing your profile."}
-      </pre>
+      {roadmap ? (
+        <pre
+          className="
+            whitespace-pre-wrap
+            text-sm
+            leading-7
+            text-slate-300
+          "
+        >
+          {roadmap}
+        </pre>
+      ) : (
+        <div className="animate-pulse text-slate-400">
+          Generating your personalized roadmap...
+        </div>
+      )}
     </div>
   );
 }

@@ -12,13 +12,12 @@ import studentRoutes from "./routes/studentRoutes";
 import chatHistoryRoutes from "./routes/chatHistoryRoutes";
 import authRoutes from "./routes/authRoutes";
 import conversationRoutes from "./routes/conversationRoutes";
-
 import path from "path";
-
 import uploadRoutes from "./routes/uploadRoutes";
-
 import memoryRoutes from "./routes/memoryRoutes";
-
+import analyticsRoutes from "./routes/analyticsRoutes";
+import reportRoutes from "./routes/reportRoutes";
+import recommendationRoutes from "./routes/recommendationRoutes";
 
 const app = express();
 
@@ -55,6 +54,11 @@ app.use(
 );
 
 app.use(
+  "/api/report",
+  reportRoutes
+);
+
+app.use(
   "/api/chat-history",
   chatHistoryRoutes
 );
@@ -65,8 +69,18 @@ app.use(
 );
 
 app.use(
+  "/api/recommendations",
+  recommendationRoutes
+);
+
+app.use(
   "/conversation",
   conversationRoutes
+);
+
+app.use(
+  "/api/analytics",
+  analyticsRoutes
 );
 
 app.get("/", (_, res) => {

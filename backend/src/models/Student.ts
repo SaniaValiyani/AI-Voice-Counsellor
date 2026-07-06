@@ -164,6 +164,11 @@ const studentSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
+
+    roadmap: {
+      type: String,
+      default: "",
+    },
   },
   {
     timestamps: true,

@@ -1,7 +1,5 @@
 import { motion } from "framer-motion";
-
 import DashboardLayout from "../components/layout/DashboardLayout";
-
 import RecentConversations from "../components/dashboard/RecentConversations";
 import ProfileCard from "../components/dashboard/ProfileCard";
 import GoalProgressCard from "../components/dashboard/GoalProgressCard";
@@ -32,168 +30,194 @@ import SentimentCard from "../components/dashboard/SentimentCard";
 import TopicInsights from "../components/dashboard/TopicInsights";
 import CareerInterestMeter from "../components/dashboard/CareerInterestMeter";
 import MonthlyReportCard from "../components/dashboard/MonthlyReportCard";
-
 import { useEffect } from "react";
 import { useCounsellorStore } from "../store/counsellorStore";
+import { useAnalytics } from "@/hooks/useAnalytics";
+import { useReport } from "../hooks/useReport";
+import { exportDashboard } from "../utils/pdfExport";
 
 export default function DashboardPage() {
-  const loadRoadmap =
-  useCounsellorStore(
-  (s)=>s.loadRoadmap
+  const loadRoadmap = useCounsellorStore(
+    (s) => s.loadRoadmap
   );
 
-  useEffect(()=>{
+  const profile = useCounsellorStore(
+    (s) => s.studentProfile
+  );
 
-  loadRoadmap();
+  const analytics = useAnalytics(
+    profile.email
+  );
 
-  },[]);
-  
+  useEffect(() => {
+    loadRoadmap();
+  }, []);
+
+  const report = useReport(
+    profile.email
+  );
+
   return (
     <DashboardLayout>
-      <motion.div
-        initial={{
-          opacity: 0,
-          y: 30,
-        }}
-        animate={{
-          opacity: 1,
-          y: 0,
-        }}
-        transition={{
-          duration: 0.6,
-        }}
+      <div id="dashboard">
+        <motion.div
+          initial={{
+            opacity: 0,
+            y: 30,
+          }}
+          animate={{
+            opacity: 1,
+            y: 0,
+          }}
+          transition={{
+            duration: 0.6,
+          }}
+        >
+          <div className="grid grid-cols-12 gap-6">
+            {/* SECTION 1 */}
+
+            <HeroBanner />
+
+            <XPProgressCard />
+
+            <DailyMissionCard />
+
+            <QuickActions />
+
+            {/* SECTION 2 */}
+
+            <div className="col-span-full mt-4">
+              <h2 className="text-2xl font-bold text-white border-b border-slate-700 pb-3 mb-2">
+                📊 Overview
+              </h2>
+            </div>
+
+            <StatCard
+              title="Sessions"
+              value={
+                analytics?.totalSessions?.toString() ?? "0"
+              }
+            />
+
+            <StatCard
+              title="Languages"
+              value={
+                analytics?.languagesUsed?.toString() ?? "0"
+              }
+            />
+
+            <StatCard
+              title="Hot Leads"
+              value={
+                analytics?.hotLeads?.toString() ?? "0"
+              }
+            />
+
+            <StreakCard />
+
+            {/* SECTION 3 */}
+
+            <div className="col-span-full mt-6">
+              <h2 className="text-2xl font-bold text-white border-b border-slate-700 pb-3 mb-2">
+                🎯 Goals & Progress
+              </h2>
+            </div>
+
+            <GoalProgressCard />
+
+            <CareerReadinessCard />
+
+            <NextGoalCard />
+
+            <TimelineCard />
+
+            {/* SECTION 4 */}
+
+            <div className="col-span-full mt-6">
+              <h2 className="text-2xl font-bold text-white border-b border-slate-700 pb-3 mb-2">
+                🤖 AI Coach
+              </h2>
+            </div>
+
+            <AICoachCard />
+
+            <AIInsightsCard />
+
+            <StudyPlannerCard />
+
+            <WeeklyChallengeCard />
+
+            {/* SECTION 5 */}
+
+            <div className="col-span-full mt-6">
+              <h2 className="text-2xl font-bold text-white border-b border-slate-700 pb-3 mb-2">
+                📈 Analytics
+              </h2>
+            </div>
+
+            <LeadChart />
+
+            <LanguageChart />
+
+            <LeadScoreWidget />
+
+            <SessionStats />
+
+            <SessionDuration />
+
+            <SentimentCard />
+
+            <TopicInsights />
+
+            <CareerInterestMeter />
+
+            {/* SECTION 6 */}
+
+            <div className="col-span-full mt-6">
+              <h2 className="text-2xl font-bold text-white border-b border-slate-700 pb-3 mb-2">
+                🏆 Achievements
+              </h2>
+            </div>
+
+            <LevelCard />
+
+            <AchievementsCard />
+
+            <MonthlyReportCard
+              report={report}
+            />
+
+            <AchievementToast />
+
+            {/* SECTION 7 */}
+
+            <div className="col-span-full mt-6">
+              <h2 className="text-2xl font-bold text-white border-b border-slate-700 pb-3 mb-2">
+                👤 Student Profile
+              </h2>
+            </div>
+
+            <ProfileCard />
+
+            <GoalsCard />
+
+            {/* SECTION 8 */}
+
+            <div className="col-span-full mt-6">
+              <h2 className="text-2xl font-bold text-white border-b border-slate-700 pb-3 mb-2">
+                💬 Recent Activity
+              </h2>
+            </div>
+
+            <RecentConversations />
+          </div>
+        </motion.div>
+      </div>
+      <button
+        onClick={exportDashboard}
       >
-        <div className="grid gap-6 lg:grid-cols-4 mt-8">
-          {/* SECTION 1 */}
-
-          <HeroBanner />
-
-          <XPProgressCard />
-
-          <DailyMissionCard />
-
-          <QuickActions />
-
-          {/* SECTION 2 */}
-
-          <div className="col-span-full mt-4">
-            <h2 className="text-2xl font-bold text-white border-b border-slate-700 pb-3 mb-2">
-              📊 Overview
-            </h2>
-          </div>
-
-          <StatCard
-            title="Sessions"
-            value="89"
-          />
-
-          <StatCard
-            title="Languages"
-            value="4"
-          />
-
-          <StatCard
-            title="Hot Leads"
-            value="42"
-          />
-
-          <StreakCard />
-
-          {/* SECTION 3 */}
-
-          <div className="col-span-full mt-6">
-            <h2 className="text-2xl font-bold text-white border-b border-slate-700 pb-3 mb-2">
-              🎯 Goals & Progress
-            </h2>
-          </div>
-
-          <GoalProgressCard />
-
-          <CareerReadinessCard />
-
-          <NextGoalCard />
-
-          <TimelineCard />
-
-          {/* SECTION 4 */}
-
-          <div className="col-span-full mt-6">
-            <h2 className="text-2xl font-bold text-white border-b border-slate-700 pb-3 mb-2">
-              🤖 AI Coach
-            </h2>
-          </div>
-
-          <AICoachCard />
-
-          <AIInsightsCard />
-
-          <StudyPlannerCard />
-
-          <WeeklyChallengeCard />
-
-          {/* SECTION 5 */}
-
-          <div className="col-span-full mt-6">
-            <h2 className="text-2xl font-bold text-white border-b border-slate-700 pb-3 mb-2">
-              📈 Analytics
-            </h2>
-          </div>
-
-          <LeadChart />
-
-          <LanguageChart />
-
-          <LeadScoreWidget />
-
-          <SessionStats />
-
-          <SessionDuration />
-
-          <SentimentCard />
-
-          <TopicInsights />
-
-          <CareerInterestMeter />
-
-          {/* SECTION 6 */}
-
-          <div className="col-span-full mt-6">
-            <h2 className="text-2xl font-bold text-white border-b border-slate-700 pb-3 mb-2">
-              🏆 Achievements
-            </h2>
-          </div>
-
-          <LevelCard />
-
-          <AchievementsCard />
-
-          <MonthlyReportCard />
-
-          <AchievementToast />
-
-          {/* SECTION 7 */}
-
-          <div className="col-span-full mt-6">
-            <h2 className="text-2xl font-bold text-white border-b border-slate-700 pb-3 mb-2">
-              👤 Student Profile
-            </h2>
-          </div>
-
-          <ProfileCard />
-
-          <GoalsCard />
-
-          {/* SECTION 8 */}
-
-          <div className="col-span-full mt-6">
-            <h2 className="text-2xl font-bold text-white border-b border-slate-700 pb-3 mb-2">
-              💬 Recent Activity
-            </h2>
-          </div>
-
-          <RecentConversations />
-        </div>
-      </motion.div>
+      Export PDF
+      </button>
     </DashboardLayout>
   );
 }

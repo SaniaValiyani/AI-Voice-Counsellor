@@ -1,71 +1,55 @@
-import {
-  FileText,
-  FileJson,
-  File
-} from "lucide-react";
+import { FileDown } from "lucide-react";
 
-import {
-  exportAsPDF,
-  exportAsTXT,
-  exportAsJSON,
-} from "../../services/exportService";
+import { exportDashboard } from "../../utils/pdfExport";
+import { exportCSV } from "../../utils/exportCSV";
 
-import { useCounsellorStore }
-from "../../store/counsellorStore";
+import { useAnalytics } from "../../hooks/useAnalytics";
+import { useCounsellorStore } from "../../store/counsellorStore";
 
 export default function ExportButtons() {
-  const { messages } =
-    useCounsellorStore();
+
+  const profile =
+    useCounsellorStore(
+      (state) => state.studentProfile
+    );
+
+  const analytics =
+    useAnalytics(profile.email);
 
   return (
-    <div className="flex gap-3 flex-wrap">
+    <div className="flex gap-3">
 
       <button
-        onClick={() =>
-          exportAsPDF(messages)
-        }
+        onClick={exportDashboard}
         className="
-        px-4 py-2
-        rounded-xl
-        bg-red-500
-        text-white
-        flex items-center gap-2
+          px-4
+          py-2
+          rounded-xl
+          bg-cyan-500
+          text-black
+          font-semibold
+          hover:bg-cyan-400
         "
       >
-        <FileText size={18}/>
+        <FileDown size={18} />
         PDF
       </button>
 
       <button
         onClick={() =>
-          exportAsTXT(messages)
+          exportCSV(analytics)
         }
         className="
-        px-4 py-2
-        rounded-xl
-        bg-blue-500
-        text-white
-        flex items-center gap-2
+          px-4
+          py-2
+          rounded-xl
+          bg-green-500
+          text-white
+          font-semibold
+          hover:bg-green-400
         "
       >
-        <File size={18}/>
-        TXT
-      </button>
-
-      <button
-        onClick={() =>
-          exportAsJSON(messages)
-        }
-        className="
-        px-4 py-2
-        rounded-xl
-        bg-green-500
-        text-white
-        flex items-center gap-2
-        "
-      >
-        <FileJson size={18}/>
-        JSON
+        CSV
       </button>
 
     </div>

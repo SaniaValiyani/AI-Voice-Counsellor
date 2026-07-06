@@ -8,12 +8,12 @@ export async function generateRoadmap(
   profile: any,
   memories: string[]
 ) {
-  const prompt = `
-You are an expert career mentor.
+const prompt = `
+You are an expert AI Career Mentor.
 
-Create a COMPLETE learning roadmap.
+Create a personalized roadmap.
 
-Student
+Student Details
 
 Career Goal:
 ${profile.careerGoal}
@@ -27,28 +27,40 @@ ${profile.skills.join(", ")}
 Interests:
 ${profile.interests.join(", ")}
 
-Long Term Memory:
+Previous Learning:
 ${memories.join("\n")}
 
-Output format
+The roadmap should include:
 
-Career Goal
+🎯 Career Goal
 
-Weeks
+📚 Weekly Plan
 
-Topics
+🛠 Projects
 
-Projects
+📖 Learning Resources
 
-Resources
+🏆 Milestones
 
-Milestones
+💡 Interview Preparation
 
-Estimated Duration
+📅 Estimated Duration
+
+🎓 Final Outcome
+
+Rules:
+
+Keep the roadmap practical.
+
+Suggest free resources.
+
+Recommend projects.
 
 Use emojis.
 
-Do not use markdown.
+Do NOT use markdown.
+
+Write in simple language.
 `;
 
   const completion =

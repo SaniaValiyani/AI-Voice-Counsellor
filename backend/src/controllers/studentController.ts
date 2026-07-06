@@ -13,10 +13,14 @@ export async function saveProfile(
         {},
         req.body,
         {
-          upsert:true,
-          new:true,
+          upsert: true,
+          new: true,
         }
       );
+
+    profile.roadmap = "";
+
+    await profile.save();
 
     res.json(profile);
 

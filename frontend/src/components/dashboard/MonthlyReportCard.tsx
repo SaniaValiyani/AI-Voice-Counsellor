@@ -2,26 +2,20 @@ import {
   useCounsellorStore,
 } from "../../store/counsellorStore";
 
-export default function MonthlyReportCard() {
+interface Props {
+  report: any;
+}
+
+export default function MonthlyReportCard({
+  report,
+}: Props) {
   const {
     studentProfile,
-  } =
-    useCounsellorStore();
+  } = useCounsellorStore();
 
   return (
-    <div
-      className="
-      bg-white/5
-      rounded-2xl
-      p-5
-      "
-    >
-      <h2
-        className="
-        text-xl
-        text-white
-        "
-      >
+    <div>
+      <h2 className="text-xl font-semibold">
         AI Progress Report
       </h2>
 
@@ -31,9 +25,15 @@ export default function MonthlyReportCard() {
         space-y-2
         "
       >
+        <p className="whitespace-pre-wrap text-sm leading-7">
+          {
+            report?.report ||
+            "Generating Weekly Report..."
+          }
+        </p>
+
         <p>
-          🎯 Goal:
-          {" "}
+          🎯 Goal:{" "}
           {
             studentProfile
               .careerGoal ||
@@ -42,8 +42,7 @@ export default function MonthlyReportCard() {
         </p>
 
         <p>
-          📚 Skills:
-          {" "}
+          📚 Skills:{" "}
           {
             studentProfile
               .skills
@@ -52,17 +51,16 @@ export default function MonthlyReportCard() {
         </p>
 
         <p>
-          🔥 Streak:
-          {" "}
+          🔥 Streak:{" "}
           {
             studentProfile
               .learningStreak
-          } days
+          }{" "}
+          days
         </p>
 
         <p>
-          📈 Progress:
-          {" "}
+          📈 Progress:{" "}
           {Math.min(
             studentProfile
               .skills

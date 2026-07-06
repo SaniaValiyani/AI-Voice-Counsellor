@@ -28,11 +28,21 @@ export async function roadmapController(
         profile._id.toString()
       );
 
+    if (profile.roadmap) {
+      return res.json({
+        roadmap: profile.roadmap,
+      });
+    }
+
     const roadmap =
       await generateRoadmap(
         profile,
         memory.memories
       );
+
+    profile.roadmap = roadmap;
+
+    await profile.save();
 
     return res.json({
       roadmap,
