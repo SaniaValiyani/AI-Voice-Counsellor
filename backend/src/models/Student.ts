@@ -22,6 +22,16 @@ const studentSchema = new mongoose.Schema(
       default: "",
     },
 
+    email: {
+      type: String,
+      required: true,
+    },
+
+    password: {
+      type: String,
+      required: true,
+    },
+
     college: {
       type: String,
       default: "",

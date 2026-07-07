@@ -10,6 +10,7 @@ import RegisterPage from "../pages/RegisterPage";
 import ProfilePage from "../pages/ProfilePage";
 
 import ProtectedRoute from "../components/ProtectedRoute";
+import ProfileSetupPage from "../pages/ProfileSetupPage";
 
 export const router = createBrowserRouter([
   {
@@ -19,6 +20,14 @@ export const router = createBrowserRouter([
   {
     path: "/register",
     element: <RegisterPage />,
+  },
+  {
+    path: "/profile-setup",
+    element: (
+      <ProtectedRoute>
+        <ProfileSetupPage />
+      </ProtectedRoute>
+    ),
   },
   {
     path: "/dashboard",

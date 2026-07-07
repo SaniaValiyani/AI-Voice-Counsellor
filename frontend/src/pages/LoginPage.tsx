@@ -42,7 +42,17 @@ export default function LoginPage() {
       if (data.token) {
         loginStore(data.token, data.user);
 
-        navigate("/dashboard");
+        const profile = data.user.profile;
+
+        if (
+          !profile ||
+          !profile.careerGoal ||
+          profile.careerGoal === ""
+        ) {
+          navigate("/profile-setup");
+        } else {
+          navigate("/dashboard");
+        }
         return;
       }
 

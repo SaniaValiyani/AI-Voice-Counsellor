@@ -64,7 +64,7 @@ app.use(
 );
 
 app.use(
-  "/auth",
+  "/api/auth",
   authRoutes
 );
 

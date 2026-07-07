@@ -68,9 +68,17 @@ export async function register(
     // -------------------------
 
     // 1. Create empty student profile first
-    const student = await Student.create({
-      name: fullName,
-      preferredLanguage: "English",
+    const student =
+    await Student.create({
+
+    name:fullName,
+
+    email,
+
+    password:hashedPassword,
+
+    preferredLanguage:"English",
+
     });
 
     // 2. Create user linked to student
