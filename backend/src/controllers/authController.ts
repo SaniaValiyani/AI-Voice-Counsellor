@@ -4,6 +4,8 @@ import bcrypt from "bcrypt";
 import User from "../models/User";
 import Student from "../models/Student";
 import { generateToken } from "../utils/generateToken";
+import { AuthRequest } from "../middleware/authMiddleware";
+
 
 export async function register(
   req: Request,
@@ -185,5 +187,44 @@ export async function login(
     return res.status(500).json({
       error: "Login failed",
     });
+  }
+}
+
+export async function getCurrentUser(
+  req: AuthRequest,
+  res: Response
+) {
+  try {
+
+    const user =
+      await User.findById(req.userId)
+      .populate("profile");
+
+    if (!user) {
+
+      return res.status(404).json({
+        error: "User not found",
+      });
+
+    }
+
+    res.json({
+
+      id: user._id,
+
+      fullName: user.fullName,
+
+      email: user.email,
+
+      profile: user.profile,
+
+    });
+
+  } catch {
+
+    res.status(500).json({
+      error: "Unable to load user",
+    });
+
   }
 }

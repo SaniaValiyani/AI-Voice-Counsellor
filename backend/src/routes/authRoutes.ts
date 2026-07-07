@@ -5,6 +5,10 @@ import {
   login,
 } from "../controllers/authController";
 
+import { protect } from "../middleware/authMiddleware";
+import { getCurrentUser } from "../controllers/authController";
+
+
 const router = Router();
 
 router.post(
@@ -15,6 +19,12 @@ router.post(
 router.post(
   "/login",
   login
+);
+
+router.get(
+  "/me",
+  protect,
+  getCurrentUser
 );
 
 export default router;
