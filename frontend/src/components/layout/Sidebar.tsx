@@ -22,6 +22,7 @@ import {
 
 import { useCounsellorStore }
 from "../../store/counsellorStore";
+import { Sparkles } from "lucide-react";
 
 const menuItems = [
   {
@@ -46,6 +47,11 @@ const menuItems = [
         title: "Reports",
         path: "/reports",
         icon: FileText,
+      },
+      {
+        title: "Recommendations",
+        icon: Sparkles,
+        path: "/recommendations",
       },
       {
         title:"Profile",

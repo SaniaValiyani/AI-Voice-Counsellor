@@ -1,14 +1,14 @@
+import { useEffect } from "react";
+
 import Sidebar from "./Sidebar";
 import Topbar from "./Topbar";
 
-import { useEffect } from "react";
-
 import {
-  getConversations
+  getConversations,
 } from "../../services/conversationService";
 
 import {
-  useConversationStore
+  useConversationStore,
 } from "../../store/conversationStore";
 
 interface Props {
@@ -18,27 +18,19 @@ interface Props {
 export default function DashboardLayout({
   children,
 }: Props) {
-
   const setConversations =
     useConversationStore(
-      (state) =>
-        state.setConversations
+      (state) => state.setConversations
     );
 
   useEffect(() => {
-
     getConversations()
-      .then(
-        setConversations
-      )
-      .catch(
-        console.error
-      );
-
+      .then(setConversations)
+      .catch(console.error);
   }, []);
 
   return (
-    <div className="flex">
+    <div className="flex h-screen overflow-hidden">
       <Sidebar />
 
       <div className="flex-1 overflow-hidden">

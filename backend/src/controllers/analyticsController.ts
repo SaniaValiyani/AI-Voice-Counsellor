@@ -1,30 +1,69 @@
 import { Request, Response } from "express";
-import { getAnalytics } from "../services/analyticsService";
 
-export async function analyticsController(
+import Student from "../models/Student";
+import ChatMessage from "../models/ChatMessage";
+
+export async function getAnalytics(
   req: Request,
   res: Response
 ) {
   try {
-    const email = Array.isArray(req.params.email)
-      ? req.params.email[0]
-      : req.params.email;
+    const totalStudents =
+      await Student.countDocuments();
 
-    if (!email) {
-      return res.status(400).json({
-        error: "Email is required",
-      });
-    }
+    const totalChats =
+      await ChatMessage.countDocuments();
 
-    const analytics = await getAnalytics(email);
+    const students =
+      await Student.find();
 
-    res.json(analytics);
+    const averageXP =
+      students.length === 0
+        ? 0
+        : Math.round(
+            students.reduce(
+              (sum, student) =>
+                sum + student.xp,
+              0
+            ) / students.length
+          );
 
-  } catch (err) {
+    const averageReadiness =
+      students.length === 0
+        ? 0
+        : Math.round(
+            students.reduce(
+              (sum, student) =>
+                sum +
+                student.careerReadiness,
+              0
+            ) / students.length
+          );
 
+    const languageStats: Record<
+      string,
+      number
+    > = {};
+
+    students.forEach((student) => {
+      languageStats[
+        student.preferredLanguage
+      ] =
+        (languageStats[
+          student.preferredLanguage
+        ] || 0) + 1;
+    });
+
+    res.json({
+      totalStudents,
+      totalChats,
+      averageXP,
+      averageReadiness,
+      languageStats,
+    });
+  } catch {
     res.status(500).json({
       error: "Analytics failed",
     });
-
   }
 }

@@ -5,26 +5,27 @@ const groq = new Groq({
 });
 
 export async function generateRecommendations(student: any) {
-  const prompt = `
-Suggest:
+const prompt = `
+You are an expert career counsellor.
 
-1. Courses
-2. Projects
-3. Certifications
-4. YouTube Channels
-5. GitHub Repositories
-6. Internship Tips
+Student Profile:
+Career Goal: ${student.careerGoal}
+Education: ${student.educationLevel}
+Skills: ${student.skills.join(", ")}
+Interests: ${student.interests.join(", ")}
+Strengths: ${student.strengths.join(", ")}
+Weaknesses: ${student.weaknesses.join(", ")}
 
-Career Goal:
-${student.careerGoal}
+Return ONLY valid JSON in this format:
 
-Skills:
-${student.skills.join(",")}
-
-Interests:
-${student.interests.join(",")}
-
-Return only plain text.
+{
+  "careerPaths": [],
+  "skillsToLearn": [],
+  "courses": [],
+  "certifications": [],
+  "projects": [],
+  "resources": []
+}
 `;
 
   const completion =

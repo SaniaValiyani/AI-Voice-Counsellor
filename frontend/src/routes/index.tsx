@@ -11,6 +11,7 @@ import ProfilePage from "../pages/ProfilePage";
 
 import ProtectedRoute from "../components/ProtectedRoute";
 import ProfileSetupPage from "../pages/ProfileSetupPage";
+import RecommendationsPage from "../pages/RecommendationsPage";
 
 export const router = createBrowserRouter([
   {
@@ -58,6 +59,14 @@ export const router = createBrowserRouter([
     element: (
       <ProtectedRoute>
         <ReportsPage />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/recommendations",
+    element: (
+      <ProtectedRoute>
+        <RecommendationsPage />
       </ProtectedRoute>
     ),
   },

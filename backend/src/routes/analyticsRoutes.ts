@@ -1,14 +1,11 @@
 import { Router } from "express";
 
 import {
-  analyticsController,
+  getAnalytics,
 } from "../controllers/analyticsController";
 
 const router = Router();
 
-router.get(
-  "/:email",
-  analyticsController
-);
+router.get("/", getAnalytics);
 
 export default router;

@@ -96,9 +96,10 @@ export async function register(
     // -------------------------
 
     const token =
-      generateToken(
-        user._id.toString()
-      );
+    generateToken(
+    user._id.toString(),
+    user.email
+    );
 
     return res.status(201).json({
       token,
@@ -166,8 +167,10 @@ export async function login(
     }
 
     // Generate JWT
-    const token = generateToken(
-      user._id.toString()
+    const token =
+    generateToken(
+    user._id.toString(),
+    user.email
     );
 
     return res.json({

@@ -1,8 +1,9 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 
-export interface AuthRequest extends Request {
-  userId?: string;
+export interface AuthRequest extends Request{
+    userId?:string;
+    userEmail?:string;
 }
 
 export function protect(
@@ -27,13 +28,15 @@ export function protect(
       authHeader.split(" ")[1];
 
     const decoded = jwt.verify(
-      token,
-      process.env.JWT_SECRET!
+    token,
+    process.env.JWT_SECRET!
     ) as {
-      id: string;
+    id:string;
+    email:string;
     };
 
     req.userId = decoded.id;
+    req.userEmail = decoded.email;
 
     next();
   } catch {

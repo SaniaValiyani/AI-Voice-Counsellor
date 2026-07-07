@@ -18,6 +18,7 @@ import memoryRoutes from "./routes/memoryRoutes";
 import analyticsRoutes from "./routes/analyticsRoutes";
 import reportRoutes from "./routes/reportRoutes";
 import recommendationRoutes from "./routes/recommendationRoutes";
+import profileRoutes from "./routes/profileRoutes";
 
 const app = express();
 
@@ -56,6 +57,11 @@ app.use(
 app.use(
   "/api/report",
   reportRoutes
+);
+
+app.use(
+"/api/profile",
+profileRoutes
 );
 
 app.use(
