@@ -18,6 +18,14 @@ Weaknesses: ${student.weaknesses.join(", ")}
 
 Return ONLY valid JSON.
 
+Keep every list between 4 and 8 items.
+
+Recommend only FREE learning resources.
+
+Prefer Coursera, freeCodeCamp, roadmap.sh, MDN, Microsoft Learn, Google, Cisco Skills For All and official documentation whenever possible.
+
+Never invent URLs.
+
 The JSON MUST exactly match this schema:
 
 {
@@ -57,5 +65,15 @@ Return ONLY the JSON object.
     throw new Error("No response from Groq");
   }
 
+  try{
+
   return JSON.parse(content);
+
+  }
+
+  catch{
+
+  throw new Error("Groq returned invalid JSON");
+
+  }
 }

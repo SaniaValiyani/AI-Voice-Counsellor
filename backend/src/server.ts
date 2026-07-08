@@ -19,7 +19,7 @@ import analyticsRoutes from "./routes/analyticsRoutes";
 import reportRoutes from "./routes/reportRoutes";
 import recommendationRoutes from "./routes/recommendationRoutes";
 import profileRoutes from "./routes/profileRoutes";
-
+import notificationRoutes from "./routes/notificationRoutes";
 const app = express();
 
 app.use(cors());
@@ -52,6 +52,14 @@ app.use(
 app.use(
   "/api/student",
   studentRoutes
+);
+
+app.use(
+
+"/api/notifications",
+
+notificationRoutes
+
 );
 
 app.use(

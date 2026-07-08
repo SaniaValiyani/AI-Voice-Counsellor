@@ -1,14 +1,19 @@
 import { Router } from "express";
 
-import {
-  recommendationController,
-} from "../controllers/recommendationController";
+import { recommendationController } from "../controllers/recommendationController";
 
-const router = Router();
+import { protect } from "../middleware/authMiddleware";
+
+const router=Router();
 
 router.get(
-  "/:email",
-  recommendationController
+
+"/",
+
+protect,
+
+recommendationController
+
 );
 
 export default router;
