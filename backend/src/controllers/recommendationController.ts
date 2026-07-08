@@ -21,9 +21,7 @@ export async function recommendationController(
     const recommendations =
       await generateRecommendations(student);
 
-    res.json({
-      recommendations,
-    });
+    res.json(recommendations);
 
   } catch {
 
