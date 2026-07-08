@@ -20,6 +20,8 @@ import reportRoutes from "./routes/reportRoutes";
 import recommendationRoutes from "./routes/recommendationRoutes";
 import profileRoutes from "./routes/profileRoutes";
 import notificationRoutes from "./routes/notificationRoutes";
+import settingsRoutes from "./routes/settingsRoutes";
+
 const app = express();
 
 app.use(cors());
@@ -76,6 +78,8 @@ app.use(
   "/api/chat-history",
   chatHistoryRoutes
 );
+
+app.use("/api/settings", settingsRoutes);
 
 app.use(
   "/api/auth",

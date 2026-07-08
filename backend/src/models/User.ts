@@ -26,6 +26,37 @@ const userSchema = new mongoose.Schema(
       ref: "Student",
       required: true,
     },
+    settings: {
+      theme: {
+        type: String,
+        default: "dark",
+      },
+
+      language: {
+        type: String,
+        default: "English",
+      },
+
+      aiPersonality: {
+        type: String,
+        default: "Friendly",
+      },
+
+      voiceRate: {
+        type: Number,
+        default: 1,
+      },
+
+      voicePitch: {
+        type: Number,
+        default: 1,
+      },
+
+      notifications: {
+        type: Boolean,
+        default: true,
+      },
+    },
   },
   {
     timestamps: true,

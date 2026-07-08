@@ -26,6 +26,11 @@ import {
 fetchRoadmap,
 } from "../services/roadmapService";
 
+import {
+  saveSettings,
+  loadSettings,
+} from "../services/settingsService";
+
 interface Message {
   sender: "user" | "ai";
   message: string;
@@ -124,6 +129,10 @@ interface CounsellorState {
 
   loadRoadmap:
   () => Promise<void>;
+
+  loadSettings: () => Promise<void>;
+
+  persistSettings: () => Promise<void>;
 }
 
 export const useCounsellorStore =
@@ -236,6 +245,22 @@ export const useCounsellorStore =
 
       }));
 
+      },
+
+      loadSettings: async () => {
+        const settings = await loadSettings();
+
+        if (!settings) return;
+
+        set({
+          settings,
+        });
+      },
+
+      persistSettings: async () => {
+        const state = useCounsellorStore.getState();
+
+        await saveSettings(state.settings);
       },
 
         transcript: "",
