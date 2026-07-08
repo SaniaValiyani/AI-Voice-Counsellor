@@ -24,6 +24,7 @@ import { useCounsellorStore }
 from "../../store/counsellorStore";
 import { Sparkles } from "lucide-react";
 
+
 const menuItems = [
   {
     section: "MAIN",
@@ -102,7 +103,7 @@ const menuItems = [
 export default function Sidebar() {
   const navigate = useNavigate();
   const location = useLocation();
-
+  
   const conversations =
     useConversationStore(
       (state) =>

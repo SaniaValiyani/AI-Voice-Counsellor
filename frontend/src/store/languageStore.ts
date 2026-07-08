@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import i18n from "../i18n";
 
 type Language = "English" | "Hindi" | "Gujarati" | "Marathi";
 
@@ -10,8 +11,11 @@ interface LanguageState {
 export const useLanguageStore = create<LanguageState>((set) => ({
   language: "English",
 
-  setLanguage: (language) =>
+  setLanguage: (language) => {
+    i18n.changeLanguage(language);
+
     set({
       language,
-    }),
+    });
+  },
 }));
