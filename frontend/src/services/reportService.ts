@@ -1,13 +1,9 @@
 import api from "./api";
 
-export async function fetchReport(
-  email: string
-) {
+export async function fetchReport() {
 
   const res =
-    await api.get(
-      `/report/${email}`
-    );
+    await api.get("/report");
 
   return res.data;
 

@@ -1,69 +1,27 @@
-import { Request, Response } from "express";
+import { Response } from "express";
 
-import Student from "../models/Student";
-import ChatMessage from "../models/ChatMessage";
+import { AuthRequest } from "../middleware/authMiddleware";
 
-export async function getAnalytics(
-  req: Request,
-  res: Response
+import { getDashboardAnalytics } from "../services/dashboardAnalyticsService";
+
+export async function analyticsController(
+
+req: AuthRequest,
+
+res: Response
+
 ) {
-  try {
-    const totalStudents =
-      await Student.countDocuments();
 
-    const totalChats =
-      await ChatMessage.countDocuments();
+const data =
+await getDashboardAnalytics(
+req.userEmail!
+);
 
-    const students =
-      await Student.find();
+if (!data)
+return res.status(404).json({
+error: "Student not found",
+});
 
-    const averageXP =
-      students.length === 0
-        ? 0
-        : Math.round(
-            students.reduce(
-              (sum, student) =>
-                sum + student.xp,
-              0
-            ) / students.length
-          );
+res.json(data);
 
-    const averageReadiness =
-      students.length === 0
-        ? 0
-        : Math.round(
-            students.reduce(
-              (sum, student) =>
-                sum +
-                student.careerReadiness,
-              0
-            ) / students.length
-          );
-
-    const languageStats: Record<
-      string,
-      number
-    > = {};
-
-    students.forEach((student) => {
-      languageStats[
-        student.preferredLanguage
-      ] =
-        (languageStats[
-          student.preferredLanguage
-        ] || 0) + 1;
-    });
-
-    res.json({
-      totalStudents,
-      totalChats,
-      averageXP,
-      averageReadiness,
-      languageStats,
-    });
-  } catch {
-    res.status(500).json({
-      error: "Analytics failed",
-    });
-  }
 }

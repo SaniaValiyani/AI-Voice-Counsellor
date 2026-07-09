@@ -1,24 +1,18 @@
 import { useEffect, useState } from "react";
 
-import {
-  fetchReport,
-} from "../services/reportService";
+import { fetchReport } from "../services/reportService";
 
-export function useReport(
-  email: string
-) {
+export function useReport() {
 
   const [report, setReport] =
     useState<any>();
 
   useEffect(() => {
 
-    if (!email) return;
-
-    fetchReport(email)
+    fetchReport()
       .then(setReport);
 
-  }, [email]);
+  }, []);
 
   return report;
 

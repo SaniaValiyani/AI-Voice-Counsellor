@@ -1,4 +1,6 @@
 import { motion } from "framer-motion";
+import { useEffect } from "react";
+
 import DashboardLayout from "../components/layout/DashboardLayout";
 import RecentConversations from "../components/dashboard/RecentConversations";
 import ProfileCard from "../components/dashboard/ProfileCard";
@@ -30,11 +32,12 @@ import SentimentCard from "../components/dashboard/SentimentCard";
 import TopicInsights from "../components/dashboard/TopicInsights";
 import CareerInterestMeter from "../components/dashboard/CareerInterestMeter";
 import MonthlyReportCard from "../components/dashboard/MonthlyReportCard";
-import { useEffect } from "react";
+
 import { useCounsellorStore } from "../store/counsellorStore";
-import { useAnalytics } from "@/hooks/useAnalytics";
+import { useDashboardStore } from "../store/dashboardStore";
 import { useReport } from "../hooks/useReport";
 import { exportDashboard } from "../utils/pdfExport";
+import { useAnalytics } from "@/hooks/useAnalytics";
 
 export default function DashboardPage() {
   const loadRoadmap = useCounsellorStore(
@@ -45,17 +48,23 @@ export default function DashboardPage() {
     (s) => s.studentProfile
   );
 
-  const analytics = useAnalytics(
-    profile.email
+  const load = useDashboardStore(
+    (s: any) => s.load
   );
+
+  const analytics =
+    useAnalytics();
 
   useEffect(() => {
     loadRoadmap();
   }, []);
 
-  const report = useReport(
-    profile.email
-  );
+  useEffect(() => {
+    load();
+  }, []);
+
+  const report =
+  useReport();
 
   return (
     <DashboardLayout>
@@ -213,10 +222,9 @@ export default function DashboardPage() {
           </div>
         </motion.div>
       </div>
-      <button
-        onClick={exportDashboard}
-      >
-      Export PDF
+
+      <button onClick={exportDashboard}>
+        Export PDF
       </button>
     </DashboardLayout>
   );
