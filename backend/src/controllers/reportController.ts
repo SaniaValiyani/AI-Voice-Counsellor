@@ -2,19 +2,18 @@ import { Request, Response } from "express";
 
 import Student from "../models/Student";
 import { generateWeeklyReport } from "../services/reportService";
+import { AuthRequest } from "../middleware/authMiddleware";
 
 export async function reportController(
-  req: Request,
+  req:AuthRequest,
   res: Response
 ) {
   try {
 
-    const email = req.params.email;
-
-    const student =
-      await Student.findOne({
-        email,
-      });
+    const student=
+    await Student.findOne({
+    email:req.userEmail,
+    });
 
     if (!student) {
       return res.status(404).json({

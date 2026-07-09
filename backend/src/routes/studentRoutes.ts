@@ -7,17 +7,21 @@ import {
 }
 from "../controllers/studentController";
 
+import { protect } from "../middleware/authMiddleware";
+
 const router =
 Router();
 
-router.get(
-  "/profile",
-  getProfile
+router.post(
+"/save",
+protect,
+saveProfile
 );
 
-router.post(
- "/save",
- saveProfile
+router.get(
+"/profile",
+protect,
+getProfile
 );
 
 export default router;

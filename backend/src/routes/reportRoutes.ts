@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { protect } from "../middleware/authMiddleware";
 
 import {
   reportController,
@@ -7,8 +8,9 @@ import {
 const router = Router();
 
 router.get(
-  "/:email",
-  reportController
+"/",
+protect,
+reportController
 );
 
 export default router;

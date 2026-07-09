@@ -1,54 +1,58 @@
-import Student
-from "../models/Student";
+import Student from "../models/Student";
+import { AuthRequest } from "../middleware/authMiddleware";
 
 export async function saveProfile(
-  req:any,
-  res:any
+  req: AuthRequest,
+  res: any
 ) {
-
   try {
+    const profile = await Student.findOneAndUpdate(
+      {
+        email: req.userEmail,
+      },
+      req.body,
+      {
+        new: true,
+      }
+    );
 
-    const profile =
-      await Student.findOneAndUpdate(
-        {},
-        req.body,
-        {
-          upsert: true,
-          new: true,
-        }
-      );
+    if (!profile) {
+      return res.status(404).json({
+        error: "Profile not found",
+      });
+    }
 
     profile.roadmap = "";
 
     await profile.save();
 
     res.json(profile);
-
-  } catch(error){
-
+  } catch (error) {
     res.status(500).json({
-      error:
-      "Failed"
+      error: "Failed",
     });
   }
 }
 
 export async function getProfile(
-  req: any,
+  req: AuthRequest,
   res: any
 ) {
   try {
+    const profile = await Student.findOne({
+      email: req.userEmail,
+    });
 
-    const profile =
-      await Student.findOne();
+    if (!profile) {
+      return res.status(404).json({
+        error: "Profile not found",
+      });
+    }
 
     res.json(profile);
-
   } catch (error) {
-
     res.status(500).json({
-      error:
-        "Failed to load profile",
+      error: "Failed to load profile",
     });
   }
 }
