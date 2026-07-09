@@ -8,6 +8,9 @@ import {
   useCounsellorStore,
 } from "../../store/counsellorStore";
 
+import { notify } from "../../utils/toast";
+import { toast } from "sonner";
+
 export default function ResumeCard() {
   const profile =
     useCounsellorStore(
@@ -16,7 +19,7 @@ export default function ResumeCard() {
 
   return (
     <div>
-      <h3>Resume</h3>
+      Resume
 
       <label className="inline-flex items-center gap-2 cursor-pointer">
         <Upload size={16} />
@@ -34,17 +37,25 @@ export default function ResumeCard() {
 
             // Max 5 MB
             if (file.size > 5 * 1024 * 1024) {
-              alert("Maximum size is 5MB");
+              notify.error(
+                "Maximum file size is 5MB."
+              );
               return;
             }
 
             // Only PDF
             if (file.type !== "application/pdf") {
-              alert("Only PDF allowed");
+              notify.error(
+                "Only PDF files are allowed."
+              );
               return;
             }
 
             await uploadResume(file);
+
+            notify.success(
+              "Resume uploaded successfully."
+            );
 
             await useCounsellorStore
               .getState()

@@ -8,6 +8,7 @@ import AnimatedBackground from "../components/layout/AnimatedBackground";
 import { register } from "../services/authService";
 import { useAuthStore } from "../store/authStore";
 import { useLanguageStore } from "../store/languageStore";
+import { notify } from "../utils/toast";
 
 export default function RegisterPage() {
   const navigate = useNavigate();
@@ -53,6 +54,10 @@ export default function RegisterPage() {
         data.user
       );
 
+      notify.success(
+        "Account created successfully!"
+      );
+
       navigate("/dashboard");
     } catch (error: any) {
       alert(
@@ -65,8 +70,7 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="relative min-h-screen bg-slate-950 flex items-center justify-center overflow-hidden">
-
+    <div>
       <AnimatedBackground />
 
       <motion.div
@@ -84,11 +88,9 @@ export default function RegisterPage() {
         className="relative z-10"
       >
         <div className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-3xl p-10 shadow-2xl w-107.5">
-
           {/* Logo */}
 
           <div className="flex flex-col items-center gap-4">
-
             <BrainCircuit
               size={60}
               className="text-cyan-400"
@@ -101,13 +103,11 @@ export default function RegisterPage() {
             <p className="text-slate-300 text-center">
               Join AI Voice Counsellor
             </p>
-
           </div>
 
           {/* Form */}
 
           <div className="mt-8 space-y-4">
-
             <select
               value={language}
               onChange={(e) =>
@@ -185,24 +185,17 @@ export default function RegisterPage() {
             </button>
 
             <p className="text-center text-slate-300">
-
               Already have an account?{" "}
-
               <Link
                 to="/"
                 className="text-cyan-400 hover:underline"
               >
                 Login
               </Link>
-
             </p>
-
           </div>
-
         </div>
-
       </motion.div>
-
     </div>
   );
 }

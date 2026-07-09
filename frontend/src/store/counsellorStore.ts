@@ -31,6 +31,8 @@ import {
   loadSettings,
 } from "../services/settingsService";
 
+import { notify } from "../utils/toast";
+
 interface Message {
   sender: "user" | "ai";
   message: string;
@@ -339,35 +341,38 @@ export const useCounsellorStore =
           });
         },
 
-        loadRoadmap:
-        async()=>{
+        loadRoadmap: async () => {
+          const profile =
+            useCounsellorStore
+              .getState()
+              .studentProfile;
 
-        const profile=
-        useCounsellorStore
-        .getState()
-        .studentProfile;
+          const roadmap =
+            await fetchRoadmap(
+              profile.email
+            );
 
-        const roadmap=
-        await fetchRoadmap(
-        profile.email
-        );
+          set({
+            roadmap,
+          });
 
-        set({
-        roadmap,
-        });
-
+          notify.success(
+            "Roadmap generated!"
+          );
         },
 
-        persistProfile:
-          async () => {
+        persistProfile: async () => {
+          const state =
+            useCounsellorStore.getState();
 
-            const state =
-              useCounsellorStore.getState();
+          await saveProfile(
+            state.studentProfile
+          );
 
-            await saveProfile(
-              state.studentProfile
-            );
-          },
+          notify.success(
+            "Profile updated successfully."
+          );
+        },
 
         loadChatHistory:
         async () => {
@@ -517,6 +522,10 @@ export const useCounsellorStore =
               },
             };
           });
+
+          notify.success(
+            "Goal completed! +25 XP"
+          );
 
           setTimeout(() => {
 

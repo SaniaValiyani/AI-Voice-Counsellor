@@ -7,6 +7,8 @@ import AnimatedBackground from "../components/layout/AnimatedBackground";
 import { useLanguageStore } from "../store/languageStore";
 import { login } from "../services/authService";
 import { useAuthStore } from "../store/authStore";
+import { notify } from "../utils/toast";
+
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -51,6 +53,8 @@ export default function LoginPage() {
         ) {
           navigate("/profile-setup");
         } else {
+          notify.success("Welcome back!");
+
           navigate("/dashboard");
         }
         return;
@@ -58,7 +62,7 @@ export default function LoginPage() {
 
       setError(data.error || "Login failed.");
     } catch {
-      setError("Unable to connect to the server.");
+      notify.error("Unable to connect to server.");
     } finally {
       setLoading(false);
     }
