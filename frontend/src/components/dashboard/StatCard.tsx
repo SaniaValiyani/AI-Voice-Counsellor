@@ -8,7 +8,14 @@ export default function StatCard({
   value,
 }: Props) {
   return (
-    <div className="group bg-slate-900 border border-slate-800 rounded-2xl p-6 hover:scale-105 transition duration-300 cursor-pointer">
+    <div className="group bg-slate-900
+border
+border-slate-800
+hover:border-cyan-500/40
+hover:shadow-lg
+hover:shadow-cyan-500/10
+transition-all
+duration-300 rounded-2xl p-6 hover:scale-105 transition duration-300 cursor-pointer">
       <p className="text-slate-400">
         {title}
       </p>

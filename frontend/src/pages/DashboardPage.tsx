@@ -96,7 +96,7 @@ export default function DashboardPage() {
             duration: 0.6,
           }}
         >
-          <div className="grid grid-cols-12 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-6 xl:grid-cols-12 gap-6">
             {/* SECTION 1 */}
 
             <HeroBanner />

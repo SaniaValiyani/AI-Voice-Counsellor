@@ -19,7 +19,14 @@ export default function NotificationDropdown() {
 
   return (
 
-    <div className="absolute right-0 mt-3 w-80 rounded-2xl bg-slate-900 border border-slate-800 shadow-xl z-50">
+    <div className="absolute right-0 mt-3 w-80 rounded-2xl bg-slate-900
+border
+border-slate-800
+hover:border-cyan-500/40
+hover:shadow-lg
+hover:shadow-cyan-500/10
+transition-all
+duration-300 shadow-xl z-50">
 
       <div className="p-4 border-b border-slate-800">
 

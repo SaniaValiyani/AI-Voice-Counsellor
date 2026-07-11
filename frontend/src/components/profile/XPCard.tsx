@@ -4,7 +4,14 @@ export default function XPCard() {
   const profile = useCounsellorStore((s) => s.studentProfile);
 
   return (
-    <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800">
+    <div className="p-6 rounded-2xl bg-slate-900
+border
+border-slate-800
+hover:border-cyan-500/40
+hover:shadow-lg
+hover:shadow-cyan-500/10
+transition-all
+duration-300">
       <h2 className="text-white font-semibold">XP Progress</h2>
 
       <p className="text-cyan-400 text-3xl font-bold mt-2">

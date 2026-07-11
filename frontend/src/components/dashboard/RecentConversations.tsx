@@ -18,7 +18,14 @@ const conversations = [
 
 export default function RecentConversations() {
   return (
-    <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6">
+    <div className="bg-slate-900
+border
+border-slate-800
+hover:border-cyan-500/40
+hover:shadow-lg
+hover:shadow-cyan-500/10
+transition-all
+duration-300 rounded-2xl p-6">
       <h2 className="text-white text-xl mb-5">
         Recent Conversations
       </h2>

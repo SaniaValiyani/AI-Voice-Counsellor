@@ -24,7 +24,14 @@ target="_blank"
 
 rel="noreferrer"
 
-className="block rounded-xl bg-slate-900 border border-slate-800 p-4 hover:border-cyan-500 transition"
+className="block rounded-xl bg-slate-900
+border
+border-slate-800
+hover:border-cyan-500/40
+hover:shadow-lg
+hover:shadow-cyan-500/10
+transition-all
+duration-300 p-4 hover:border-cyan-500 transition"
 
 >
 
