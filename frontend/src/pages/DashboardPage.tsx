@@ -38,6 +38,7 @@ import { useDashboardStore } from "../store/dashboardStore";
 import { useReport } from "../hooks/useReport";
 import { exportDashboard } from "../utils/pdfExport";
 import { useAnalytics } from "@/hooks/useAnalytics";
+import DashboardSkeleton from "../components/dashboard/DashboardSkeleton";
 
 export default function DashboardPage() {
   const loadRoadmap = useCounsellorStore(
@@ -65,6 +66,19 @@ export default function DashboardPage() {
 
   const report =
   useReport();
+
+  const loading =
+    analytics === undefined ||
+    report === undefined;
+
+  
+  if (loading) {
+    return (
+      <DashboardLayout>
+        <DashboardSkeleton />
+      </DashboardLayout>
+    );
+  }
 
   return (
     <DashboardLayout>

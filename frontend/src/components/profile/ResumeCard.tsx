@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Upload } from "lucide-react";
 
 import {
@@ -17,6 +18,9 @@ export default function ResumeCard() {
       (s) => s.studentProfile
     );
 
+  const [uploading, setUploading] =
+    useState(false);
+
   return (
     <div>
       Resume
@@ -24,10 +28,15 @@ export default function ResumeCard() {
       <label className="inline-flex items-center gap-2 cursor-pointer">
         <Upload size={16} />
 
-        <span>Upload Resume</span>
+        <span>
+          {uploading
+            ? "Uploading..."
+            : "Upload Resume"}
+        </span>
 
         <input
           hidden
+          disabled={uploading}
           type="file"
           accept=".pdf"
           onChange={async (e) => {
@@ -51,7 +60,11 @@ export default function ResumeCard() {
               return;
             }
 
+            setUploading(true);
+
             await uploadResume(file);
+
+            setUploading(false);
 
             notify.success(
               "Resume uploaded successfully."
