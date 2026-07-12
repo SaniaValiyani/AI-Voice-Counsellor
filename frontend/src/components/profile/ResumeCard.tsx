@@ -10,7 +10,7 @@ import {
 } from "../../store/counsellorStore";
 
 import { notify } from "../../utils/toast";
-import { toast } from "sonner";
+import { serverUrl } from "../../utils/serverUrl";
 
 export default function ResumeCard() {
   const profile =
@@ -79,10 +79,7 @@ export default function ResumeCard() {
 
       {profile.resume && (
         <a
-          href={`http://localhost:5000/${profile.resume.replace(
-            /\\/g,
-            "/"
-          )}`}
+          href={`${serverUrl}/${profile.resume.replace(/\\/g, "/")}`}
           target="_blank"
           rel="noreferrer"
           className="block mt-4 text-cyan-400"

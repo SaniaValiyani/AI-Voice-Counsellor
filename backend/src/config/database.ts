@@ -12,9 +12,7 @@ export async function connectDB() {
     );
 
   } catch (error) {
-
-    console.error(error);
-
+    console.error("Database connection error:", error);
     process.exit(1);
   }
 }

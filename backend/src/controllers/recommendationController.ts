@@ -39,16 +39,12 @@ return res.json(recommendations);
 
 }
 
-catch(error){
+catch (error) {
+  console.error("Recommendation controller error:", error);
 
-console.error(error);
-
-return res.status(500).json({
-
-error:"Failed to generate recommendations",
-
-});
-
+  return res.status(500).json({
+    error: "Failed to generate recommendations",
+  });
 }
 
 }

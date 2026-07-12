@@ -25,7 +25,8 @@ export default function LoginPage() {
   
   const { language, setLanguage } = useLanguageStore();
 
-  async function handleLogin() {
+  async function handleLogin(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
     setError("");
 
     if (!email || !password) {
@@ -46,15 +47,10 @@ export default function LoginPage() {
 
         const profile = data.user.profile;
 
-        if (
-          !profile ||
-          !profile.careerGoal ||
-          profile.careerGoal === ""
-        ) {
+        if (!profile || !profile.careerGoal || profile.careerGoal === "") {
           navigate("/profile-setup");
         } else {
           notify.success("Welcome back!");
-
           navigate("/dashboard");
         }
         return;
@@ -88,21 +84,16 @@ export default function LoginPage() {
       >
         <div className="backdrop-blur-xl app-card-glass border border-white/20 rounded-3xl p-10 shadow-2xl w-105">
           <div className="flex flex-col items-center gap-4">
-            <BrainCircuit
-              size={60}
-              className="text-cyan-400"
-            />
+            <BrainCircuit size={60} className="text-cyan-400" />
 
-            <h1 className="text-3xl font-bold app-text">
-              AI Voice Counsellor
-            </h1>
+            <h1 className="text-3xl font-bold app-text">AI Voice Counsellor</h1>
 
             <p className="app-text-muted text-center">
               Multilingual Student Counselling Platform
             </p>
           </div>
 
-          <div className="mt-8 space-y-4">
+          <form onSubmit={handleLogin} className="mt-8 space-y-4">
             <select
               value={language}
               onChange={(e) =>
@@ -121,82 +112,56 @@ export default function LoginPage() {
               <option value="Gujarati">Gujarati</option>
               <option value="Marathi">Marathi</option>
             </select>
+
             <input
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Email"
+              aria-label="Email"
               className="w-full rounded-xl app-card-glass border border-white/20 px-4 py-3 app-text outline-none"
             />
 
             <div className="relative">
-
               <input
-                type={
-                  showPassword
-                    ? "text"
-                    : "password"
-                }
+                type={showPassword ? "text" : "password"}
                 value={password}
-                onChange={(e) =>
-                  setPassword(e.target.value)
-                }
+                onChange={(e) => setPassword(e.target.value)}
                 placeholder="Password"
+                aria-label="Password"
                 className="w-full rounded-xl app-card-glass border border-white/20 px-4 py-3 pr-12 app-text outline-none"
               />
 
               <button
                 type="button"
-                onClick={() =>
-                  setShowPassword(
-                    !showPassword
-                  )
-                }
+                onClick={() => setShowPassword(!showPassword)}
                 className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400"
+                aria-label={showPassword ? "Hide password" : "Show password"}
               >
-                {showPassword ? (
-                  <EyeOff size={18} />
-                ) : (
-                  <Eye size={18} />
-                )}
+                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
               </button>
-
             </div>
 
-            {
-              error && (
-                <p className="text-red-400 text-sm">
-                  {error}
-                </p>
-              )
-            }
+            {error && <p className="text-red-400 text-sm">{error}</p>}
 
             <button
-              onClick={handleLogin}
+              type="submit"
               disabled={loading}
               className="w-full rounded-xl bg-cyan-500 hover:bg-cyan-400 py-3 font-semibold text-black transition"
             >
               {loading ? (
-                <Loader2
-                  className="animate-spin mx-auto"
-                  size={20}
-                />
+                <Loader2 className="animate-spin mx-auto" size={20} />
               ) : (
                 "Login"
               )}
             </button>
+
             <p className="text-center text-slate-400">
-
               Don't have an account?
-
-              <Link
-                to="/register"
-                className="text-cyan-400 ml-2 hover:underline"
-              >
+              <Link to="/register" className="text-cyan-400 ml-2 hover:underline">
                 Register
               </Link>
-
             </p>
-          </div>
+          </form>
         </div>
       </motion.div>
     </div>

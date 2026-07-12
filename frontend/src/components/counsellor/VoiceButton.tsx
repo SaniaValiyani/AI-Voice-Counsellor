@@ -25,7 +25,7 @@ export default function VoiceButton() {
       window.webkitSpeechRecognition;
 
     if (!SpeechRecognition) {
-      alert("Speech Recognition not supported");
+      notify.error("Speech Recognition is not supported in this browser.");
       return;
     }
 

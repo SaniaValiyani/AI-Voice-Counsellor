@@ -49,13 +49,10 @@ export async function roadmapController(
     });
 
   } catch (err) {
-
-    console.error(err);
+    console.error("Roadmap controller error:", err);
 
     res.status(500).json({
-      error:
-        "Roadmap generation failed",
+      error: "Roadmap generation failed",
     });
-
   }
 }

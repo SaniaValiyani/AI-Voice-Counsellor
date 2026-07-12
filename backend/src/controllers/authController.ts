@@ -116,11 +116,10 @@ export async function register(
     });
 
   } catch (error) {
-    console.error(error);
+    console.error("Registration error:", error);
 
     return res.status(500).json({
-      error:
-        "Registration failed",
+      error: "Registration failed",
     });
   }
 }
@@ -185,7 +184,7 @@ export async function login(
     });
 
   } catch (error) {
-    console.error(error);
+    console.error("Login error:", error);
 
     return res.status(500).json({
       error: "Login failed",

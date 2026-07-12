@@ -1,31 +1,28 @@
-export async function saveMessage(
- message:any
-){
+import { serverUrl } from "../utils/serverUrl";
+import { getAuthHeaders } from "../utils/authHeaders";
 
- await fetch(
-  "http://localhost:5000/api/chat-history/save",
-  {
-   method:"POST",
+export async function saveMessage(message: any) {
+  const response = await fetch(`${serverUrl}/api/chat-history/save`, {
+    method: "POST",
+    headers: getAuthHeaders(),
+    body: JSON.stringify(message),
+  });
 
-   headers:{
-    "Content-Type":
-    "application/json",
-   },
-
-   body:
-   JSON.stringify(
-    message
-   ),
+  if (!response.ok) {
+    throw new Error("Unable to save chat history");
   }
- );
+
+  return response.json();
 }
 
-export async function loadMessages(){
+export async function loadMessages() {
+  const response = await fetch(`${serverUrl}/api/chat-history/all`, {
+    headers: getAuthHeaders(),
+  });
 
- const response =
- await fetch(
-  "http://localhost:5000/api/chat-history/all"
- );
+  if (!response.ok) {
+    throw new Error("Unable to load chat history");
+  }
 
- return response.json();
+  return response.json();
 }

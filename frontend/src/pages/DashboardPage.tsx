@@ -2,14 +2,11 @@ import { motion } from "framer-motion";
 import { useEffect } from "react";
 
 import DashboardLayout from "../components/layout/DashboardLayout";
-import RecentConversations from "../components/dashboard/RecentConversations";
 import ProfileCard from "../components/dashboard/ProfileCard";
 import GoalProgressCard from "../components/dashboard/GoalProgressCard";
 import StreakCard from "../components/dashboard/StreakCard";
 import AchievementsCard from "../components/dashboard/AchievementsCard";
-import LevelCard from "../components/dashboard/LevelCard";
 import AICoachCard from "../components/dashboard/AICoachCard";
-import WeeklyChallengeCard from "../components/dashboard/WeeklyChallengeCard";
 import StudyPlannerCard from "../components/dashboard/StudyPlannerCard";
 import AchievementToast from "../components/dashboard/AchievementToast";
 import GoalsCard from "../components/dashboard/GoalsCard";
@@ -17,21 +14,15 @@ import CareerReadinessCard from "../components/dashboard/CareerReadinessCard";
 import NextGoalCard from "../components/dashboard/NextGoalCard";
 import TimelineCard from "../components/dashboard/TimelineCard";
 import AIInsightsCard from "../components/dashboard/AIInsightsCard";
-//import WelcomeBanner from "../components/dashboard/WelcomeBanner";
 import HeroBanner from "../components/dashboard/HeroBanner";
 import XPProgressCard from "../components/dashboard/XPProgressCard";
-import DailyMissionCard from "../components/dashboard/DailyMissionCard";
-import QuickActions from "../components/dashboard/QuickActions";
 import StatCard from "../components/dashboard/StatCard";
-import LeadChart from "../components/dashboard/LeadChart";
-import LanguageChart from "../components/dashboard/LanguageChart";
-import LeadScoreWidget from "../components/dashboard/LeadScoreWidget";
 import SessionStats from "../components/dashboard/SessionStats";
 import SessionDuration from "../components/dashboard/SessionDuration";
-import SentimentCard from "../components/dashboard/SentimentCard";
 import TopicInsights from "../components/dashboard/TopicInsights";
 import CareerInterestMeter from "../components/dashboard/CareerInterestMeter";
 import MonthlyReportCard from "../components/dashboard/MonthlyReportCard";
+import MessageStatsCard from "../components/dashboard/MessageStatsCard";
 
 import { useCounsellorStore } from "../store/counsellorStore";
 import { useDashboardStore } from "../store/dashboardStore";
@@ -39,22 +30,21 @@ import { useReport } from "../hooks/useReport";
 import { exportDashboard } from "../utils/pdfExport";
 import { useAnalytics } from "@/hooks/useAnalytics";
 import DashboardSkeleton from "../components/dashboard/DashboardSkeleton";
+import { useLocation } from "react-router-dom";
 
 export default function DashboardPage() {
-  const loadRoadmap = useCounsellorStore(
-    (s) => s.loadRoadmap
-  );
+  const loadRoadmap = useCounsellorStore((s) => s.loadRoadmap);
 
-  const profile = useCounsellorStore(
-    (s) => s.studentProfile
-  );
+  const loadGoals = useCounsellorStore((s) => s.loadGoals);
+  const careerGoal = useCounsellorStore((s) => s.studentProfile.careerGoal);
 
-  const load = useDashboardStore(
-    (s: any) => s.load
-  );
+  const load = useDashboardStore((s: any) => s.load);
 
-  const analytics =
-    useAnalytics();
+  const analytics = useAnalytics();
+
+  const report = useReport();
+
+  const location = useLocation();
 
   useEffect(() => {
     loadRoadmap();
@@ -64,14 +54,32 @@ export default function DashboardPage() {
     load();
   }, []);
 
-  const report =
-  useReport();
+  useEffect(() => {
+    if (!careerGoal) return;
+    loadGoals();
+  }, [careerGoal, loadGoals]);
+
+  useEffect(() => {
+    if (!location.hash) return;
+
+    const id = location.hash.replace("#", "");
+
+    const timer = setTimeout(() => {
+      document
+        .getElementById(id)
+        ?.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+    }, 100);
+
+    return () => clearTimeout(timer);
+  }, [location.hash]);
 
   const loading =
     analytics === undefined ||
     report === undefined;
 
-  
   if (loading) {
     return (
       <DashboardLayout>
@@ -96,16 +104,17 @@ export default function DashboardPage() {
             duration: 0.6,
           }}
         >
-          <div className="grid grid-cols-1 md:grid-cols-6 xl:grid-cols-12 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+
             {/* SECTION 1 */}
 
             <HeroBanner />
 
             <XPProgressCard />
 
-            <DailyMissionCard />
+            <StreakCard />
 
-            <QuickActions />
+            <MessageStatsCard />
 
             {/* SECTION 2 */}
 
@@ -136,11 +145,12 @@ export default function DashboardPage() {
               }
             />
 
-            <StreakCard />
-
             {/* SECTION 3 */}
 
-            <div className="col-span-full mt-6">
+            <div
+              id="goals"
+              className="col-span-full mt-6 scroll-mt-28"
+            >
               <h2 className="text-2xl font-bold text-white border-b border-slate-700 pb-3 mb-2">
                 🎯 Goals & Progress
               </h2>
@@ -156,7 +166,10 @@ export default function DashboardPage() {
 
             {/* SECTION 4 */}
 
-            <div className="col-span-full mt-6">
+            <div
+              id="planner"
+              className="col-span-full mt-6 scroll-mt-28"
+            >
               <h2 className="text-2xl font-bold text-white border-b border-slate-700 pb-3 mb-2">
                 🤖 AI Coach
               </h2>
@@ -168,7 +181,7 @@ export default function DashboardPage() {
 
             <StudyPlannerCard />
 
-            <WeeklyChallengeCard />
+            <TopicInsights />
 
             {/* SECTION 5 */}
 
@@ -178,37 +191,26 @@ export default function DashboardPage() {
               </h2>
             </div>
 
-            <LeadChart />
-
-            <LanguageChart />
-
-            <LeadScoreWidget />
-
             <SessionStats />
 
             <SessionDuration />
-
-            <SentimentCard />
-
-            <TopicInsights />
 
             <CareerInterestMeter />
 
             {/* SECTION 6 */}
 
-            <div className="col-span-full mt-6">
+            <div
+              id="achievements"
+              className="col-span-full mt-6 scroll-mt-28"
+            >
               <h2 className="text-2xl font-bold text-white border-b border-slate-700 pb-3 mb-2">
                 🏆 Achievements
               </h2>
             </div>
 
-            <LevelCard />
-
             <AchievementsCard />
 
-            <MonthlyReportCard
-              report={report}
-            />
+            <MonthlyReportCard report={report} />
 
             <AchievementToast />
 
@@ -224,22 +226,20 @@ export default function DashboardPage() {
 
             <GoalsCard />
 
-            {/* SECTION 8 */}
+            <TimelineCard />
 
-            <div className="col-span-full mt-6">
-              <h2 className="text-2xl font-bold text-white border-b border-slate-700 pb-3 mb-2">
-                💬 Recent Activity
-              </h2>
+            <div className="col-span-full flex justify-end mt-4">
+              <button
+                onClick={exportDashboard}
+                className="px-5 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-700 transition-colors"
+              >
+                Export PDF
+              </button>
             </div>
 
-            <RecentConversations />
           </div>
         </motion.div>
       </div>
-
-      <button onClick={exportDashboard}>
-        Export PDF
-      </button>
     </DashboardLayout>
   );
 }

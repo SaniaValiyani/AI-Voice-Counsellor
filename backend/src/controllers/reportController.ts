@@ -35,13 +35,10 @@ export async function reportController(
     });
 
   } catch (err) {
-
-    console.error(err);
+    console.error("Report controller error:", err);
 
     return res.status(500).json({
-      error:
-        "Failed to generate report",
+      error: "Failed to generate report",
     });
-
   }
 }

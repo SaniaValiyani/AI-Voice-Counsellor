@@ -67,17 +67,17 @@ const menuItems = [
     items: [
       {
         title: "Goals",
-        path: "/dashboard",
+        path: "/dashboard#goals",
         icon: Target,
       },
       {
         title: "Planner",
-        path: "/dashboard",
+        path: "/dashboard#planner",
         icon: CalendarDays,
       },
       {
         title: "Achievements",
-        path: "/dashboard",
+        path: "/dashboard#achievements",
         icon: Trophy,
       },
     ],
@@ -146,27 +146,46 @@ export default function Sidebar() {
                   return (
                     <button
                       key={item.title}
-                      onClick={() => navigate(item.path)}
+                      onClick={() => {
+                        if (item.path.includes("#")) {
+                          const [page, id] = item.path.split("#");
+
+                          if (location.pathname !== page) {
+                            navigate(item.path);
+                            return;
+                          }
+
+                          document
+                            .getElementById(id)
+                            ?.scrollIntoView({
+                              behavior: "smooth",
+                              block: "start",
+                            });
+                        } else {
+                          navigate(item.path);
+                        }
+                      }}
                       className={`
                         group
                         flex
                         items-center
                         gap-3
                         w-full
-                        rounded-xl
+                        rounded-2xl
                         p-3
                         transition-all
                         duration-300
-
                         ${
                           location.pathname === item.path
-                            ? "bg-linear-to-r from-cyan-500 to-sky-500 text-white shadow-lg"
-                            : "app-text-muted hover:bg-cyan-500/10 hover:text-cyan-400"
+                            ? "bg-gradient-to-r from-cyan-500 to-sky-500 text-white shadow-lg"
+                            : "app-text-muted hover:bg-cyan-500/10 hover:text-cyan-300"
                         }
                       `}
                     >
                       <Icon size={20} />
-                      {item.title}
+                      <span className="font-medium">
+                        {item.title}
+                      </span>
                     </button>
                   );
                 })}

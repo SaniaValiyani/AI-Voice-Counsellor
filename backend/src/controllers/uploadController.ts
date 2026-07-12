@@ -24,7 +24,7 @@ export async function uploadProfileImage(
 
     res.json(student);
   } catch (err) {
-    console.error(err);
+    console.error("Profile image upload error:", err);
 
     res.status(500).json({
       error: "Upload failed",
@@ -54,7 +54,7 @@ export async function uploadResume(
 
     res.json(student);
   } catch (err) {
-    console.error(err);
+    console.error("Resume upload error:", err);
 
     res.status(500).json({
       error: "Upload failed",

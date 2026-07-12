@@ -23,6 +23,10 @@ import {
 from "../services/chatHistoryService";
 
 import {
+  fetchGoals,
+} from "../services/goalService";
+
+import {
 fetchRoadmap,
 } from "../services/roadmapService";
 
@@ -54,6 +58,8 @@ interface CounsellorState {
   isThinking: boolean;
 
   isSpeaking: boolean;
+
+  isGeneratingGoals: boolean;
 
   roadmap: string;
 
@@ -122,6 +128,12 @@ interface CounsellorState {
 
   persistProfile:
     () => Promise<void>;
+
+  setGoals: (
+    goals: StudentProfile["goals"]
+  ) => void;
+
+  loadGoals: () => Promise<void>;
 
   loadChatHistory:
     () => Promise<void>;
@@ -291,16 +303,11 @@ export const useCounsellorStore =
             roadmap,
           }),
 
-        updateProfile: (
-          profile
-        ) => {
-
+        updateProfile: (profile) => {
           set((state) => ({
             studentProfile: {
               ...state.studentProfile,
-
               ...profile,
-
               skills: [
                 ...new Set([
                   ...state.studentProfile.skills,
@@ -309,14 +316,6 @@ export const useCounsellorStore =
               ],
             },
           }));
-
-          setTimeout(() => {
-
-            useCounsellorStore
-              .getState()
-              .persistProfile();
-
-          }, 0);
         },
         loadStudentProfile:
         async () => {
@@ -339,6 +338,59 @@ export const useCounsellorStore =
             studentProfile:
               cleanProfile,
           });
+        },
+
+        setGoals: (goals) => {
+          set((state) => ({
+            studentProfile: {
+              ...state.studentProfile,
+              goals,
+            },
+          }));
+        },
+
+        loadGoals: async () => {
+          const profile =
+            useCounsellorStore
+              .getState()
+              .studentProfile;
+
+          if (
+            !profile.careerGoal ||
+            profile.careerGoal.trim() === ""
+          ) {
+            return;
+          }
+
+          if (
+            profile.goals &&
+            profile.goals.length > 0
+          ) {
+            return;
+          }
+
+          set({ isGeneratingGoals: true });
+
+          try {
+            const goalData =
+              await fetchGoals(
+                profile.careerGoal
+              );
+
+            set((state) => ({
+              studentProfile: {
+                ...state.studentProfile,
+                goals:
+                  goalData.goals || [],
+              },
+            }));
+          } catch {
+            notify.error(
+              "Unable to load AI goals."
+            );
+          } finally {
+            set({ isGeneratingGoals: false });
+          }
         },
 
         loadRoadmap: async () => {
@@ -365,13 +417,20 @@ export const useCounsellorStore =
           const state =
             useCounsellorStore.getState();
 
-          await saveProfile(
-            state.studentProfile
-          );
-
-          notify.success(
-            "Profile updated successfully."
-          );
+          try {
+            await saveProfile(
+              state.studentProfile
+            );
+            notify.success(
+              "Profile updated successfully."
+            );
+            return true;
+          } catch {
+            notify.error(
+              "Unable to save profile."
+            );
+            return false;
+          }
         },
 
         loadChatHistory:

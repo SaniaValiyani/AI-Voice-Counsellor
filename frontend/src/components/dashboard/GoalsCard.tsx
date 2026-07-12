@@ -6,19 +6,29 @@ export default function GoalsCard() {
   const {
     studentProfile,
     toggleGoal,
+    isGeneratingGoals,
   } = useCounsellorStore();
+
+  const goals = studentProfile.goals || [];
 
   return (
     <div>
       🎯 Goals
 
-      <div
-        className="
-        space-y-3
-        "
-      >
-        {(studentProfile.goals || []).map(
-          (goal) => (
+      <div className="space-y-3">
+        {isGeneratingGoals ? (
+          <div className="text-slate-300">
+            Generating goals for your career goal...
+          </div>
+        ) : goals.length === 0 ? (
+          <div className="text-slate-300">
+            {studentProfile.careerGoal
+              ? "No goals generated yet. Your AI coach will create personalized goals from your career goal."
+              : "Set your career goal to receive AI-generated learning goals."
+            }
+          </div>
+        ) : (
+          goals.map((goal) => (
             <div
               key={goal.id}
               className="
@@ -55,7 +65,7 @@ export default function GoalsCard() {
                 {goal.title}
               </span>
             </div>
-          )
+          ))
         )}
       </div>
     </div>

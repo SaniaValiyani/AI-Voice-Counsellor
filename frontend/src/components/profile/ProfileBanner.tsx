@@ -1,8 +1,8 @@
-import { Trophy, Flame } from "lucide-react";
+import { Trophy, Flame, Camera } from "lucide-react";
 import { useCounsellorStore } from "../../store/counsellorStore";
-
-import { Camera } from "lucide-react";
 import { uploadProfileImage } from "../../services/uploadService";
+import { serverUrl } from "../../utils/serverUrl";
+import { notify } from "../../utils/toast";
 
 export default function ProfileBanner() {
   const profile = useCounsellorStore(
@@ -26,8 +26,8 @@ export default function ProfileBanner() {
         <img
         src={
         profile.profileImage
-        ? `http://localhost:5000/${profile.profileImage.replace(/\\/g,"/")}`
-        : "https://ui-avatars.com/api/?name=Student"
+        ? `${serverUrl}/${profile.profileImage.replace(/\\/g, "/")}`
+        : "/default-avatar.svg"
         }
         className="w-28 h-28 rounded-full object-cover border-4 border-white"
         />
@@ -52,23 +52,21 @@ export default function ProfileBanner() {
         </div>
 
         <input
-        hidden
-        type="file"
-        accept="image/*"
+          hidden
+          type="file"
+          accept="image/*"
+          onChange={async (e) => {
+            const file = e.target.files?.[0];
+            if (!file) return;
 
-        onChange={async(e)=>{
-
-        const file=e.target.files?.[0];
-
-        if(!file)return;
-
-        const student=
-        await uploadProfileImage(file);
-
-        updateProfile(student);
-
-        }}
-
+            try {
+              const student = await uploadProfileImage(file);
+              updateProfile(student);
+              notify.success("Profile photo updated.");
+            } catch (error) {
+              notify.error("Unable to upload profile image.");
+            }
+          }}
         />
 
         </label>

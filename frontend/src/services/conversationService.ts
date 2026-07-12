@@ -1,37 +1,14 @@
-const API =
-"http://localhost:5000";
+import { serverUrl } from "../utils/serverUrl";
+import { getAuthHeaders } from "../utils/authHeaders";
 
-export async function getConversations(){
+export async function getConversations() {
+  const response = await fetch(`${serverUrl}/conversation`, {
+    headers: getAuthHeaders(),
+  });
 
-const response =
-await fetch(
+  if (!response.ok) {
+    throw new Error("Unable to load conversations");
+  }
 
-`${API}/conversation`,
-
-{
-
-headers:{
-
-Authorization:
-
-`Bearer ${
-localStorage.getItem("token")
-}`
-
-}
-
-}
-
-);
-
-if(!response.ok){
-
-throw new Error(
-"Unable to load conversations"
-);
-
-}
-
-return response.json();
-
+  return response.json();
 }

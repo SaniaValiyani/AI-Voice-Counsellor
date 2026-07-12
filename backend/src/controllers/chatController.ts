@@ -97,11 +97,10 @@ export async function chatController(
       sentiment,
     });
   } catch (error) {
-    console.error(error);
+    console.error("Chat controller error:", error);
 
     return res.status(500).json({
-      error:
-        "Failed to generate response",
+      error: "Failed to generate response",
     });
   }
 }

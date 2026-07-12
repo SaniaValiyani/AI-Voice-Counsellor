@@ -1,5 +1,4 @@
 import { motion } from "framer-motion";
-import DashboardLayout from "../components/layout/DashboardLayout";
 import { useEffect } from "react";
 //import ProfileHeader from "../components/profile/ProfileHeader";
 import XPCard from "../components/profile/XPCard";
@@ -26,57 +25,69 @@ export default function ProfilePage() {
       (s) => s.loadStudentProfile
     );
 
+  const persistProfile =
+    useCounsellorStore(
+      (s) => s.persistProfile
+    );
+
   useEffect(() => {
     loadStudentProfile();
   }, []);
-  
+
+  const handleContinue = async () => {
+    const saved = await persistProfile();
+    if (saved) {
+      navigate("/dashboard");
+    }
+  };
+
   return (
-    <DashboardLayout>
+    <div className="min-h-screen bg-slate-950 text-white">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="space-y-6"
+        className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8"
       >
-        <ProfileBanner />
-        <ProfileInfoCard />
+        <div className="rounded-3xl border border-slate-800 bg-slate-900/90 p-8 shadow-2xl shadow-cyan-500/10">
+          <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+            <div>
+              <h1 className="text-4xl font-bold text-white">
+                Complete your profile
+              </h1>
+              <p className="mt-3 max-w-2xl text-slate-400 leading-relaxed">
+                Tell us about yourself so the dashboard can deliver personalized recommendations, goals, and insights.
+              </p>
+            </div>
 
-        <div className="grid lg:grid-cols-3 gap-6">
-          <div className="space-y-6 lg:col-span-2">
-            <XPCard />
+            <button
+              disabled={!profile.careerGoal}
+              onClick={handleContinue}
+              className="mt-4 inline-flex items-center justify-center rounded-xl bg-cyan-500 px-8 py-3 text-black font-semibold transition hover:bg-cyan-400 disabled:cursor-not-allowed disabled:opacity-50 lg:mt-0"
+            >
+              Continue →
+            </button>
+          </div>
+        </div>
+
+        <div className="mt-8 grid gap-6 lg:grid-cols-3">
+          <div className="lg:col-span-2 space-y-6">
+            <ProfileBanner />
+            <ProfileInfoCard />
+            <div className="grid gap-6 lg:grid-cols-2">
+              <XPCard />
+              <ProgressCard />
+            </div>
             <SkillsCard />
             <InterestsCard />
             <CareerCard />
           </div>
 
-          <div className="flex justify-end">
-
-            <button
-              disabled={!profile.careerGoal}
-              onClick={() => navigate("/dashboard")}
-              className="
-                px-8
-                py-3
-                rounded-xl
-                bg-cyan-500
-                hover:bg-cyan-400
-                disabled:opacity-50
-                disabled:cursor-not-allowed
-                text-black
-                font-semibold
-              "
-            >
-              Continue →
-            </button>
-
-          </div>
-
           <div className="space-y-6">
-            <ProgressCard />
             <LinksCard />
             <ResumeCard />
           </div>
         </div>
       </motion.div>
-    </DashboardLayout>
+    </div>
   );
 }

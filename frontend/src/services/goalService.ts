@@ -1,24 +1,18 @@
-export async function fetchGoals(
-  careerGoal: string
-) {
+import { serverUrl } from "../utils/serverUrl";
+import { getAuthHeaders } from "../utils/authHeaders";
 
-  const response =
-    await fetch(
-      "http://localhost:5000/api/goals",
-      {
-        method: "POST",
+export async function fetchGoals(careerGoal: string) {
+  const response = await fetch(`${serverUrl}/api/goals`, {
+    method: "POST",
+    headers: getAuthHeaders(),
+    body: JSON.stringify({
+      careerGoal,
+    }),
+  });
 
-        headers: {
-          "Content-Type":
-            "application/json",
-        },
-
-        body:
-          JSON.stringify({
-            careerGoal,
-          }),
-      }
-    );
+  if (!response.ok) {
+    throw new Error("Unable to fetch goals");
+  }
 
   return response.json();
 }

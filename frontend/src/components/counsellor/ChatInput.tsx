@@ -19,6 +19,7 @@ import {
   fetchGoals,
 }
 from "../../services/goalService";
+import { notify } from "../../utils/toast";
 
 export default function ChatInput() {
   const [message, setMessage] = useState("");
@@ -60,26 +61,40 @@ export default function ChatInput() {
     if (
       profile.careerGoal
     ) {
+      try {
+        const goalData =
+          await fetchGoals(
+            profile.careerGoal
+          );
 
-      const goalData =
-        await fetchGoals(
-          profile.careerGoal
+        updateProfile({
+          goals:
+            goalData.goals,
+        });
+      } catch {
+        notify.error(
+          "Unable to fetch goals."
         );
-
-      updateProfile({
-        goals:
-          goalData.goals,
-      });
+      }
     }
 
     setMessage("");
 
-    const data = await sendChat(
-      userMessage,
-      messages,
-      studentProfile,
-      settings
-    );
+    let data;
+
+    try {
+      data = await sendChat(
+        userMessage,
+        messages,
+        studentProfile,
+        settings
+      );
+    } catch {
+      notify.error(
+        "Unable to send your message."
+      );
+      return;
+    }
 
     setSentiment(data.sentiment);
 

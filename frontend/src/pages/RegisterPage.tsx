@@ -13,61 +13,48 @@ import { notify } from "../utils/toast";
 export default function RegisterPage() {
   const navigate = useNavigate();
 
-  const { language, setLanguage } =
-    useLanguageStore();
+  const { language, setLanguage } = useLanguageStore();
 
-  const login =
-    useAuthStore(
-      (state) => state.login
-    );
+  const login = useAuthStore((state) => state.login);
 
-  const [fullName, setFullName] =
-    useState("");
+  const [fullName, setFullName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
-  const [email, setEmail] =
-    useState("");
+  async function handleRegister(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setError("");
 
-  const [password, setPassword] =
-    useState("");
-
-  const [loading, setLoading] =
-    useState(false);
-
-  const handleRegister = async () => {
     if (!fullName || !email || !password) {
-      alert("Please fill all fields");
+      setError("Please fill all fields.");
       return;
     }
 
     try {
       setLoading(true);
 
-      const data =
-        await register({
-          fullName,
-          email,
-          password,
-        });
+      const data = await register({
+        fullName,
+        email,
+        password,
+      });
 
-      login(
-        data.token,
-        data.user
-      );
+      login(data.token, data.user);
 
-      notify.success(
-        "Account created successfully!"
-      );
+      notify.success("Account created successfully!");
 
       navigate("/dashboard");
     } catch (error: any) {
-      alert(
+      notify.error(
         error?.response?.data?.error ||
           "Registration Failed"
       );
     } finally {
       setLoading(false);
     }
-  };
+  }
 
   return (
     <div>
@@ -88,26 +75,15 @@ export default function RegisterPage() {
         className="relative z-10"
       >
         <div className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-3xl p-10 shadow-2xl w-107.5">
-          {/* Logo */}
-
           <div className="flex flex-col items-center gap-4">
-            <BrainCircuit
-              size={60}
-              className="text-cyan-400"
-            />
+            <BrainCircuit size={60} className="text-cyan-400" />
 
-            <h1 className="text-3xl font-bold text-white">
-              Create Account
-            </h1>
+            <h1 className="text-3xl font-bold text-white">Create Account</h1>
 
-            <p className="text-slate-300 text-center">
-              Join AI Voice Counsellor
-            </p>
+            <p className="text-slate-300 text-center">Join AI Voice Counsellor</p>
           </div>
 
-          {/* Form */}
-
-          <div className="mt-8 space-y-4">
+          <form onSubmit={handleRegister} className="mt-8 space-y-4">
             <select
               value={language}
               onChange={(e) =>
@@ -121,32 +97,18 @@ export default function RegisterPage() {
               }
               className="w-full rounded-xl bg-white border border-white/20 px-4 py-3 text-black"
             >
-              <option value="English">
-                English
-              </option>
-
-              <option value="Hindi">
-                Hindi
-              </option>
-
-              <option value="Gujarati">
-                Gujarati
-              </option>
-
-              <option value="Marathi">
-                Marathi
-              </option>
+              <option value="English">English</option>
+              <option value="Hindi">Hindi</option>
+              <option value="Gujarati">Gujarati</option>
+              <option value="Marathi">Marathi</option>
             </select>
 
             <input
               type="text"
               placeholder="Full Name"
               value={fullName}
-              onChange={(e) =>
-                setFullName(
-                  e.target.value
-                )
-              }
+              onChange={(e) => setFullName(e.target.value)}
+              aria-label="Full Name"
               className="w-full rounded-xl bg-white/10 border border-white/20 px-4 py-3 text-white outline-none"
             />
 
@@ -154,11 +116,8 @@ export default function RegisterPage() {
               type="email"
               placeholder="Email"
               value={email}
-              onChange={(e) =>
-                setEmail(
-                  e.target.value
-                )
-              }
+              onChange={(e) => setEmail(e.target.value)}
+              aria-label="Email"
               className="w-full rounded-xl bg-white/10 border border-white/20 px-4 py-3 text-white outline-none"
             />
 
@@ -166,34 +125,28 @@ export default function RegisterPage() {
               type="password"
               placeholder="Password"
               value={password}
-              onChange={(e) =>
-                setPassword(
-                  e.target.value
-                )
-              }
+              onChange={(e) => setPassword(e.target.value)}
+              aria-label="Password"
               className="w-full rounded-xl bg-white/10 border border-white/20 px-4 py-3 text-white outline-none"
             />
 
+            {error && <p className="text-red-400 text-sm">{error}</p>}
+
             <button
-              onClick={handleRegister}
+              type="submit"
               disabled={loading}
               className="w-full rounded-xl bg-cyan-500 hover:bg-cyan-400 py-3 font-semibold text-black transition"
             >
-              {loading
-                ? "Creating Account..."
-                : "Register"}
+              {loading ? "Creating Account..." : "Register"}
             </button>
 
             <p className="text-center text-slate-300">
-              Already have an account?{" "}
-              <Link
-                to="/"
-                className="text-cyan-400 hover:underline"
-              >
+              Already have an account?{' '}
+              <Link to="/" className="text-cyan-400 hover:underline">
                 Login
               </Link>
             </p>
-          </div>
+          </form>
         </div>
       </motion.div>
     </div>
